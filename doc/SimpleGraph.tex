@@ -358,6 +358,19 @@ julia> elist(G)
   a tree assuming, that is, that the input is valid. No checks are
   done on the input so user beware.
 
+\item \verb|RandomSBM|
+
+  Use \verb|RandomSBM(bmap,pmat)| to create a random stochastic block
+  model graph. Here \verb|bmap| is an $n$-long list of integers between
+  $1$ and $b$ that assigns the $n$ vertices to blocks. The
+  $i,j$-entry of the matrix \verb|pmat|
+  gives the probability that a vertex in block $i$
+  is adjacent to a vertex in block $j$.
+
+  This can also be invoked by \verb|RandomSBM(n,pvec,pmat)| where
+  \verb|n| is the number of vertices, \verb|pvec| is a probability vector
+  whose $j$-th entry is the probability a vertex is placed in the $j$-th block. 
+
 
 \item \verb|Kneser|
 
