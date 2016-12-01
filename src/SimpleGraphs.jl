@@ -4,6 +4,7 @@
 module SimpleGraphs
 using DataStructures
 using Iterators
+using SimpleRandom
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.

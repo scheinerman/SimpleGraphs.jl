@@ -1,6 +1,6 @@
 # functions for building various standard types of graphs
 
-export Complete, Path, Cycle, RandomGraph, RandomRegular
+export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall
 export Petersen, Kneser, Paley, Knight
@@ -410,6 +410,53 @@ function RandomRegular(n::Int, d::Int, verbose::Bool=false)
         end
     end
 end
+
+
+
+"""
+`RandomSBM(bmap,pmat)` creates a random stochastic block model random graph.
+The vector `bmap` is a list of `n` positive integers giving the block number
+of vertices `1:n`. The `i,j`-entry of the matrix `pmat` gives the probability
+of an edge from a vertex in block `i` to a vertex in block `j`.
+
+`RandomSBM(n,pvec,pmat)` creates such a graph with `n` vertices. The vector
+`pvec` gives the probabilities that vertices fall into a given block.
+"""
+function RandomSBM{S<:Real}(bmap::Vector{Int}, pmat::Array{S,2})
+  n = length(bmap)    # no of vertices
+  b = maximum(bmap)   # no of blocks
+
+  @assert minimum(bmap)>0 "Block numbers must be positive"
+  @assert pmat == pmat' "Probability matrix must be square and symmetrical"
+  r = size(pmat,1)
+  @assert b<=r "Insufficient rows/cols in probability matrix"
+  @assert minimum(pmat)>=0 && maximum(pmat)<=1 "Entries in probability matrix out of range"
+
+  G = IntGraph(n)
+  for u=1:n-1
+    bu = bmap[u]
+    for v=u+1:n
+      bv = bmap[v]
+      p = pmat[bu,bv]
+      if rand() <= p
+        add!(G,u,v)
+      end
+    end
+  end
+  return G
+end
+
+
+function RandomSBM{S<:Real,T<:Real}(n::Int, pvec::Vector{S}, pmat::Array{T,2})
+  @assert minimum(pvec)>=0 "Entries in pvec must be nonnegative"
+  @assert sum(pvec)==1 "Entries in pvec must sum to 1"
+  bmap = [ random_choice(pvec) for _=1:n]
+  return RandomSBM(bmap,pmat)
+end
+
+
+
+
 
 """
 `Knight(r::Int=8,c::Int=8)` creates a Knight's Moves graph on a
