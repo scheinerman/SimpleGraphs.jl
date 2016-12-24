@@ -5,6 +5,7 @@ module SimpleGraphs
 using DataStructures
 using Iterators
 using SimpleRandom
+using Primes # needed for Paley graphs 
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
