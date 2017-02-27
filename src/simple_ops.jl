@@ -2,7 +2,7 @@ import Base.isequal
 import Base.delete!, Base.union
 import Base.join
 
-export add!, delete!, contract!,  induce
+export add!, delete!, contract!,  induce, add_edges!
 export line_graph, complement, complement!, ctranspose
 export cartesian, lex, relabel, trim
 export disjoint_union, union, join
@@ -77,6 +77,29 @@ function add!{T}(G::SimpleGraph{T}, v, w)
         push!(G.N[w], v)
     end
     return true
+end
+
+"""
+`add_edges!(G,edge_table)` adds edges to the graph `G`. The argument
+`edge_table` is an `m`-by-`2` array of vertices. Each row of the table
+represents an edge to add to `G`. Returns the number of edges
+successfully added to `G`.
+
+This works both when `G` is a `SimpleGraph` and when `G` is
+a `SimpleDigraph`.
+"""
+function add_edges!{T}(G::AbstractSimpleGraph, edge_table::Array{T,2})
+  r,c = size(edge_table)
+  if c != 2
+    error("Edge table must be an m-by-2 array of vertices")
+  end
+  m0 = NE(G)
+  for i=1:r
+    u = edge_table[i,1]
+    v = edge_table[i,2]
+    add!(G,u,v)
+  end
+  return NE(G)-m0
 end
 
 # edge deletion
