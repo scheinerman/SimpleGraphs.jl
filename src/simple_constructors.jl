@@ -3,7 +3,7 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall
-export Petersen, Kneser, Paley, Knight
+export Petersen, Kneser, Paley, Knight, Frucht
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.
@@ -351,6 +351,17 @@ function Paley(p::Int)
         end
     end
     return G
+end
+
+"""
+`Frucht()` returns the Frucht graph: A 12-vertex, 3-regular
+graph with non-nontrivial automorphisms.
+"""
+function Frucht()
+  G = Cycle(12)
+  more_edges = [ 1 6; 2 4; 3 11; 5 7; 8 10; 9 12]
+  add_edges!(G,more_edges)
+  return G
 end
 
 # Called by RandomRegular ... one step
