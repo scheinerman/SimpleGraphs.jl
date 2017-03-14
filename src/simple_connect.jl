@@ -1,7 +1,7 @@
 # Various functions regarding graph connectivity
 
 export components, num_components, is_connected, spanning_forest
-export find_path, dist, diam, is_cut_edge
+export find_path, dist, diam, is_cut_edge, is_acyclic
 
 # Find the components of the graph as a Set of subsets of the vertices
 
@@ -291,4 +291,16 @@ end
 # whose first two entries are the end points of the edge
 function is_cut_edge(G::SimpleGraph, e)
     return is_cut_edge(G,e[1],e[2])
+end
+
+
+"""
+`is_acyclic(G)` returns `true` if `G` has no cycles and `false`
+otherwise.
+"""
+function is_acyclic(G::SimpleGraph)
+  n = NV(G)
+  m = NE(G)
+  c = num_components(G)
+  return m == n-c
 end
