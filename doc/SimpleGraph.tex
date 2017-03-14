@@ -369,7 +369,7 @@ julia> elist(G)
 
   This can also be invoked by \verb|RandomSBM(n,pvec,pmat)| where
   \verb|n| is the number of vertices, \verb|pvec| is a probability vector
-  whose $j$-th entry is the probability a vertex is placed in the $j$-th block. 
+  whose $j$-th entry is the probability a vertex is placed in the $j$-th block.
 
 
 \item \verb|Kneser|
@@ -676,6 +676,9 @@ julia> d[(3,9)]
   Compute the diameter of a graph. Note that \verb|diam(G)| returns
   $-1$ if the graph is not connected.
 
+\item \verb|is_ayclic|
+
+  Determine if the graph is acyclic.
 
 \item \verb|is_cut_edge|
 
@@ -730,6 +733,13 @@ julia> bipartition(G)
 {{2,4,6},{1,3,5}}
 \end{verbatim}
   }
+
+
+\item \verb|girth| and \verb|girth_cycle|
+
+  Determine the girth of a simple graph and find a shortest cycle
+  in that graph. If the graph is acyclic, \verb|girth| returns
+  \verb|0| and \verb|girth_cycle| returns an empty array.
 
 
 \item \verb|greedy_color| and \verb|random_greedy_color|
