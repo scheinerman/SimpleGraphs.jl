@@ -670,11 +670,32 @@ julia> d[(3,9)]
   $j^{\text{th}}$ vertex of the graph where the order is produced by
   \verb|vlist|.
 
+\item \verb|wiener_index|
+
+  The function \verb|wiener_index| computes the sum of the distances
+  between distinct vertices in the graph:
+  \[
+  \frac12 \sum_{v\in V} \sum_{w \in V} d(v,w).
+  \]
 
 \item \verb|diam|
 
   Compute the diameter of a graph. Note that \verb|diam(G)| returns
   $-1$ if the graph is not connected.
+
+
+\item \verb|eccentricty|
+
+  The \emph{eccentricity} of a vertex $v$ of a graph $G$ is the
+  maximum distance from $v$ to another vertex of $G$.
+  \verb|eccentricity(G,v)| returns this
+  value, but if the graph is not connected it returns $-1$.
+
+\item \verb|radius|
+
+  The \emph{radius} of a graph is the minimum eccentricty of a vertex.
+  \verb|radius(G)| returns $-1$ if the graph is not connected.
+
 
 \item \verb|is_ayclic|
 

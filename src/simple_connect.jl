@@ -1,7 +1,8 @@
 # Various functions regarding graph connectivity
 
 export components, num_components, is_connected, spanning_forest
-export find_path, dist, diam, is_cut_edge, is_acyclic
+export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
+export eccentricity, radius
 
 # Find the components of the graph as a Set of subsets of the vertices
 
@@ -251,6 +252,48 @@ function dist(G::AbstractSimpleGraph)
     end
 
     return dd
+end
+
+"""
+`eccentricity(G,v)` returns the eccentricty of vertex `v`
+in the graph `G`. This is the maximum distance from `v`
+to another vertex (or -1 if the graph is not connected).
+"""
+function eccentricity(G::SimpleGraph, v)
+  if !has(G,v)
+    error("$v is not a vertex of this graph")
+  end
+  d = collect(values(dist(G,v)))
+  if minimum(d)<0
+    return -1
+  end
+  return maximum(d)
+end
+
+"""
+`radius(G)` returns the radius of the graph `G`. This is the
+minimum `eccentricity` of a vertex of `G` (or -1 if the graph
+is not connected).
+"""
+function radius(G::SimpleGraph)
+  D = dist_matrix(G)
+  if minimum(D)<0
+    return -1
+  end
+  return minimum(maximum(D,1))
+end
+
+
+
+"""
+`wiener_index(G)` is the sum of the distances between vertices in `G`.
+Returns -1 if `G` is not connected.
+"""
+function wiener_index(G::SimpleGraph)::Int
+  if is_connected(G)
+    return div(sum(values(dist(G))),2)
+  end
+  return -1
 end
 
 # Calculate the diameter of a graph, but return -1 if not connected.
