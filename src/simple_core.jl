@@ -16,7 +16,7 @@ cases.
 """
 type SimpleGraph{T} <: AbstractSimpleGraph
     V::Set{T}          # Vertex set
-    E::Set{Tuple{T,T}}      # Edge set
+    E::Set{Tuple{T,T}} # Edge set
     N::Dict{T,Set{T}}  # Optional neighbor sets
     Nflag::Bool        # Tells if N is used or not (default on)
     function SimpleGraph(Nflag::Bool=true)
