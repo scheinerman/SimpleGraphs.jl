@@ -2,13 +2,18 @@
 # needed again. Note that if the graph is modified, the cache should be
 # wiped clean.
 
-# Here is a list of symbols and their associated meanings.
+export cache_clear, cache_on, cache_off
+
+# Here is a list of symbols and their associated meanings; we try to match
+# the symbol's name with the function it saves.
 
 # :num_comps (Int) is the number of connected components.
 # :components (Partition) is a partion of V into connected components.
 
 """
 `cache_clear(G)` clears all items in `G`'s cache.
+
+`cache_clear(G,item)` clears just that item.
 """
 function cache_clear(G::SimpleGraph)
   if length(G.cache) > 0
@@ -17,10 +22,12 @@ function cache_clear(G::SimpleGraph)
   nothing
 end
 
+cache_clear(G::SimpleGraph, item::Symbol) = delete!(G.cache,item)
+
 """
 `cache_check(G,item)` checks if the symbol `item` is a valid key.
 """
-cache_check(G::SimpleGraph, item::Symbol)::Bool = haskey(G.cache,item)
+cache_check(G::SimpleGraph, item::Symbol)::Bool = G.cache_flag && haskey(G.cache,item)
 
 """
 `cache_recall(G,item)` retreives the value associated with `item`.
@@ -34,4 +41,23 @@ cache_recall(G::SimpleGraph,item::Symbol) = deepcopy(G.cache[item])
 `cache_save(G,item,value)` saves `value` associated with
 the symbol (key) `item` in the cache for this graph.
 """
-cache_save(G::SimpleGraph,item::Symbol,value) = G.cache[item]=deepcopy(value)
+function cache_save(G::SimpleGraph,item::Symbol,value)
+  if G.cache_flag
+    G.cache[item]=deepcopy(value)
+  end
+  nothing
+end
+
+"""
+`cache_on(G)` activates results caching for this graph. See also: `cache_off`.
+"""
+cache_on(G::SimpleGraph) = G.cache_flag=true
+
+"""
+`cache_off(G)` deactivates cache checking and clears the cache.
+See also: `cache_on`.
+"""
+function cache_off(G::SimpleGraph)
+  cache_clear(G)
+  G.cache_flag=false
+end
