@@ -19,11 +19,13 @@ type SimpleGraph{T} <: AbstractSimpleGraph
     E::Set{Tuple{T,T}} # Edge set
     N::Dict{T,Set{T}}  # Optional neighbor sets
     Nflag::Bool        # Tells if N is used or not (default on)
+    cache::Dict{Symbol,Any}
     function SimpleGraph(Nflag::Bool=true)
         V = Set{T}()
         E = Set{Tuple{T,T}}()
         N = Dict{T,Set{T}}()
-        G = new(V,E,N,Nflag)
+        cache = Dict{Symbol,Any}()
+        G = new(V,E,N,Nflag,cache)
     end
 end
 

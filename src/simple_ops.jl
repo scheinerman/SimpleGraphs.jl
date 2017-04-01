@@ -43,6 +43,7 @@ function add!{T}(G::SimpleGraph{T}, v)
     if has(G,v)
         return false
     end
+    cache_clear(G)
     push!(G.V, v)
     if G.Nflag
         G.N[v] = Set{T}()
@@ -71,6 +72,7 @@ function add!{T}(G::SimpleGraph{T}, v, w)
     if has(G,v,w)
         return false
     end
+    cache_clear(G)
     push!(G.E, (v,w))
     if G.Nflag
         push!(G.N[v], w)
@@ -112,6 +114,7 @@ from the graph.
 function delete!(G::SimpleGraph, v, w)
     flag = false
     if has(G,v,w)
+        cache_clear(G)
         flag = true
         delete!(G.E,(v,w))
         delete!(G.E,(w,v))
@@ -127,6 +130,7 @@ end
 function delete!(G::SimpleGraph, v)
     flag = false
     if has(G,v)
+        cache_clear(G)
         flag = true
         Nv = G[v]
         for w in Nv
@@ -158,7 +162,7 @@ function contract!(G::SimpleGraph, u, v)
     if !has(G,u) || !has(G,v) || u==v
         return false
     end
-
+    cache_clear(G)
     Nv = G[v]
     for x in Nv
         add!(G,u,x)
@@ -281,6 +285,7 @@ ctranspose(G::SimpleGraph) = complement(G)
 `complement!(G)` replaces `G` with its complement.
 """
 function complement!(G::SimpleGraph)
+    cache_clear(G)
     n = NV(G)
     V = vlist(G)
     for i=1:n-1

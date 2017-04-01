@@ -14,6 +14,7 @@ abstract AbstractSimpleGraph
 export AbstractSimpleGraph
 
 include("simple_core.jl")
+include("cache.jl")
 include("simple_ops.jl")
 include("simple_constructors.jl")
 include("platonic.jl")
