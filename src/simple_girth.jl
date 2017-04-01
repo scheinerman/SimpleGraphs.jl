@@ -12,6 +12,7 @@ function girth_cycle{T}(G::SimpleGraph{T})
   end
   best_path = T[]
   if is_acyclic(G)
+    cache_save(G,:girth_cycle,best_path)
     return best_path
   end
   best = NV(G)+1
@@ -32,12 +33,11 @@ function girth_cycle{T}(G::SimpleGraph{T})
 end
 
 
-
 """
 `girth(G)` computes the length of a shortest cycle in `G` or returns `0`
 if `G` is acyclic.
 
-*Warning*: This implementation is quite inefficient.
+**Warning**: This implementation is quite inefficient.
 """
 function girth(G::SimpleGraph)
   if cache_check(G,:girth)

@@ -141,7 +141,7 @@ ASCIIString (constructor with 1 method)
 \section{Look but don't touch}
 \label{sect:fastN}
 
-The \verb|SimpleGraph| objects have three internal fields. It is not
+The \verb|SimpleGraph| objects have various internal fields. It is not
 safe to change these directly, but there is no problem examining their
 values.
 
@@ -167,6 +167,16 @@ values.
   This is a \verb|Dict| that keeps track of the neighborhood of each
   vertex. It is only active if the \verb|Nflag| is set to
   \verb|true|.
+
+\item \verb|:cache|
+
+  This is a dictionary that holds previously computed properties
+  of the graph. See Section~\ref{sect:cache} for details and user
+  functions for manipulating the cache.
+
+\item \verb|cache_flag|
+
+  Used to determine if caching should be enabled.
 
 \end{itemize}
 
@@ -977,6 +987,37 @@ so the output of \verb|convert_simple| provides two dictionaries for
 mapping from the vertex set of the \verb|SimpleGraph| to the vertex set
 of the \verb|simple_graph|, and back again.
 
+
+\section{Results Caching}
+\label{sect:cache}
+
+Some graph-theoretic computations can be expensive. To avoid computing
+the same item twice for a given graph, the results of these
+calculations are saved in a data structure attached to the graph. Note
+that any change to the graph will automaticaly clear the cache.
+
+Some values held in the cache may be mutable Julia objects. Such
+objects are deep copied when fetched from the cache.
+
+
+The following functions are available to the user to manipulate the
+cache.
+
+\begin{itemize}
+\item \verb|cache_clear(G)|: Removes all items held in the cache.
+
+\item \verb|cache_clear(G,item)|: Remove a specific item from the
+  cache. The variable \verb|item| is a \verb|Symbol| whose name
+  corresponds to the function it caches (for example,
+  \verb|:components| or \verb|:girth|).
+
+\item \verb|cache_on(G)|: Enable the caching system for this graph.
+
+\item \verb|cache_off(G)|: Disable the caching system for this graph.
+  Note thie does not wipe the graph's cache, so to save space, also
+  use \verb|cache_clear(G)|.
+
+\end{itemize}
 
 
 \end{document}
