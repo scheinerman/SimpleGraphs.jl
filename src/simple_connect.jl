@@ -14,6 +14,7 @@ function components{T}(G::SimpleGraph{T})
   if cache_check(G,:components)
     return cache_recall(G,:components)
   end
+
   P = Partition(G.V)
   for e in G.E
     (u,v) = e
@@ -30,7 +31,15 @@ end
 """
 `num_components(G)` returns the number of connected components in `G`.
 """
-num_components{T}(G::SimpleGraph{T}) = num_parts(components(G))
+function num_components{T}(G::SimpleGraph{T})::Int
+  if cache_check(G,:num_comps)
+    return cache_recall(G,:num_comps)
+  end
+  result = num_parts(components(G))
+  cache_save(G,:num_comps,result)
+  return result
+end
+
 
 # determine if the graph is connected
 """
