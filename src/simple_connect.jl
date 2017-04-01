@@ -4,11 +4,9 @@ export components, num_components, is_connected, spanning_forest
 export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
 export eccentricity, radius
 
-# Find the components of the graph as a Set of subsets of the vertices
-
 """
 `components(G)` returns the vertex sets of the connected components of
-`G` (as a set of sets.
+`G` (as a `Partition`).
 """
 function components{T}(G::SimpleGraph{T})
   if cache_check(G,:components)
@@ -24,19 +22,15 @@ function components{T}(G::SimpleGraph{T})
   return P
 end
 
-
-
-
-# count the number of connected components
 """
 `num_components(G)` returns the number of connected components in `G`.
 """
 function num_components{T}(G::SimpleGraph{T})::Int
-  if cache_check(G,:num_comps)
-    return cache_recall(G,:num_comps)
+  if cache_check(G,:num_components)
+    return cache_recall_fast(G,:num_components)
   end
   result = num_parts(components(G))
-  cache_save(G,:num_comps,result)
+  cache_save_fast(G,:num_components,result)
   return result
 end
 
@@ -56,6 +50,9 @@ end
 `spanning_forest(G)` creates a maximal acyclic subgraph of `G`.
 """
 function spanning_forest{T}(G::SimpleGraph{T})
+    if cache_check(G,:spanning_forest)
+      return cache_recall(G,:spanning_forest)
+    end
     H = SimpleGraph{T}()
     if NV(G) == 0
         return H
@@ -78,6 +75,7 @@ function spanning_forest{T}(G::SimpleGraph{T})
             break
         end
     end
+    cache_save(G,:spanning_forest,H)
     return H
 end
 
@@ -186,6 +184,10 @@ end
 
 # find all distances between all vertices
 function dist(G::AbstractSimpleGraph)
+    if cache_check(G,:dist)
+      return cache_recall(G,:dist)
+    end
+
     T = vertex_type(G)
     dd = Dict{Tuple{T,T},Int}()
     vtcs = vlist(G)
@@ -196,7 +198,7 @@ function dist(G::AbstractSimpleGraph)
             dd[(v,w)] = d[w]
         end
     end
-
+    cache_save(G,:dist,dd)
     return dd
 end
 
@@ -222,11 +224,16 @@ minimum `eccentricity` of a vertex of `G` (or -1 if the graph
 is not connected).
 """
 function radius(G::SimpleGraph)
+  if cache_check(G,:radius)
+    return cache_recall_fast(G,:radius)
+  end
   D = dist_matrix(G)
   if minimum(D)<0
     return -1
   end
-  return minimum(maximum(D,1))
+  r = minimum(maximum(D,1))
+  cache_save_fast(G,:radius,r)
+  return r
 end
 
 

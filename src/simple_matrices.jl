@@ -87,6 +87,9 @@ from the `i`th vertex to the `j`th vertex. If there is no `i,j`-path,
 that entry is `-1`.
 """
 function dist_matrix(G::AbstractSimpleGraph)
+    if cache_check(G,:dist_matrix)
+      return cache_recall(G,:dist_matrix)
+    end
     vtcs = vlist(G)
     n = length(vtcs)
     dd = dist(G)
@@ -100,7 +103,7 @@ function dist_matrix(G::AbstractSimpleGraph)
             A[i,j] = dd[(u,v)]
         end
     end
-
+    cache_save(G,:dist_matrix,A)
     return A
 end
 
@@ -111,9 +114,14 @@ using Polynomials
 `adjacency(G)`.
 """
 function char_poly(G::AbstractSimpleGraph)
+    if cache_check(G,:char_poly)
+      return cache_recall(G,:char_poly)
+    end
     A = adjacency(G)
     evs = eigvals(A)
     P = poly(evs)
     cs = round(Int,real(coeffs(P)))
-    return Poly(cs)
+    P =  Poly(cs)
+    cache_save(G,:char_poly,P)
+    return P
 end

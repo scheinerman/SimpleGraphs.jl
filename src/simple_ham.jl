@@ -6,6 +6,9 @@ graph (if one exists) or an empty array (otherwise). This works
 reasonably well for small graphs.
 """
 function hamiltonian_cycle(G::SimpleGraph)
+    if cache_check(G,:hamiltonian_cycle)
+      return cache_recall(G,:hamiltonian_cycle)
+    end
     T = vertex_type(G)
 
     # rule out some simple non-Hamiltonian graphs
@@ -28,9 +31,12 @@ function hamiltonian_cycle(G::SimpleGraph)
     path[1] = v
 
     if ham_extend(G,VV,1,used,path)
+        cache_save(G,:hamiltonian_cycle,path)
         return path
     else
-        return T[]
+        path = T[]
+        cache_save(G,:hamiltonian_cycle,path)
+        return path
     end
 end
 

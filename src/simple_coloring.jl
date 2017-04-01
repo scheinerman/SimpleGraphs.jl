@@ -7,10 +7,13 @@ export bipartition, two_color, greedy_color, random_greedy_color
 
 """
 `two_color(G)` creates a two-coloring of the graph or throws an error
-if tghe graph is not bipartite. The output is a `Dict` mapping the
+if the graph is not bipartite. The output is a `Dict` mapping the
 vertex set to the values 1 and 2.
 """
 function two_color{T}(G::SimpleGraph{T})
+    if cache_check(G,:two_color)
+      return cache_recall(G,:two_color)
+    end
     f = Dict{T,Int}()
     for A in parts(components(G))
         a = first(A)
@@ -32,6 +35,7 @@ function two_color{T}(G::SimpleGraph{T})
             end
         end
     end
+    cache_save(G,:two_color,f)
     return f
 end
 

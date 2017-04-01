@@ -5,10 +5,10 @@ export euler
 # This function finds an Euler trail/tour given initial
 # vertices. Returns the trail if it exists of [] if it does not.
 
-""" 
+"""
 `euler(G,u,v)` finds an Euler trail in `G` starting at `u` and ending
 at `v` returned as a list of vertices (in the order they are visited
-on the trail). 
+on the trail).
 
 `euler(G,u)` finds an Euler tour beginning and ending at
 `u`. Alternatively, call `euler(G)` and the initial/final vertex will
@@ -82,6 +82,9 @@ end
 # vertex will do but if there are isolated vertices, we don't want to
 # pick one of those!
 function euler{T}(G::SimpleGraph{T})
+    if cache_check(G,:euler)
+      return cache_recall(G,:euler)
+    end
     if NV(G)==0
         return T[]
     end
@@ -98,8 +101,9 @@ function euler{T}(G::SimpleGraph{T})
     # if we reach here, the graph only has isolated vertics. Let it
     # work from any isolated vertex (and likely fail).
     u = verts[1]
-    return euler(G,u,u)
-
+    tour = euler(G,u,u)
+    cache_save(G,:euler,tour)
+    return tour
 end
 
 # private helper function for euler()

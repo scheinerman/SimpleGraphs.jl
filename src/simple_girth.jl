@@ -7,6 +7,9 @@ the vertices on that cycle, or an empty array if `G` is acyclic.
 *Warning*: This implementation is quite inefficient.
 """
 function girth_cycle{T}(G::SimpleGraph{T})
+  if cache_check(G,:girth_cycle)
+    return cache_recall(G,:girth_cycle)
+  end
   best_path = T[]
   if is_acyclic(G)
     return best_path
@@ -24,6 +27,7 @@ function girth_cycle{T}(G::SimpleGraph{T})
       best_path = P
     end
   end
+  cache_save(G,:girth_cycle,best_path)
   return best_path
 end
 
@@ -35,4 +39,11 @@ if `G` is acyclic.
 
 *Warning*: This implementation is quite inefficient.
 """
-girth(G::SimpleGraph) = length(girth_cycle(G))
+function girth(G::SimpleGraph)
+  if cache_check(G,:girth)
+    return cache_recall_fast(G,:girth)
+  end
+  g = length(girth_cycle(G))
+  cache_save_fast(G,:girth,g)
+  return g
+end
