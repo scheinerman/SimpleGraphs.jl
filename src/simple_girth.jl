@@ -17,18 +17,20 @@ function girth_cycle{T}(G::SimpleGraph{T})
   end
   best = NV(G)+1
 
-  for e in elist(G)
+  GG = deepcopy(G)
+
+  for e in elist(GG)
     u,v = e
-    delete!(G,u,v)
-    P = find_path(G,u,v)
-    add!(G,u,v)
+    delete!(GG,u,v)
+    P = find_path(GG,u,v)
+    add!(GG,u,v)
     nP = length(P)
     if  0 < nP < best
       best = nP
       best_path = P
     end
   end
-  cache_save(G,:girth_cycle,best_path)
+  cache_save(GG,:girth_cycle,best_path)
   return best_path
 end
 
