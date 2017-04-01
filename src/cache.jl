@@ -4,8 +4,7 @@
 
 # Here is a list of symbols and their associated meanings.
 
-# :conn (Bool) is true if the graph is connected.
-
+# :components (SimplePartition) partition of V into components.
 
 """
 `cache_clear(G)` clears all items in `G`'s cache.

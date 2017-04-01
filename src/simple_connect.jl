@@ -11,55 +11,26 @@ export eccentricity, radius
 `G` (as a set of sets.
 """
 function components{T}(G::SimpleGraph{T})
+  if cache_check(G,:components)
+    return cache_recall(G,:components)
+  end
   P = Partition(G.V)
   for e in G.E
     (u,v) = e
     merge_parts!(P,u,v)
   end
+  cache_save(G,:components,P)
   return P
 end
 
 
 
-#  OLD VERSION
-# function components{T}(G::SimpleGraph{T})
-#     VL = vlist(G)
-#
-#     # create the partition of the vertex set inside a "DisjointSets"
-#     # Julia structure
-#     parts = DisjointSets{T}(VL)
-#     for e in G.E
-#         (u,v) = e
-#         union!(parts,u,v)
-#         if num_groups(parts)==1
-#             break
-#         end
-#     end
-#     return set_of_sets(parts)
-# end
 
 # count the number of connected components
 """
 `num_components(G)` returns the number of connected components in `G`.
 """
 num_components{T}(G::SimpleGraph{T}) = num_parts(components(G))
-
-# OLD VERSION
-#
-# function num_components{T}(G::SimpleGraph{T})
-#     if NV(G)<2
-#         return NV(G)
-#     end
-#     parts = DisjointSets{T}(vlist(G))
-#     for e in G.E
-#         (u,v) = e
-#         union!(parts,u,v)
-#         if num_groups(parts)==1
-#             return 1
-#         end
-#     end
-#     return num_groups(parts)
-# end
 
 # determine if the graph is connected
 """
@@ -75,9 +46,6 @@ end
 """
 `spanning_forest(G)` creates a maximal acyclic subgraph of `G`.
 """
-
-
-
 function spanning_forest{T}(G::SimpleGraph{T})
     H = SimpleGraph{T}()
     if NV(G) == 0
@@ -103,37 +71,6 @@ function spanning_forest{T}(G::SimpleGraph{T})
     end
     return H
 end
-
-
-# OLD VERSION
-#
-# function spanning_forest{T}(G::SimpleGraph{T})
-#     H = SimpleGraph{T}()
-#     if NV(G) == 0
-#         return H
-#     end
-#
-#     for v in G.V
-#         add!(H,v)
-#     end
-#
-#     parts = DisjointSets{T}(vlist(G))
-#
-#     for e in G.E
-#         (u,v) = e
-#         if in_same_set(parts,u,v)
-#             continue
-#         end
-#         add!(H,u,v)
-#         union!(parts,u,v)
-#         if num_groups(parts)==1
-#             break
-#         end
-#     end
-#     return H
-# end
-
-# find a shortest path between vertices
 
 """
 `find_path(G,s,t)` finds a shortest path from `s` to `t`. If no
