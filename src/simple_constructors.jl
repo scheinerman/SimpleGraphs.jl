@@ -23,6 +23,7 @@ function Complete(n::Int)
             add!(G,j,k)
         end
     end
+    cache_save(G,:name,"Complete graph K($n)")
     return G
 end
 
@@ -34,6 +35,7 @@ function Complete(n::Int, m::Int)
             add!(G,u,v)
         end
     end
+    cache_save(G,:name,"Complete bipartite graph K($n,$m)")
     return G
 end
 
@@ -73,7 +75,7 @@ function Complete(parts::Array{Int,1})
             end
         end
     end
-
+    cache_save(G,:name,"Complete multipartite graph K$parts")
     return G
 end
 
@@ -92,6 +94,7 @@ function Path(n::Int)
     for v = 1:n-1
         add!(G,v,v+1)
     end
+    cache_save(G,:name,"Path P($n)")
     return G
 end
 
@@ -106,6 +109,7 @@ function Path{T}(verts::Array{T})
     for k = 1:n-1
         add!(G,verts[k],verts[k+1])
     end
+    cache_save(G,:name,"Path with $n vertices")
     return G
 end
 
@@ -116,6 +120,7 @@ function Cycle(n::Int)
     end
     G = Path(n)
     add!(G,1,n)
+    cache_save(G,:name,"Cycle C($n)")
     return G
 end
 
@@ -134,6 +139,7 @@ function Wheel(n::Int)
     for k=1:n-1
         add!(G,k,n)
     end
+    cache_save(G,:name,"Wheel with $n vertices")
     return G
 end
 
@@ -166,6 +172,7 @@ function Grid(n::Int, m::Int)
             add!(G,(u,v),(u+1,v))
         end
     end
+    cache_save(G,:name,"$n-by-$m grid")
     return G
 end
 
@@ -254,6 +261,7 @@ function Cube(n::Integer=3)
             add!(G,bin(u,n), bin(v,n))
         end
     end
+    cache_save(G,:name,"Cube Q($n)")
     return G
 end
 

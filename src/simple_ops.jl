@@ -299,7 +299,7 @@ function complement!(G::SimpleGraph)
             end
         end
     end
-    return None
+    nothing
 end
 
 # Create the cartesian product of two graphs

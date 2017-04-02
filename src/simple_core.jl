@@ -31,7 +31,11 @@ type SimpleGraph{T} <: AbstractSimpleGraph
 end
 
 function show(io::IO, G::SimpleGraph)
-    print(io,"SimpleGraph{$(vertex_type(G))} (n=$(NV(G)), m=$(NE(G)))")
+    if cache_check(G,:name)
+      print(io,cache_recall(G,:name))
+    else
+      print(io,"SimpleGraph{$(vertex_type(G))} (n=$(NV(G)), m=$(NE(G)))")
+    end
 end
 
 # Default constructor uses Any type vertices
