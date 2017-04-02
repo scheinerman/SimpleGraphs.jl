@@ -2,7 +2,9 @@
 # needed again. Note that if the graph is modified, the cache should be
 # wiped clean.
 
-export cache_clear, cache_on, cache_off, cache_recall, cache_check 
+export cache_clear, cache_on, cache_off, cache_recall, cache_check
+# but we don't export cache_save
+
 
 # We try to match the symbol's name with the function it saves.
 
@@ -34,32 +36,17 @@ sure to use `cache_check` first!
 cache_recall(G::SimpleGraph,item::Symbol) = deepcopy(G.cache[item])
 
 
-"""
-`cache_recall_fast(G,item)` is similar to `cache_recall` except we do not
-make a copy of the object. Use this only for immutable saved values.
-"""
-cache_recall_fast(G::SimpleGraph,item::Symbol) = G.cache[item]
-
 
 """
 `cache_save(G,item,value)` saves `value` associated with
 the symbol (key) `item` in the cache for this graph.
 """
 function cache_save(G::SimpleGraph, item::Symbol, value)
-  cache_save_fast(G,item,deepcopy(value))
-end
-
-"""
-`cache_save_fast(G,item,value)` is the same as `cache_save` but safe
-for immutable values.
-"""
-function cache_save_fast(G::SimpleGraph, item::Symbol, value)
   if G.cache_flag
-    G.cache[item]=value
+    G.cache[item] = deepcopy(value)
   end
   nothing
 end
-
 
 """
 `cache_on(G)` activates results caching for this graph. See also: `cache_off`.

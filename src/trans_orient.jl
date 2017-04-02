@@ -64,7 +64,7 @@ orientations of the graph `G`.
 """
 function num_trans_orientations(G2::SimpleGraph)
   if cache_check(G2,:num_trans_orientations)
-    return cache_recall_fast(G2,:num_trans_orientations)
+    return cache_recall(G2,:num_trans_orientations)
   end
   G = deepcopy(G2)
   V = vertex_type(G)
@@ -82,7 +82,7 @@ function num_trans_orientations(G2::SimpleGraph)
   for m in multiplexes
     ans = ans*factorial(m)
   end
-  cache_save_fast(G2,:num_trans_orientations,ans)
+  cache_save(G2,:num_trans_orientations,ans)
   return ans
 end
 

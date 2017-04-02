@@ -27,10 +27,10 @@ end
 """
 function num_components{T}(G::SimpleGraph{T})::Int
   if cache_check(G,:num_components)
-    return cache_recall_fast(G,:num_components)
+    return cache_recall(G,:num_components)
   end
   result = num_parts(components(G))
-  cache_save_fast(G,:num_components,result)
+  cache_save(G,:num_components,result)
   return result
 end
 
@@ -225,14 +225,14 @@ is not connected).
 """
 function radius(G::SimpleGraph)
   if cache_check(G,:radius)
-    return cache_recall_fast(G,:radius)
+    return cache_recall(G,:radius)
   end
   D = dist_matrix(G)
   if minimum(D)<0
     return -1
   end
   r = minimum(maximum(D,1))
-  cache_save_fast(G,:radius,r)
+  cache_save(G,:radius,r)
   return r
 end
 

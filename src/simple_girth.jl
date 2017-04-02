@@ -30,7 +30,7 @@ function girth_cycle{T}(G::SimpleGraph{T})
       best_path = P
     end
   end
-  cache_save(GG,:girth_cycle,best_path)
+  cache_save(G,:girth_cycle,best_path)
   return best_path
 end
 
@@ -43,9 +43,9 @@ if `G` is acyclic.
 """
 function girth(G::SimpleGraph)
   if cache_check(G,:girth)
-    return cache_recall_fast(G,:girth)
+    return cache_recall(G,:girth)
   end
   g = length(girth_cycle(G))
-  cache_save_fast(G,:girth,g)
+  cache_save(G,:girth,g)
   return g
 end
