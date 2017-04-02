@@ -94,7 +94,7 @@ function Path(n::Int)
     for v = 1:n-1
         add!(G,v,v+1)
     end
-    cache_save(G,:name,"Path P($n)")
+    cache_save(G,:name,"Path graph P($n)")
     return G
 end
 
@@ -109,7 +109,7 @@ function Path{T}(verts::Array{T})
     for k = 1:n-1
         add!(G,verts[k],verts[k+1])
     end
-    cache_save(G,:name,"Path with $n vertices")
+    cache_save(G,:name,"Path graph with $n vertices")
     return G
 end
 
@@ -120,7 +120,7 @@ function Cycle(n::Int)
     end
     G = Path(n)
     add!(G,1,n)
-    cache_save(G,:name,"Cycle C($n)")
+    cache_save(G,:name,"Cycle graph C($n)")
     return G
 end
 
@@ -139,7 +139,7 @@ function Wheel(n::Int)
     for k=1:n-1
         add!(G,k,n)
     end
-    cache_save(G,:name,"Wheel with $n vertices")
+    cache_save(G,:name,"Wheel graph with $n vertices")
     return G
 end
 
@@ -172,7 +172,7 @@ function Grid(n::Int, m::Int)
             add!(G,(u,v),(u+1,v))
         end
     end
-    cache_save(G,:name,"$n-by-$m grid")
+    cache_save(G,:name,"Grid graph of size $n-by-$m")
     return G
 end
 
@@ -261,7 +261,7 @@ function Cube(n::Integer=3)
             add!(G,bin(u,n), bin(v,n))
         end
     end
-    cache_save(G,:name,"Cube Q($n)")
+    cache_save(G,:name,"Cube graph Q($n)")
     return G
 end
 
@@ -291,6 +291,7 @@ function BuckyBall()
     for e in edges
         add!(G,e[1],e[2])
     end
+    cache_save(G,:name,"Buckyball graph")
     return G
 end
 
@@ -322,7 +323,7 @@ function Kneser(n::Int,k::Int)
             end
         end
     end
-
+    cache_save(G,:name,"Kneser($n,$k) graph")
     return G
 end
 
@@ -333,7 +334,11 @@ the 2-element subsets of `1:5`. Wrap in `relabel` to have vertices
 named `1:10`. See also: `Kneser`.
 """
 
-Petersen() = Kneser(5,2)
+function Petersen()
+  G = Kneser(5,2)
+  cache_save(G,:name,"Petersen graph")
+  return G
+end
 
 # Create Paley graphs
 
@@ -358,6 +363,7 @@ function Paley(p::Int)
             add!(G,u,v)
         end
     end
+    cache_save(G,:name,"Paley($p) graph")
     return G
 end
 
@@ -369,6 +375,7 @@ function Frucht()
   G = Cycle(12)
   more_edges = [ 1 6; 2 4; 3 11; 5 7; 8 10; 9 12]
   add_edges!(G,more_edges)
+  cache_save(G,:name,"Frucht graph")
   return G
 end
 
@@ -500,6 +507,6 @@ function Knight(r::Int=8,c::Int=8)
             end
         end
     end
-
+    cache_save(G,:name,"Knight's tour graph on $r-by-$c chess board")
     return G
 end

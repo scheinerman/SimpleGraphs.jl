@@ -52,6 +52,7 @@ function Dodecahedron()
              19 20
              ]
     add_edge_matrix!(G,edges)
+    cache_save(G,:name,"Dodecahedron graph")
     return G
 end
 
@@ -93,6 +94,7 @@ function Icosahedron()
              11 12
              ]
     add_edge_matrix!(G, edges)
+    cache_save(G,:name,"Icosahedron graph")
     return G
 end
 
@@ -117,5 +119,6 @@ function Octahedron()
              ]
 
     add_edge_matrix!(G, edges)
+    cache_save(G,:name,"Octahedron graph")
     return G
 end
