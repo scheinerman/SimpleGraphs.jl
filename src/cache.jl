@@ -2,7 +2,7 @@
 # needed again. Note that if the graph is modified, the cache should be
 # wiped clean.
 
-export cache_clear, cache_on, cache_off
+export cache_clear, cache_on, cache_off, cache_recall, cache_check 
 
 # We try to match the symbol's name with the function it saves.
 

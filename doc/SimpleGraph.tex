@@ -1017,6 +1017,14 @@ cache.
   Note thie does not wipe the graph's cache, so to save space, also
   use \verb|cache_clear(G)|.
 
+\item \verb|cache_check(G,item)|: See if there is a value associated
+  with the symbol \verb|item| held in the graph's cache.
+
+\item \verb|cache_recall(G,item)|: Copy a value associated with the
+  symbol \verb|item| from the cache. \textbf{Warning}: If there is
+  no such symbol held in the cache an error will be thrown. Be sure
+  to first check using \verb|cache_check|.
+
 \end{itemize}
 
 
