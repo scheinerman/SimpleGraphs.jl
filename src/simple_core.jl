@@ -31,10 +31,11 @@ type SimpleGraph{T} <: AbstractSimpleGraph
 end
 
 function show(io::IO, G::SimpleGraph)
+    suffix = " (n=$(NV(G)), m=$(NE(G)))"
     if cache_check(G,:name)
-      print(io,cache_recall(G,:name))
+      print(io,cache_recall(G,:name) * suffix)
     else
-      print(io,"SimpleGraph{$(vertex_type(G))} (n=$(NV(G)), m=$(NE(G)))")
+      print(io,"SimpleGraph{$(vertex_type(G))}" * suffix)
     end
 end
 
