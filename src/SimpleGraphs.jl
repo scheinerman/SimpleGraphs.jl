@@ -32,6 +32,7 @@ include("trans_orient.jl")
 include("d_simple_core.jl")
 include("d_simple_constructors.jl")
 include("d_simple_matrices.jl")
+include("d_dist.jl")
 
 
 end # module SimpleGraphs
