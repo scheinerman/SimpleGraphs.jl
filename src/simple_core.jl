@@ -2,7 +2,7 @@ import Base.show, Base.==, Base.ctranspose, Base.*
 import Base.getindex
 
 export SimpleGraph, IntGraph, StringGraph
-export show, NV, NE, has, vertex_type, fastN!
+export show, NV, NE, has, vertex_type, fastN!, name
 export vlist, elist, neighbors, getindex, deg, deg_hist
 
 """
@@ -30,13 +30,33 @@ type SimpleGraph{T} <: AbstractSimpleGraph
     end
 end
 
+"""
+`name(G)` returns the graph's name.
+
+`name(G,str)` assigns `str` to be the graph's name. If `str` is
+empty, then the name is set to the default `SimpleGraph{T}` where
+`T` is the vertex type.
+"""
+function name(G::SimpleGraph)
+  if cache_check(G,:name)
+    return cache_recall(G,:name)
+  end
+  return "SimpleGraph{$(vertex_type(G))}"
+end
+
+function name(G::SimpleGraph, the_name::String)
+  G.cache[:name] = the_name
+  if length(the_name) == 0
+    cache_clear(G,:name)
+  end
+  nothing
+end
+
+
+
 function show(io::IO, G::SimpleGraph)
     suffix = " (n=$(NV(G)), m=$(NE(G)))"
-    if cache_check(G,:name)
-      print(io,cache_recall(G,:name) * suffix)
-    else
-      print(io,"SimpleGraph{$(vertex_type(G))}" * suffix)
-    end
+    print(io,name(G)*suffix)
 end
 
 # Default constructor uses Any type vertices
