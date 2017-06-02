@@ -3,7 +3,7 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall
-export Petersen, Kneser, Paley, Knight, Frucht
+export Petersen, Kneser, Paley, Knight, Frucht, HoffmanSingleton
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.
@@ -509,4 +509,47 @@ function Knight(r::Int=8,c::Int=8)
     end
     cache_save(G,:name,"Knight's tour graph on $r-by-$c chess board")
     return G
+end
+
+
+
+"""
+`HoffmanSingleton()` creates the Hoffman-Singleton graph. This is
+a 7-regular graph whose diameter is 2 and whose girth is 5.
+"""
+function HoffmanSingleton()
+  G = StringGraph()
+  # P-pentagons
+  for i=0:4
+    for j=0:4
+      jj = mod(j+1,5)
+      v = "P$i$j"
+      w = "P$i$jj"
+      add!(G,v,w)
+    end
+  end
+
+  # Q-pentagrams
+  for i=0:4
+    for j=0:4
+      jj = mod(j+2,5)
+      v = "Q$i$j"
+      w = "Q$i$jj"
+      add!(G,v,w)
+    end
+  end
+
+  # Connections
+  for i=0:4
+    for j=0:4
+      for k=0:4
+        v = "P$i$j"
+        x = mod(i*k+j,5)
+        w = "Q$k$x"
+        add!(G,v,w)
+      end
+    end
+  end
+  cache_save(G,:name,"Hoffman-Singleton graph")
+  return G
 end
