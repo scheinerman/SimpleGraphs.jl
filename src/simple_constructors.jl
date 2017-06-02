@@ -369,7 +369,7 @@ end
 
 """
 `Frucht()` returns the Frucht graph: A 12-vertex, 3-regular
-graph with non-nontrivial automorphisms.
+graph with no non-nontrivial automorphisms.
 """
 function Frucht()
   G = Cycle(12)
