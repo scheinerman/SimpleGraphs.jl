@@ -3,7 +3,7 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall
-export Petersen, Kneser, Paley, Knight, Frucht, HoffmanSingleton
+export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.
@@ -52,7 +52,7 @@ function Complete(parts::Array{Int,1})
     G = IntGraph(n)
 
     np = length(parts)
-    if np < 2
+    if np < 2IntGraph
         return G
     end
 
@@ -556,5 +556,27 @@ function HoffmanSingleton()
     end
   end
   name(G,"Hoffman-Singleton graph")
+  return G
+end
+
+"""
+`Hoffman()` creates the Hoffman graph which is cospectral with,
+but not isomorphic to, `Cube(4)`.
+"""
+function Hoffman()
+  D = [
+  1 1 1 1 0 0 0 0
+  1 1 1 0 1 0 0 0
+  1 0 0 1 0 1 1 0
+  0 1 0 1 0 1 0 1
+  0 0 1 1 0 0 1 1
+  1 0 0 0 1 1 1 0
+  0 1 0 0 1 1 0 1
+  0 0 1 0 1 0 1 1]
+
+  A = [0*D D; D' 0*D]
+
+  G = SimpleGraph(A)
+  name(G,"Hoffman graph")
   return G
 end

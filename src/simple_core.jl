@@ -115,6 +115,9 @@ end
 `IntGraph()` creates a new `SimpleGraph` whose vertices are of type
 `Int`. Called as `IntGraph(n::Int)` prepopulates the vertex set with
 vertices `1:n`.
+
+`IntGraph(A)` where `A` is an adjacency matrix creates a graph for which
+`A` is the adjacency matrix.
 """
 
 IntGraph() = SimpleGraph{Int}()
@@ -128,6 +131,29 @@ function IntGraph(n::Int)
     end
     return G
 end
+
+function IntGraph(A::Matrix)
+  r,c = size(A)
+  @assert r==c "Matrix must be square"
+  @assert A==A' "Matrix must be symmetric"
+  G = IntGraph(r)
+  for i=1:r-1
+    for j=i+1:r
+      if A[i,j] != 0
+        add!(G,i,j)
+      end
+    end
+  end
+  return G
+end
+
+
+"""
+`SimpleGraph(A)` where `A` is a matrix creates a graph with vertex set
+`1:n` where `A` is an `n`-by-`n` symmetric matrix specifying the graph's
+adjacency matrix.
+"""
+SimpleGraph(A::Matrix) = IntGraph(A)
 
 
 """
