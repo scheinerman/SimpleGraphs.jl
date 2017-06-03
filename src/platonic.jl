@@ -52,7 +52,7 @@ function Dodecahedron()
              19 20
              ]
     add_edge_matrix!(G,edges)
-    cache_save(G,:name,"Dodecahedron graph")
+    name(G,"Dodecahedron graph")
     return G
 end
 
@@ -94,7 +94,7 @@ function Icosahedron()
              11 12
              ]
     add_edge_matrix!(G, edges)
-    cache_save(G,:name,"Icosahedron graph")
+    name(G,"Icosahedron graph")
     return G
 end
 
@@ -102,23 +102,7 @@ end
 `Octahedron()` creates the octaahedron `SimpleGraph`.
 """
 function Octahedron()
-    G = IntGraph()
-    edges = [
-             1 2
-             1 3
-             1 4
-             1 5
-             2 3
-             2 4
-             2 6
-             3 5
-             3 6
-             4 5
-             4 6
-             5 6
-             ]
-
-    add_edge_matrix!(G, edges)
-    cache_save(G,:name,"Octahedron graph")
+    G = Complete([2,2,2])
+    name(G,"Octahedron graph")
     return G
 end

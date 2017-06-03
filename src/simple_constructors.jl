@@ -23,7 +23,7 @@ function Complete(n::Int)
             add!(G,j,k)
         end
     end
-    cache_save(G,:name,"Complete graph K($n)")
+    name(G,"Complete graph K($n)")
     return G
 end
 
@@ -35,7 +35,7 @@ function Complete(n::Int, m::Int)
             add!(G,u,v)
         end
     end
-    cache_save(G,:name,"Complete bipartite graph K($n,$m)")
+    name(G,"Complete bipartite graph K($n,$m)")
     return G
 end
 
@@ -75,7 +75,7 @@ function Complete(parts::Array{Int,1})
             end
         end
     end
-    cache_save(G,:name,"Complete multipartite graph K$parts")
+    name(G,"Complete multipartite graph K$parts")
     return G
 end
 
@@ -94,7 +94,7 @@ function Path(n::Int)
     for v = 1:n-1
         add!(G,v,v+1)
     end
-    cache_save(G,:name,"Path graph P($n)")
+    name(G,"Path graph P($n)")
     return G
 end
 
@@ -109,7 +109,7 @@ function Path{T}(verts::Array{T})
     for k = 1:n-1
         add!(G,verts[k],verts[k+1])
     end
-    cache_save(G,:name,"Path graph with $n vertices")
+    name(G,"Path graph with $n vertices")
     return G
 end
 
@@ -120,7 +120,7 @@ function Cycle(n::Int)
     end
     G = Path(n)
     add!(G,1,n)
-    cache_save(G,:name,"Cycle graph C($n)")
+    name(G,"Cycle graph C($n)")
     return G
 end
 
@@ -139,7 +139,7 @@ function Wheel(n::Int)
     for k=1:n-1
         add!(G,k,n)
     end
-    cache_save(G,:name,"Wheel graph with $n vertices")
+    name(G,"Wheel graph with $n vertices")
     return G
 end
 
@@ -172,7 +172,7 @@ function Grid(n::Int, m::Int)
             add!(G,(u,v),(u+1,v))
         end
     end
-    cache_save(G,:name,"Grid graph of size $n-by-$m")
+    name(G,"Grid graph of size $n-by-$m")
     return G
 end
 
@@ -195,6 +195,7 @@ function RandomGraph(n::Int, p::Real=0.5)
             end
         end
     end
+    name(G,"Erdos-Renyi random graph, p=$p")
     return G
 end
 
@@ -215,7 +216,9 @@ function RandomTree(n::Int)
     end
 
     code = [ mod(rand(Int),n)+1 for _ in 1:n-2 ]
-    return code_to_tree(code)
+    G =  code_to_tree(code)
+    name(G,"Random tree")
+    return G
 end
 
 # This is a helper function for RandomTree that converts a Prufer code
@@ -261,7 +264,7 @@ function Cube(n::Integer=3)
             add!(G,bin(u,n), bin(v,n))
         end
     end
-    cache_save(G,:name,"Cube graph Q($n)")
+    name(G,"Cube graph Q($n)")
     return G
 end
 
@@ -291,7 +294,7 @@ function BuckyBall()
     for e in edges
         add!(G,e[1],e[2])
     end
-    cache_save(G,:name,"Buckyball graph")
+    name(G,"Buckyball graph")
     return G
 end
 
@@ -323,7 +326,7 @@ function Kneser(n::Int,k::Int)
             end
         end
     end
-    cache_save(G,:name,"Kneser($n,$k) graph")
+    name(G,"Kneser($n,$k) graph")
     return G
 end
 
@@ -336,7 +339,7 @@ named `1:10`. See also: `Kneser`.
 
 function Petersen()
   G = Kneser(5,2)
-  cache_save(G,:name,"Petersen graph")
+  name(G,"Petersen graph")
   return G
 end
 
@@ -363,7 +366,7 @@ function Paley(p::Int)
             add!(G,u,v)
         end
     end
-    cache_save(G,:name,"Paley($p) graph")
+    name(G,"Paley($p) graph")
     return G
 end
 
@@ -375,7 +378,7 @@ function Frucht()
   G = Cycle(12)
   more_edges = [ 1 6; 2 4; 3 11; 5 7; 8 10; 9 12]
   add_edges!(G,more_edges)
-  cache_save(G,:name,"Frucht graph")
+  name(G,"Frucht graph")
   return G
 end
 
@@ -429,6 +432,7 @@ function RandomRegular(n::Int, d::Int, verbose::Bool=false)
             if verbose
                 println("Success")
             end
+            name(g,"Random regular graph, d=$d")
             return g
         end
         if verbose
@@ -469,6 +473,7 @@ function RandomSBM{S<:Real}(bmap::Vector{Int}, pmat::Array{S,2})
       end
     end
   end
+  name(G,"Random stochastic block model graph")
   return G
 end
 
@@ -507,7 +512,7 @@ function Knight(r::Int=8,c::Int=8)
             end
         end
     end
-    cache_save(G,:name,"Knight's tour graph on $r-by-$c chess board")
+    name(G,"Knight's tour graph on $r-by-$c chess board")
     return G
 end
 
@@ -550,6 +555,6 @@ function HoffmanSingleton()
       end
     end
   end
-  cache_save(G,:name,"Hoffman-Singleton graph")
+  name(G,"Hoffman-Singleton graph")
   return G
 end
