@@ -46,6 +46,9 @@ purpose, we provide these special constructors:
 + `StringGraph()` and `StringDigraph()` creates graphs whose vertex
   type is `ASCIIString`.
 
+To create a new graph from an adjacency matrix `A` one can use
+either `SimpleGraph(A)` or `IntGraph(A)`.
+
 ## Fundamental operations
 
 ### Adding/deleting edges/vertices
