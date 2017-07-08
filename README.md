@@ -490,6 +490,9 @@ transitive orientations of the graph.
 
 ## Interface to `Graphs.jl`
 
+**NOTE**: This feature has been disabled because of errors
+in the `Graphs` module under Julia 0.6.
+
 We provide a `convert_simple` function that takes a `SimpleGraph`
 or a `SimpleDigraph` as input and returns a Julia
 `Graphs.simple_graph` representation of the same graph
