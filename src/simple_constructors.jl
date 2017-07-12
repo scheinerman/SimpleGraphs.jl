@@ -302,6 +302,8 @@ end
 # k-element subsets of 1:n in which two vertices are adjacent if (as
 # sets) they are disjoint. The Petersen graph is Kneser(5,2).
 
+import IterTools.subsets
+
 """
 `Kneser(n,m)` creates the Kneser graph whose vertices are all the
 `m`-element subsets of `1:n` in which two vertices are adjacent iff
