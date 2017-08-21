@@ -52,7 +52,7 @@ function Complete(parts::Array{Int,1})
     G = IntGraph(n)
 
     np = length(parts)
-    if np < 2IntGraph
+    if np < 2
         return G
     end
 
