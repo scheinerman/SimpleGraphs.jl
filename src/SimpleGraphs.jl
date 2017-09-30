@@ -5,6 +5,7 @@ module SimpleGraphs
 using DataStructures
 using SimpleRandom
 using Primes # needed for Paley graphs
+using Polynomials
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
@@ -27,6 +28,7 @@ include("simple_ham.jl")
 include("simple_girth.jl")
 include("bisect.jl")
 include("trans_orient.jl")
+include("interlace.jl")
 
 include("d_simple_core.jl")
 include("d_simple_constructors.jl")

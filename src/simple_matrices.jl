@@ -107,8 +107,6 @@ function dist_matrix(G::AbstractSimpleGraph)
     return A
 end
 
-using Polynomials
-
 """
 `char_poly(G)` returns the characteristic polynomial of
 `adjacency(G)`.
