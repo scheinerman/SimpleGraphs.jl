@@ -91,23 +91,39 @@ function interlace(G::SimpleGraph, saver::Bool=true)
         return Poly([0,1])^NV(G)
     end
 
-    e = first(G.E)
-    a = e[1]
-    b = e[2]
+    if is_connected(G)
+        e = first(G.E)
+        a = e[1]
+        b = e[2]
 
-    G1 = deepcopy(G)
-    delete!(G1,a)
-    p1 = interlace(G1,false)
+        G1 = deepcopy(G)
+        delete!(G1,a)
+        p1 = interlace(G1,false)
 
-    G2 = deepcopy(G)
-    pivot!(G2,a,b)
-    delete!(G2,b)
-    p2 = interlace(G2,false)
+        G2 = deepcopy(G)
+        pivot!(G2,a,b)
+        delete!(G2,b)
+        p2 = interlace(G2,false)
 
-    p = p1+p2
+        p = p1+p2
+        if saver
+            cache_save(G,:interlace,p)
+        end
+
+        return p
+    end
+
+    # if not connected, break into components and use multiplicativity
+    comps = parts(components(G))
+    p = Poly([1])
+    for S in comps
+        H = induce(G,S)
+        pH = interlace(H,false)
+        p *= pH
+    end
     if saver
         cache_save(G,:interlace,p)
     end
-
     return p
+
 end
