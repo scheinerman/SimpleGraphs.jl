@@ -31,7 +31,7 @@ function matching_poly(G::SimpleGraph, cache_flag::Bool=true)
 
         p = p1 - p2
         if cache_flag
-            SimpleGraphs.cache_save(G,:matching_poly,p)
+            cache_save(G,:matching_poly,p)
         end
         return p
     end
@@ -44,7 +44,7 @@ function matching_poly(G::SimpleGraph, cache_flag::Bool=true)
         p *= pH
     end
     if cache_flag
-        SimpleGraphs.cache_save(G,:matching_poly,p)
+        cache_save(G,:matching_poly,p)
     end
     return p
 end
