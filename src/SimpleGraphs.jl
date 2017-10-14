@@ -30,6 +30,7 @@ include("bisect.jl")
 include("trans_orient.jl")
 include("interlace.jl")
 include("matching_poly.jl")
+include("indep_poly.jl")
 
 include("d_simple_core.jl")
 include("d_simple_constructors.jl")
