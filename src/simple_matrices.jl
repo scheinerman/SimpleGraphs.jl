@@ -1,6 +1,6 @@
 # Functions to create standard graph matrices
-
-export adjacency, char_poly, laplace, incidence, dist_matrix
+import Base.eigvals
+export adjacency, char_poly, laplace, incidence, dist_matrix, eigvals
 
 # Adjaceny Matrix
 
@@ -115,11 +115,21 @@ function char_poly(G::AbstractSimpleGraph)
     if cache_check(G,:char_poly)
       return cache_recall(G,:char_poly)
     end
-    A = adjacency(G)
-    evs = eigvals(A)
+    evs = eigvals(G)
     P = poly(evs)
     cs = round(Int,real(coeffs(P)))
     P =  Poly(cs)
     cache_save(G,:char_poly,P)
     return P
+end
+
+
+"""
+`eigvals(G)` for a `SimpleGraph` returns the eigenvalues of `G`'s
+adjacency matrix. More generally, `eigvals(G,mat)` returns the eigenvalues
+of `mat(G)` where `mat` is a matrix-valued function of `G`. In particular,
+one can use `mat(G,laplace)` to find the eigenvalues of `G`'s Laplacian.
+"""
+function eigvals(G::SimpleGraph, mat::Function = adjacency)
+    return eigvals(mat(G))
 end
