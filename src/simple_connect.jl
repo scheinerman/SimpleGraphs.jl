@@ -2,7 +2,7 @@
 
 export components, num_components, is_connected, spanning_forest
 export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
-export eccentricity, radius
+export eccentricity, radius, center
 
 """
 `components(G)` returns the vertex sets of the connected components of
@@ -146,6 +146,13 @@ end
 whose `[u,v]` entry is the distance from `u` to `v`.
 """
 function dist(G::AbstractSimpleGraph,u,v)
+    if !has(G,u) || !has(G,v)
+        error("One or both of $u and $v are not vertices of this graph")
+    end
+    if cache_check(G,:dist)
+        d = cache_recall(G,:dist)
+        return d[u,v]
+    end
     return length(find_path(G,u,v))-1
 end
 
@@ -217,6 +224,32 @@ function eccentricity(G::SimpleGraph, v)
   end
   return maximum(d)
 end
+
+"""
+`center(G)` returns the set of vertices of a `SimpleGraph` with minimum
+eccentricities.
+"""
+function center(G::SimpleGraph)::Set
+    if cache_check(G,:center)
+        return cache_recall(G,:center)
+    end
+    if G.cache_flag
+        dist(G) # force all pairs distance computation
+    end
+
+    xtable = Dict( (v, eccentricity(G,v)) for v in G.V )
+    min_r = minimum(values(xtable))
+
+    if min_r < 0
+        return deepcopy(G.V)
+    end
+
+    A = Set( v for v in keys(xtable) if xtable[v]==min_r)
+    cache_save(G,:center, A)
+    return A
+end
+
+
 
 """
 `radius(G)` returns the radius of the graph `G`. This is the
