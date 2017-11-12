@@ -14,14 +14,14 @@ Use `SimpleGraph()` to create a new graph in which the vertices may be
 vertices are of type `T`. See `IntGraph` and `StringGraph` as special
 cases.
 """
-type SimpleGraph{T} <: AbstractSimpleGraph
+mutable struct SimpleGraph{T} <: AbstractSimpleGraph
     V::Set{T}          # Vertex set
     E::Set{Tuple{T,T}} # Edge set
     N::Dict{T,Set{T}}  # Optional neighbor sets
     Nflag::Bool        # Tells if N is used or not (default on)
     cache::Dict{Symbol,Any}   # save previous expensive results
     cache_flag::Bool          # decide if we use cache or no
-    function SimpleGraph(Nflag::Bool=true)
+    function SimpleGraph{T}(Nflag::Bool=true) where T
         V = Set{T}()
         E = Set{Tuple{T,T}}()
         N = Dict{T,Set{T}}()

@@ -10,7 +10,7 @@ using Polynomials
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
 """
-abstract AbstractSimpleGraph
+abstract type AbstractSimpleGraph end
 export AbstractSimpleGraph
 
 include("simple_core.jl")

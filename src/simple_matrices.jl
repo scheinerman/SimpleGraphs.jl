@@ -117,7 +117,7 @@ function char_poly(G::AbstractSimpleGraph)
     end
     evs = eigvals(G)
     P = poly(evs)
-    cs = round(Int,real(coeffs(P)))
+    cs = round.(Int,real(coeffs(P)))
     P =  Poly(cs)
     cache_save(G,:char_poly,P)
     return P

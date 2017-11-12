@@ -260,7 +260,7 @@ function Cube(n::Integer=3)
     G = StringGraph()
     for u=0:2^n-1
         for shift=0:n-1
-            v = (1<<shift) $ u
+            v = xor( (1<<shift), u)
             add!(G,bin(u,n), bin(v,n))
         end
     end

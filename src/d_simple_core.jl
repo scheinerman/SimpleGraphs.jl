@@ -10,12 +10,12 @@ export in_neighbors, out_neighbors, simplify, vertex_split
 type. This can be restricted to vertics of type `T` with
 `SimpleDigraph{T}()`.
 """
-type SimpleDigraph{T} <: AbstractSimpleGraph
+mutable struct SimpleDigraph{T} <: AbstractSimpleGraph
     V::Set{T}              # vertex set of this graph
     N::Dict{T,Set{T}}      # map vertices to out-neighbors
     NN::Dict{T,Set{T}}     # map vertices to in-neighbors
     looped::Bool           # flag to indicate if loops are allowed
-    function SimpleDigraph()
+    function SimpleDigraph{T}() where T
         V = Set{T}()
         N = Dict{T,Set{T}}()
         NN = Dict{T,Set{T}}()
