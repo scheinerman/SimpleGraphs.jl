@@ -111,15 +111,17 @@ end
 `char_poly(G)` returns the characteristic polynomial of
 `adjacency(G)`.
 """
-function char_poly(G::AbstractSimpleGraph)
-    if cache_check(G,:char_poly)
+function char_poly(G::AbstractSimpleGraph, func::Function=adjacency)
+    if cache_check(G,:char_poly) && func==adjacency
       return cache_recall(G,:char_poly)
     end
-    evs = eigvals(G)
+    evs = eigvals(G,func)
     P = poly(evs)
     cs = round.(Int,real(coeffs(P)))
     P =  Poly(cs)
-    cache_save(G,:char_poly,P)
+    if func==adjacency
+        cache_save(G,:char_poly,P)
+    end 
     return P
 end
 
