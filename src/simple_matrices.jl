@@ -109,7 +109,8 @@ end
 
 """
 `char_poly(G)` returns the characteristic polynomial of
-`adjacency(G)`.
+`adjacency(G)`. Use `char_poly(G,function)` for other
+possible integer matrix functions such as `laplace`.
 """
 function char_poly(G::AbstractSimpleGraph, func::Function=adjacency)
     if cache_check(G,:char_poly) && func==adjacency
@@ -121,7 +122,7 @@ function char_poly(G::AbstractSimpleGraph, func::Function=adjacency)
     P =  Poly(cs)
     if func==adjacency
         cache_save(G,:char_poly,P)
-    end 
+    end
     return P
 end
 
