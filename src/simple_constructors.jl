@@ -2,7 +2,7 @@
 
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
-export Grid, Wheel, Cube, BuckyBall
+export Grid, Wheel, Cube, BuckyBall, Johnson
 export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton
 
 """
@@ -331,6 +331,45 @@ function Kneser(n::Int,k::Int)
     name(G,"Kneser($n,$k) graph")
     return G
 end
+
+
+"""
+`Johnson(n,k)` creates the Johnson graph whose vertices
+and the `k`-element subsets of `{1,2,...,n}`. Vertices `v`
+and `w` are adjacent if their intersection has size `k-1`.
+"""
+function Johnson(n::Int, k::Int)
+    if k<0 || n<0
+        error("n,k must be nonnegative")
+    end
+
+    if k>n
+        error("k must not be greater than n")
+    end
+
+    A = collect(1:n)
+    vtcs = [Set{Int}(v) for v in subsets(A,k)]
+    G = SimpleGraph{Set{Int}}()
+
+    for v in vtcs
+        add!(G,v)
+
+        for j=1:n
+            if !in(j,v)
+                for x in v
+                    w = deepcopy(v)
+                    push!(w,j)
+                    pop!(w,x)
+                    add!(G,v,w)
+                end
+            end
+        end
+    end
+
+    name(G,"Johnson($n,$k) graph")
+    return G
+end
+
 
 # Create the Petersen graph.
 """
