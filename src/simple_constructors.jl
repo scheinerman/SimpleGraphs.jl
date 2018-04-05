@@ -57,7 +57,7 @@ function Complete(parts::Array{Int,1})
     end
 
     # create table of part ranges
-    ranges = Array(Int,np,2)
+    ranges = Array{Int}(np,2)   # old ranges = Array(Int,np,2)
     ranges[1,1] = 1
     ranges[1,2] = parts[1]
     for k = 2:np
