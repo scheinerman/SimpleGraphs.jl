@@ -113,7 +113,7 @@ function find_path(G::AbstractSimpleGraph,s,t)
             enqueue!(Q,w)
 
             if w==t  # success!
-                path = Array(T,1)
+                path = Array{T}(1)
                 path[1] = t
                 while path[1] != s
                     v = tracer[path[1]]
