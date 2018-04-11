@@ -89,7 +89,7 @@ function find_path(G::AbstractSimpleGraph,s,t)
         error("Source and/or target vertex is not in this graph")
     end
     if s==t
-        result = Array(T,1)
+        result = Array{T}(1)
         result[1] = s
         return result
     end
