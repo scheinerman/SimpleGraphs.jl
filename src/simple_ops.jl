@@ -3,7 +3,7 @@ import Base.delete!, Base.union
 import Base.join
 
 export add!, delete!, contract!,  induce, add_edges!
-export line_graph, complement, complement!, ctranspose
+export line_graph, complement, complement!, adjoint
 export cartesian, lex, relabel, trim
 export disjoint_union, union, join
 
@@ -39,7 +39,7 @@ end
 of those vertices is not already in the graph, it is added to the
 vertex set.
 """
-function add!{T}(G::SimpleGraph{T}, v)
+function add!(G::SimpleGraph{T}, v) where {T}
     if has(G,v)
         return false
     end
@@ -52,7 +52,7 @@ function add!{T}(G::SimpleGraph{T}, v)
 end
 
 # adding edges
-function add!{T}(G::SimpleGraph{T}, v, w)
+function add!(G::SimpleGraph{T}, v, w) where {T}
     if v==w
         return false
     end
@@ -61,6 +61,7 @@ function add!{T}(G::SimpleGraph{T}, v, w)
         if v > w
             v,w = w,v
         end
+    catch
     end
 
     if ~has(G,v)
@@ -90,7 +91,7 @@ successfully added to `G`.
 This works both when `G` is a `SimpleGraph` and when `G` is
 a `SimpleDigraph`.
 """
-function add_edges!{T}(G::AbstractSimpleGraph, edge_table::Array{T,2})
+function add_edges!(G::AbstractSimpleGraph, edge_table::Array{T,2}) where {T}
   r,c = size(edge_table)
   if c != 2
     error("Edge table must be an m-by-2 array of vertices")
@@ -177,7 +178,7 @@ end
 `induce(G,A)` creates the induced subgraph of `G` with vertices in the
 set `A`.
 """
-function induce{T}(G::SimpleGraph{T}, A::Set)
+function induce(G::SimpleGraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
     for v in A
         if ~has(G,v)
@@ -227,7 +228,7 @@ end
 """
 `line_graph(G)` creates the line graph of `G`.
 """
-function line_graph{T}(G::SimpleGraph{T})
+function line_graph(G::SimpleGraph{T}) where {T}
     H = SimpleGraph{Tuple{T,T}}()
 
     m = NE(G)
@@ -253,7 +254,7 @@ end
 `complement(G)` creates (as a new graph) the complement of `G`.
 Note that `G'` is a short cut for `complement(G)`.
 """
-function complement{T}(G::SimpleGraph{T})
+function complement(G::SimpleGraph{T}) where {T}
     H = SimpleGraph{T}()
     V = vlist(G)
     n = NV(G)
@@ -278,7 +279,7 @@ end
 """
 `G'` is equivalent to `complement(G)`.
 """
-ctranspose(G::SimpleGraph) = complement(G)
+adjoint(G::SimpleGraph) = complement(G)
 
 # complement in place. Returns None.
 """
@@ -307,7 +308,7 @@ end
 `cartesian(G,H)` creates the Cartesian product of the two graphs.
 This can be abbreviated as `G*H`.
 """
-function cartesian{S,T}(G::SimpleGraph{S}, H::SimpleGraph{T})
+function cartesian(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     K = SimpleGraph{Tuple{S,T}}()
     for v in G.V
         for w in H.V
@@ -336,7 +337,7 @@ end
 """
 For `SimpleGraph`s: `G*H` is equivalent to `cartesian(G,H)`.
 """
-function *{S,T}(G::SimpleGraph{S},H::SimpleGraph{T})
+function *(G::SimpleGraph{S},H::SimpleGraph{T}) where {S,T}
     return cartesian(G,H)
 end
 
@@ -347,7 +348,7 @@ end
 `join(G,H)` is a new graph formed by taking disjoint copies of
 `G` and `H` together with all possible edges between those copies.
 """
-function join{S,T}(G::SimpleGraph{S}, H::SimpleGraph{T})
+function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     K = disjoint_union(G,H)
     for v in G.V
         for w in H.V
@@ -364,7 +365,7 @@ end
 `union(G,H)` creates the union of the graphs `G` and `H`. The graphs
 may (and typically do) have common vertices or edges.
 """
-function union{S,T}(G::SimpleGraph{S}, H::SimpleGraph{T})
+function union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     if S==T
         K = SimpleGraph{S}()
     else
@@ -391,7 +392,7 @@ end
 # a new graph in which the name of each vertex has an integer
 # appended. For example, if the vertex type is String in the original
 # graph, the new vertices are type (String, Int).
-function label_append{S}(G::SimpleGraph{S}, a::Int)
+function label_append(G::SimpleGraph{S}, a::Int) where {S}
     mapper = Dict{S,Tuple{S,Int}}()
     for v in G.V
         mapper[v] = (v,a)
@@ -406,7 +407,7 @@ end
 `disjoint_union(G,H)` is a new graph formed by taking disjoint copies
 of `G` and `H` (and no additional edges).
 """
-function disjoint_union{S,T}(G::SimpleGraph{S}, H::SimpleGraph{T})
+function disjoint_union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     GG = label_append(G,1)
     HH = label_append(H,2)
     if S==T
@@ -464,7 +465,7 @@ end
 `relabel(G,d)` (where `d` is a `Dict`) returns a copy of `G` in which
 vertex `v` is renamed `d[v]`.
 """
-function relabel{S,T}(G::SimpleGraph{S}, label::Dict{S,T})
+function relabel(G::SimpleGraph{S}, label::Dict{S,T}) where {S,T}
     H = SimpleGraph{T}()
     for v in G.V
         add!(H,label[v])
@@ -479,7 +480,7 @@ function relabel{S,T}(G::SimpleGraph{S}, label::Dict{S,T})
 end
 
 # Relabel the vertices with the integers 1:n
-function relabel{S}(G::SimpleGraph{S})
+function relabel(G::SimpleGraph{S}) where {S}
     verts = vlist(G)
     n = length(verts)
     label = Dict{S,Int}()
@@ -503,7 +504,7 @@ and `h~h'`.
 
 We can use the notation `G[H]` also to create `lex(G,H)`.
 """
-function lex{S,T}(G::SimpleGraph{S}, H::SimpleGraph{T})
+function lex(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     VT = Tuple{S,T}
     K = SimpleGraph{VT}()
     # Create vertex set

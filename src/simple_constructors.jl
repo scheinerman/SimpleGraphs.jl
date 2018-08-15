@@ -99,7 +99,7 @@ function Path(n::Int)
 end
 
 # Create a path graph from a list of vertices
-function Path{T}(verts::Array{T})
+function Path(verts::Array{T}) where {T}
     G = SimpleGraph{T}()
     n = length(verts)
 
@@ -493,7 +493,7 @@ of an edge from a vertex in block `i` to a vertex in block `j`.
 `RandomSBM(n,pvec,pmat)` creates such a graph with `n` vertices. The vector
 `pvec` gives the probabilities that vertices fall into a given block.
 """
-function RandomSBM{S<:Real}(bmap::Vector{Int}, pmat::Array{S,2})
+function RandomSBM(bmap::Vector{Int}, pmat::Array{S,2}) where {S<:Real}
   n = length(bmap)    # no of vertices
   b = maximum(bmap)   # no of blocks
 
@@ -519,7 +519,7 @@ function RandomSBM{S<:Real}(bmap::Vector{Int}, pmat::Array{S,2})
 end
 
 
-function RandomSBM{S<:Real,T<:Real}(n::Int, pvec::Vector{S}, pmat::Array{T,2})
+function RandomSBM(n::Int, pvec::Vector{S}, pmat::Array{T,2}) where {S<:Real,T<:Real}
   @assert minimum(pvec)>=0 "Entries in pvec must be nonnegative"
   @assert sum(pvec)==1 "Entries in pvec must sum to 1"
   bmap = [ random_choice(pvec) for _=1:n]

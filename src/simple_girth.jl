@@ -6,7 +6,7 @@ the vertices on that cycle, or an empty array if `G` is acyclic.
 
 *Warning*: This implementation is quite inefficient.
 """
-function girth_cycle{T}(G::SimpleGraph{T})
+function girth_cycle(G::SimpleGraph{T}) where {T}
   if cache_check(G,:girth_cycle)
     return cache_recall(G,:girth_cycle)
   end

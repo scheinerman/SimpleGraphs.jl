@@ -8,7 +8,7 @@ export eccentricity, radius, center
 `components(G)` returns the vertex sets of the connected components of
 `G` (as a `Partition`).
 """
-function components{T}(G::SimpleGraph{T})
+function components(G::SimpleGraph{T}) where {T}
   if cache_check(G,:components)
     return cache_recall(G,:components)
   end
@@ -25,7 +25,7 @@ end
 """
 `num_components(G)` returns the number of connected components in `G`.
 """
-function num_components{T}(G::SimpleGraph{T})::Int
+function num_components(G::SimpleGraph{T})::Int where {T}
   if cache_check(G,:num_components)
     return cache_recall(G,:num_components)
   end
@@ -39,7 +39,7 @@ end
 """
 `is_connected(G)` determines if `G` is connected.
 """
-function is_connected{T}(G::SimpleGraph{T})
+function is_connected(G::SimpleGraph{T}) where {T}
     return num_components(G) <= 1
 end
 
@@ -49,7 +49,7 @@ end
 """
 `spanning_forest(G)` creates a maximal acyclic subgraph of `G`.
 """
-function spanning_forest{T}(G::SimpleGraph{T})
+function spanning_forest(G::SimpleGraph{T}) where {T}
     if cache_check(G,:spanning_forest)
       return cache_recall(G,:spanning_forest)
     end
