@@ -19,7 +19,7 @@ in the graph (just don't choose an isolated vertex as the first/last).
 
 If no Euler trail/tour exists, an empty list is returned.
 """
-function euler{T}(G::SimpleGraph{T}, u::T, v::T)
+function euler(G::SimpleGraph{T}, u::T, v::T) where {T}
     notrail = T[]
 
     # perform basic checks:
@@ -74,14 +74,14 @@ function euler{T}(G::SimpleGraph{T}, u::T, v::T)
 end
 
 # special case: find an Euler tour from a specified vertex
-function euler{T}(G::SimpleGraph{T},u::T)
+function euler(G::SimpleGraph{T},u::T) where {T}
     return euler(G,u,u)
 end
 
 # special case: find any Euler tour. If the graph is connected, any
 # vertex will do but if there are isolated vertices, we don't want to
 # pick one of those!
-function euler{T}(G::SimpleGraph{T})
+function euler(G::SimpleGraph{T}) where {T}
     if cache_check(G,:euler)
       return cache_recall(G,:euler)
     end
@@ -107,7 +107,7 @@ function euler{T}(G::SimpleGraph{T})
 end
 
 # private helper function for euler()
-function euler_work!{T}(G::SimpleGraph{T}, u::T)
+function euler_work!(G::SimpleGraph{T}, u::T) where {T}
     trail = T[]
 
     while true

@@ -1,4 +1,4 @@
-import Base.show, Base.==, Base.ctranspose, Base.*
+import Base.show, Base.==, Base.adjoint, Base.*
 import Base.getindex
 
 export SimpleGraph, IntGraph, StringGraph
@@ -76,7 +76,7 @@ or two tokens separated by white space. If the line contains a single
 token, we add that token as a vertex. If the line contains two (or
 more) tokens, then the first two tokens are taken as vertex names and
 (assuming they are different) the corresponding edge is created. Any
-extra tokens on the line are ignored. Lines that begin with a \# are
+extra tokens on the line are ignored. Lines that begin with a # are
 ignored.
 """
 StringGraph() = SimpleGraph{String}()
@@ -160,7 +160,7 @@ SimpleGraph(A::Matrix) = IntGraph(A)
 `vertex_type(G)` returns the data type of the vertices this graph may hold.
 For example, if `G=IntGraph()` then this returns `Int64`.`
 """
-vertex_type{T}(G::SimpleGraph{T}) = T
+vertex_type(G::SimpleGraph{T}) where {T} = T
 
     # number of vertices and edges
 
@@ -194,7 +194,7 @@ structure holding the graph, but slows down look up of edges.
 
 **Note**: Fast neighborhood look up is on by default.
 """
-function fastN!{T}(G::SimpleGraph{T},flg::Bool=true)
+function fastN!(G::SimpleGraph{T},flg::Bool=true) where {T}
     # if no change, do nothing
     if flg == G.Nflag
         return flg
@@ -247,6 +247,7 @@ function vlist(G::AbstractSimpleGraph)
     result = collect(G.V)
     try
         sort!(result)
+    catch
     end
     return result
 end
@@ -258,6 +259,7 @@ function elist(G::SimpleGraph)
     result = collect(G.E)
     try
         sort!(result)
+    catch
     end
     return result
 end
@@ -268,7 +270,7 @@ end
 
 May also be invoked as `G[v]`.
 """
-function neighbors{T}(G::SimpleGraph{T}, v)
+function neighbors(G::SimpleGraph{T}, v) where {T}
     if ~has(G,v)
         error("Graph does not contain requested vertex")
     end
@@ -286,6 +288,7 @@ function neighbors{T}(G::SimpleGraph{T}, v)
     end
     try
         sort!(N)
+    catch
     end
     return N
 end
@@ -314,7 +317,7 @@ function deg(G::SimpleGraph, v)
 end
 
 # Degree sequence
-function deg{T}(G::SimpleGraph{T})
+function deg(G::SimpleGraph{T}) where {T}
     if G.Nflag
         ds = [deg(G,v) for v in G.V]
     else
@@ -344,7 +347,7 @@ present in the graph. Because Julia arrays are 1-based, the indexing
 is a bit off. Specifically, entry `k` in the returned array is the
 number of vertices of degree `k-1`.
 """
-function deg_hist{T}(G::SimpleGraph{T})
+function deg_hist(G::SimpleGraph{T}) where {T}
     n = NV(G)
     degs = deg(G)
     result = zeros(Int,n)

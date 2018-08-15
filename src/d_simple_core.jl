@@ -38,7 +38,7 @@ end
 """
 StringDigraph() = SimpleDigraph{String}()
 
-vertex_type{T}(G::SimpleDigraph{T}) = T
+vertex_type(G::SimpleDigraph{T}) where {T} = T
 
 """
 `IntDigraph()` creates a new directed graph with vertices of type
@@ -105,7 +105,7 @@ end
 """
 `loops(G)` returns a list of vertices at which a loop is present.
 """
-function loops{T}(G::SimpleDigraph{T})
+function loops(G::SimpleDigraph{T}) where {T}
     if !is_looped(G)
         return T[]
     end
@@ -118,6 +118,7 @@ function loops{T}(G::SimpleDigraph{T})
     loop_list = collect(loop_set)
     try
         sort!(loop_list)
+    catch
     end
     return loop_list
 end
@@ -168,6 +169,7 @@ function out_neighbors(G::SimpleDigraph, v)
     result = collect(G.N[v])
     try
         sort!(result)
+    catch
     end
     return result
 end
@@ -180,6 +182,7 @@ function in_neighbors(G::SimpleDigraph, v)
     result = collect(G.NN[v])
     try
         sort!(result)
+    catch
     end
     return result
 end
@@ -197,7 +200,7 @@ end
 has(G::SimpleDigraph, v, w) = has(G,v) && in(w,G.N[v])
 
 # Add a vertex to a digraph
-function add!{T}(G::SimpleDigraph{T}, v)
+function add!(G::SimpleDigraph{T}, v) where {T}
     if has(G,v)
         return false
     end
@@ -208,7 +211,7 @@ function add!{T}(G::SimpleDigraph{T}, v)
 end
 
 # Add an edge to a digraph
-function add!{T}(G::SimpleDigraph{T}, v, w)
+function add!(G::SimpleDigraph{T}, v, w) where {T}
     if !G.looped && v==w
         return false
     end
@@ -254,7 +257,7 @@ function delete!(G::SimpleDigraph, v)
 end
 
 # Create a list of all edges in the digraph
-function elist{T}(G::SimpleDigraph{T})
+function elist(G::SimpleDigraph{T}) where {T}
     E = Set{Tuple{T,T}}()
     for v in G.V
         for w in G.N[v]
@@ -264,13 +267,14 @@ function elist{T}(G::SimpleDigraph{T})
     result = collect(E)
     try
         sort!(result)
+    catch
     end
     return result
 end
 
 # Convert a directed graph into a simple undirected graph by removing
 # directions (and loops)
-function simplify{T}(D::SimpleDigraph{T})
+function simplify(D::SimpleDigraph{T}) where {T}
     G = SimpleGraph{T}()
     for v in D.V
         add!(G,v)
@@ -309,7 +313,7 @@ end
 
 # Relabel the vertics of a graph based on a dictionary mapping old
 # vertex names to new
-function relabel{S,T}(G::SimpleDigraph{S}, label::Dict{S,T})
+function relabel(G::SimpleDigraph{S}, label::Dict{S,T}) where {S,T}
     H = SimpleDigraph{T}()
     for v in G.V
         add!(H,label[v])
@@ -325,7 +329,7 @@ function relabel{S,T}(G::SimpleDigraph{S}, label::Dict{S,T})
 end
 
 # Relabel the vertices with the integers 1:n
-function relabel{S}(G::SimpleDigraph{S})
+function relabel(G::SimpleDigraph{S}) where {S}
     verts = vlist(G)
     n = length(verts)
     label = Dict{S,Int}()
@@ -348,7 +352,7 @@ bipartite graph. For each vertex `v` in `G`, the output graph has two
 vertices `(v,1)` and `(v,2)`. Each edge `(v,w)` of `G` is rendered as
 an edge between `(v,1)` and `(w,2)` in the output graph.
 """
-function vertex_split{S}(G::SimpleDigraph{S})
+function vertex_split(G::SimpleDigraph{S}) where {S}
     H = SimpleGraph{Tuple{S,Int}}()
 
     for v in vlist(G)
