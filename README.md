@@ -19,7 +19,7 @@ This module defines two data types for working with graphs:
 
 To get started, get the package like this:
 ```julia
-Pkg.clone("https://github.com/scheinerman/SimpleGraphs.jl.git")
+]clone https://github.com/scheinerman/SimpleGraphs.jl.git
 ```
 Then, in any Julia session or program, give the command
 `using SimpleGraphs`.
