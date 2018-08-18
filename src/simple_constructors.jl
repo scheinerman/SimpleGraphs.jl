@@ -242,7 +242,7 @@ function code_to_tree(code::Array{Int,1})
         end
     end
 
-    last = find(degree)
+    last = findall(x->x!=0,degree)
     add!(G,last[1],last[2])
 
     return G

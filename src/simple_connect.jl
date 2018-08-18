@@ -165,7 +165,7 @@ function dist(G::AbstractSimpleGraph, v)
     end
 
     d[v] = 0
-    Q = Queue(T)
+    Q = Queue{T}()
     enqueue!(Q,v)
 
     while length(Q)>0

@@ -7,6 +7,8 @@ using SimpleRandom
 using Primes # needed for Paley graphs
 using Polynomials
 using LinearAlgebra
+using Statistics
+using IterTools
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.

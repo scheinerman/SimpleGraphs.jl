@@ -38,7 +38,8 @@ function bisect(G::SimpleGraph,
     VV = vlist(G)
     n  = NV(G)
     L  = laplace(G)
-    x  = collect( eig(L)[2][:,2] )
+    # x  = collect( eig(L)[2][:,2] )
+    x = collect( eigen(L).vectors[:,2])
 
     if verbose
         println(sort(x))
@@ -104,8 +105,8 @@ of vertices of `G`.
 """
 function cross_edges(G::SimpleGraph, A, B)
 
-    AB = IterTools.product(A,B)
+    AB = Iterators.product(A,B)
 
-    result = Set(filter(e -> has(G,e[1],e[2]), AB))
+    result = Set(filter(e -> has(G,e[1],e[2]), collect(AB)))
     return result
 end

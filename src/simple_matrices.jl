@@ -40,8 +40,9 @@ matrix.
 """
 function laplace(G::SimpleGraph)
     A = adjacency(G)
-    d = collect(sum(A,1))[:]
-    D = Base.diagm(d)
+    d = collect(sum(A,dims=1))[:]
+    # D = diagm(d) # deprecated version
+    D = Matrix(Diagonal(d))
     L = D-A
     return L
 end
