@@ -4,8 +4,9 @@ SimpleRandom
 Primes
 Polynomials
 SimplePartitions
-IterTools
 Graphs
 LinearAlgebra
 Statistics
 Random
+IterTools
+SparseArrays

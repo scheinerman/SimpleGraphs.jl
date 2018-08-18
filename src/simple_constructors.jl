@@ -259,7 +259,7 @@ function Cube(n::Integer=3)
     for u=0:2^n-1
         for shift=0:n-1
             v = xor( (1<<shift), u)
-            add!(G,bin(u,n), bin(v,n))
+            add!(G,string(u,base=2,pad=n), string(v,base=2,pad=n))
         end
     end
     name(G,"Cube graph Q($n)")
@@ -300,7 +300,7 @@ end
 # k-element subsets of 1:n in which two vertices are adjacent if (as
 # sets) they are disjoint. The Petersen graph is Kneser(5,2).
 
-import IterTools.subsets
+# import IterTools.subsets
 
 """
 `Kneser(n,m)` creates the Kneser graph whose vertices are all the
@@ -309,7 +309,7 @@ they are disjoint.
 """
 function Kneser(n::Int,k::Int)
     A = collect(1:n)
-    vtcs = [Set(v) for v in subsets(A,k)]
+    vtcs = [Set(v) for v in IterTools.subsets(A,k)]
     G = SimpleGraph{Set{Int}}()
 
     for v in vtcs
@@ -346,7 +346,7 @@ function Johnson(n::Int, k::Int)
     end
 
     A = collect(1:n)
-    vtcs = [Set{Int}(v) for v in subsets(A,k)]
+    vtcs = [Set{Int}(v) for v in IterTools.subsets(A,k)]
     G = SimpleGraph{Set{Int}}()
 
     for v in vtcs
@@ -534,7 +534,7 @@ of an `r`-by-`c` chess board. Two vertices are adjacent if a Knight
 can go from one of these squares to the other in a single move.
 """
 function Knight(r::Int=8,c::Int=8)
-    vtcs = collect(product(1:r,1:c))
+    vtcs = collect(IterTools.product(1:r,1:c))
     G = SimpleGraph{Tuple{Int64,Int64}}()
     for v in vtcs
         add!(G,v)

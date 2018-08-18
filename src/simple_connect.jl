@@ -95,7 +95,7 @@ function find_path(G::AbstractSimpleGraph,s,t)
     end
 
     # set up a queue for vertex exploration
-    Q = Queue(T)
+    Q = Queue{T}()
     enqueue!(Q,s)
 
     # set up trace-back dictionary
@@ -113,11 +113,11 @@ function find_path(G::AbstractSimpleGraph,s,t)
             enqueue!(Q,w)
 
             if w==t  # success!
-                path = Array{T}(1)
+                path = Array{T}(undef,1)
                 path[1] = t
                 while path[1] != s
                     v = tracer[path[1]]
-                    unshift!(path,v)
+                    pushfirst!(path,v)
                 end
                 return path
 
@@ -264,7 +264,7 @@ function radius(G::SimpleGraph)
   if minimum(D)<0
     return -1
   end
-  r = minimum(maximum(D,1))
+  r = minimum(maximum(D,dims=1))
   cache_save(G,:radius,r)
   return r
 end

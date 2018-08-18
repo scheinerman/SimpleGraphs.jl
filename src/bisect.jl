@@ -96,7 +96,7 @@ function bisect(G::SimpleGraph,
     return A,B
 end
 
-import IterTools.product
+# import IterTools.product
 
 """
 `cross_edges(G::SimpleGraph,A,B)` returns the set of edges of `G` with
@@ -105,7 +105,7 @@ of vertices of `G`.
 """
 function cross_edges(G::SimpleGraph, A, B)
 
-    AB = Iterators.product(A,B)
+    AB = IterTools.product(A,B)
 
     result = Set(filter(e -> has(G,e[1],e[2]), collect(AB)))
     return result

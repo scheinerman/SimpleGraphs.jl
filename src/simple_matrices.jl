@@ -1,7 +1,7 @@
 # Functions to create standard graph matrices
 #import Base.eigvals
 export adjacency, char_poly, laplace, incidence, dist_matrix, eigvals
-
+using SparseArrays
 # Adjaceny Matrix
 
 """

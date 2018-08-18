@@ -17,7 +17,7 @@ function hamiltonian_cycle(G::SimpleGraph)
     end
 
     n = NV(G)
-    path = Array{T,1}(n)  # we'll put the answer here
+    path = Array{T,1}(undef,n)  # we'll put the answer here
 
 
     used = Dict{T,Bool}()
