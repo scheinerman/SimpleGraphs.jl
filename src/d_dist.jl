@@ -4,9 +4,9 @@ function dist_matrix(G::SimpleDigraph)
   n = length(VV)
   A = zeros(Int,n,n)
   for u=1:n
-    d = dist(G,u)
+    d = dist(G,VV[u])
     for v=1:n
-      A[u,v]=d[v]
+      A[u,v]=d[VV[v]]
     end
   end
   return A

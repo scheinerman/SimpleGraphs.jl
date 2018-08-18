@@ -96,7 +96,7 @@ length-`n` tuples of distinct elements in `alphabet`.
 function all_tuples(alphabet, n::Int)
     elts = collect(distinct(alphabet))
     src  = [ elts for _=1:n ]
-    its  = product(src...)
+    its  = Iterators.product(src...)
     return its
 end
 
@@ -126,7 +126,7 @@ function ShiftDigraph(alphabet=[0,1], n::Int=3)
     # create edges here
 
     for v in vlist
-        head = collect(drop(v,1))
+        head = collect(Iterators.drop(v,1))
         for c in elts
             w = tuple([head;c]...)
             add!(G,v,w)
