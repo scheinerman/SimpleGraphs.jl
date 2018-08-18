@@ -130,7 +130,7 @@ function random_greedy_color(G::SimpleGraph{T}, reps::Int=1) where {T}
     println("Initial coloring uses ", best, " colors")
 
     for k in 1:reps
-        shuffle!(seq)
+        Random.shuffle!(seq)
         f = greedy_color(G,seq)
         mx = maximum(values(f))
         if mx < best

@@ -9,6 +9,7 @@ using Polynomials
 using LinearAlgebra
 using Statistics
 using IterTools
+using Random
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
