@@ -1,5 +1,5 @@
 # Functions to create standard graph matrices
-import Base.eigvals
+#import Base.eigvals
 export adjacency, char_poly, laplace, incidence, dist_matrix, eigvals
 
 # Adjaceny Matrix
@@ -133,6 +133,6 @@ adjacency matrix. More generally, `eigvals(G,mat)` returns the eigenvalues
 of `mat(G)` where `mat` is a matrix-valued function of `G`. In particular,
 one can use `mat(G,laplace)` to find the eigenvalues of `G`'s Laplacian.
 """
-function eigvals(G::SimpleGraph, mat::Function = adjacency)
+function LinearAlgebra.eigvals(G::SimpleGraph, mat::Function = adjacency)
     return eigvals(mat(G))
 end

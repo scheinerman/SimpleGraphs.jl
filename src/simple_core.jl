@@ -119,7 +119,6 @@ vertices `1:n`.
 `IntGraph(A)` where `A` is an adjacency matrix creates a graph for which
 `A` is the adjacency matrix.
 """
-
 IntGraph() = SimpleGraph{Int}()
 
 # With a postive integer argument, adds 1:n as vertex set, but no

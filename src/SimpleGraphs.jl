@@ -6,6 +6,7 @@ using DataStructures
 using SimpleRandom
 using Primes # needed for Paley graphs
 using Polynomials
+using LinearAlgebra
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.

@@ -14,7 +14,6 @@ in one part and `m` vertices in the other.
 `Complete([n1,n2,...,nt])` returns a complete multipartite graph with
 parts of size `n1`, `n2`, ..., `nt`.
 """
-# Create a complete graph
 function Complete(n::Int)
     G = IntGraph(n)
 
@@ -88,7 +87,6 @@ end
 `Path(array)` creates a path graph with vertices `array[1]`,
 `array[2]`, etc.
 """
-
 function Path(n::Int)
     G = IntGraph(n)
     for v = 1:n-1
@@ -377,7 +375,6 @@ end
 the 2-element subsets of `1:5`. Wrap in `relabel` to have vertices
 named `1:10`. See also: `Kneser`.
 """
-
 function Petersen()
   G = Kneser(5,2)
   name(G,"Petersen graph")
