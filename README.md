@@ -5,7 +5,16 @@ in the source files directly. Of course, our goal is to have this
 documentation be complete. Your help is welcome.
 
 
-# The `SimpleGraphs` Julia Module
+#  `SimpleGraphs`
+
+[![Build Status](https://travis-ci.org/scheinerman/SimpleGraphs.jl.svg?branch=master)](https://travis-ci.org/scheinerman/SimpleGraphs.jl)
+
+[![Coverage Status](https://coveralls.io/repos/scheinerman/SimpleGraphs.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/scheinerman/SimpleGraphs.jl?branch=master)
+
+[![codecov.io](http://codecov.io/github/scheinerman/SimpleGraphs.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/SimpleGraphs.jl?branch=master)
+
+
+
 
 This module defines two data types for working with graphs:
 
