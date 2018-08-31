@@ -17,10 +17,10 @@ function transitive_orientation(G::SimpleGraph)
   D = SimpleDigraph{V}()
   while length(diredges) != 0 || length(edges) != 0
     if length(diredges) == 0
-      e = shift!(edges)
+      e = popfirst!(edges)
       add!(D, e[1], e[2])
     else
-      e = shift!(diredges)
+      e = popfirst!(diredges)
     end
     v1 = e[1]
     v2 = e[2]
@@ -35,7 +35,7 @@ function transitive_orientation(G::SimpleGraph)
         add!(D, v1, v)
         edg = (v1, v)
         swapedg = (v, v1)
-        unshift!(diredges, edg)
+        pushfirst!(diredges, edg)
         edges = filter(x -> x != edg && x != swapedg,edges)
       elseif has(G, v2, v) && !has(D, v, v2) && !has(G, v, v1)
         if has(D, v2, v)
@@ -44,7 +44,7 @@ function transitive_orientation(G::SimpleGraph)
         add!(D, v, v2)
         edg = (v, v2)
         swapedg = (v2, v)
-        unshift!(diredges, edg)
+        pushfirst!(diredges, edg)
         edges = filter(x -> x != edg && x != swapedg,edges)
       end
     end
@@ -116,7 +116,7 @@ function makeSimplex!(G::SimpleGraph, multiplexes::Array, col::Dict)
       colorSet = deepcopy(colorSetTest)
     end
   end
-  unshift!(multiplexes, length(simp))
+  pushfirst!(multiplexes, length(simp))
   for e in elist(G)
     if col[e] in colorSet
       delete!(G, e[1], e[2])
@@ -137,15 +137,15 @@ function makeColorClass(G1::SimpleGraph)
   while length(diredge) != 0 || length(edge) != 0
     if length(diredge) == 0
       if length(elist(E)) != 0
-        unshift!(classes,E)
+        pushfirst!(classes,E)
         E1 = SimpleGraph{V}()
         E = E1
       end
-      e = shift!(edge)
+      e = popfirst!(edge)
       add!(D, e[1], e[2])
       add!(E, e[1], e[2])
     else
-      e = shift!(diredge)
+      e = popfirst!(diredge)
     end
     v1 = e[1]
     v2 = e[2]
@@ -161,7 +161,7 @@ function makeColorClass(G1::SimpleGraph)
         add!(E, v1, v)
         edg = (v1, v)
         swapedg = (v, v1)
-        unshift!(diredge, edg)
+        pushfirst!(diredge, edg)
         edge = filter(x -> x != edg && x != swapedg,edge)
       elseif has(G, v2, v) && !has(D, v, v2) && !has(G, v, v1)
         if has(D, v2, v)
@@ -171,13 +171,13 @@ function makeColorClass(G1::SimpleGraph)
         add!(E, v, v2)
         edg = (v, v2)
         swapedg = (v2, v)
-        unshift!(diredge, edg)
+        pushfirst!(diredge, edg)
         edge = filter(x -> x != edg && x != swapedg,edge)
       end
     end
   end
   if length(elist(E)) != 0
-    unshift!(classes,E)
+    pushfirst!(classes,E)
   end
   col = Dict{Tuple{V,V}, Int}()
   i = 1
