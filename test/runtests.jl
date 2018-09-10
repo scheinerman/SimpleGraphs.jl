@@ -4,21 +4,79 @@ using LinearAlgebra
 using SparseArrays
 using SimplePartitions
 
-# Pkg.clone("https://github.com/scheinerman/SimpleRandom.jl.git")
-# Pkg.clone("https://github.com/scheinerman/SimplePartitions.jl.git")
-# This is woefully inadequate. Just a placeholder for now.
 
-G = Path(10)
-@test NV(G)==10
-@test NE(G)==9
-@test G[2] == [1,3]
-@test deg(G,2) == 2
-@test sum(deg(G)) == 2NE(G)
-@test diam(G)==9
-@test num_components(G) == 1
-@test spanning_forest(G) == G
-@test is_acyclic(G)
 
+@testset "Core" begin
+    G = Path(10)
+    name(G,"Example")
+    @test name(G)=="Example"
+    @test NV(G)==10
+    @test NE(G)==9
+    @test G[2] == [1,3]
+    @test deg(G,2) == 2
+    @test sum(deg(G)) == 2NE(G)
+
+    G = IntGraph(2)
+    add!(G,1,2)
+    add!(G,1,3)
+    add!(G,2,3)
+    @test NV(G) == NE(G)
+    A = adjacency(G)
+    H = SimpleGraph(A)
+    @test G==H
+
+    G = StringGraph()
+    add!(G,"alpha","beta")
+    @test G["alpha", "beta"]
+end
+
+@testset "Ops" begin
+    G = IntGraph(3)
+    ee = [ 1 2; 2 3; 1 3]
+    add_edges!(G,ee)
+    delete!(G,1,2)
+    @test NE(G) == 2
+    G = Cycle(5)
+    delete!(G,5)
+    @test G == Path(4)
+
+    G = line_graph(Cycle(5))
+    @test deg(G) == 2*ones(5)
+
+    H = G'
+    @test G == H'
+
+    G = Cycle(4)
+    H = cartesian(G,G)
+    @test NV(H) == NV(G)^2
+
+    H = disjoint_union(Cycle(4), Cycle(5))
+    @test NV(H) == 9
+    @test NE(H) == 9
+
+    G = join(IntGraph(5),IntGraph(4))
+    @test NE(G) == 20
+
+    G = Cycle(9)
+    H = Cycle(10)
+    contract!(H,1,10)
+    @test G==H
+
+    G = Path(9)
+    H = trim(G,1)
+    @test NV(H) == 0
+
+end
+
+@testset "Connectivity" begin
+    G = Path(10)
+    @test diam(G)==9
+    @test num_components(G) == 1
+    @test spanning_forest(G) == G
+    @test is_acyclic(G)
+end
+
+@testset "More" begin
 G = Complete(4,4)
 @test length(euler(G))==NE(G)+1
 @test length(hamiltonian_cycle(G)) == NV(G)
@@ -52,3 +110,4 @@ H = Grid(3,5)
 M = incidence(G)
 L = laplace(G)
 @test L == M*M'
+end
