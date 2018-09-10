@@ -105,7 +105,7 @@ of vertices of `G`.
 """
 function cross_edges(G::SimpleGraph, A, B)
 
-    AB = IterTools.product(A,B)
+    AB = Iterators.product(A,B)
 
     result = Set(filter(e -> has(G,e[1],e[2]), collect(AB)))
     return result

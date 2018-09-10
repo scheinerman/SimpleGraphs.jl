@@ -68,14 +68,6 @@ end
 
 end
 
-@testset "Connectivity" begin
-    G = Path(10)
-    @test diam(G)==9
-    @test num_components(G) == 1
-    @test spanning_forest(G) == G
-    @test is_acyclic(G)
-end
-
 @testset "Constructors" begin
     G = Complete(5)
     @test NE(G) == 10
@@ -100,42 +92,93 @@ end
     @test NE(G) == NE(G')
     G = RandomRegular(10,3)
     @test NE(G) == 15
+    G = Knight(5,5)
+    @test NV(G) == 25
+    @test NE(HoffmanSingleton()) == 175
+    p1 = char_poly(Hoffman())
+    p2 = char_poly(Cube(4))
+    @test p1==p2
+end
 
+@testset "Platonics" begin
+    G = Icosahedron()
+    H = Dodecahedron()
+    @test NE(G) == NE(H)
+    G = Octahedron()
+    H = Complete([2,2,2])
+    @test NE(G) == NE(H)
+    @test Tetrahedron() == Complete(4)
 end
 
 
-@testset "More" begin
-G = Complete(4,4)
-@test length(euler(G))==NE(G)+1
-@test length(hamiltonian_cycle(G)) == NV(G)
-d = two_color(G)
-@test length(d) == NV(G)
-@test num_parts(bipartition(G)) == 2
 
-G = RandomRegular(10,3)
-@test NE(G) == 15
-G = Complete([3,3,3])
-G = G'
-@test NE(G) == 9
+@testset "Connectivity" begin
+    G = Path(10)
+    @test diam(G)==9
+    @test eccentricity(G,2) == 8
+    @test num_components(G) == 1
+    @test spanning_forest(G) == G
+    @test is_acyclic(G)
+    @test is_cut_edge(G,3,4)
+    @test radius(G) == 5
+    @test center(G) == Set([5,6])
 
-G = Paley(17)
-@test NE(G) == NE(G')
+    G = Complete(5,5)'
+    @test num_components(G) == 2
+    H = spanning_forest(G)
+    @test num_components(H) == 2
+    @test NE(H)==8
+end
 
-G = Cycle(10)
-delete!(G,1,2)
-delete!(G,5,6)
-@test !is_connected(G)
+@testset "Matrices" begin
+    G = Petersen()
+    M = incidence(G)
+    L = laplace(G)
+    @test L == M*M'
+    A = adjacency(G)
+    v = A * ones(10)
+    @test v == 3*ones(Int,10)
+end
 
-G = line_graph(Complete(5))'
-H = Petersen()
-@test char_poly(G)==char_poly(H)
+@testset "Coloring" begin
+    G = RandomTree(10)
+    d = two_color(G)
+    @test Set(values(d)) == Set([1,2])
+    f = greedy_color(G)
+    @test length(keys(f)) == NV(G)
+end
 
-G = cartesian(Path(5),Path(3))
-H = Grid(3,5)
-@test girth(G)==4
-@test char_poly(G)==char_poly(H)
+@testset "Euler" begin
+    G = Cube(4)
+    tour = euler(G)
+    @test length(tour) == NE(G)+1
+    @test tour[1] == tour[end]
+end
 
-M = incidence(G)
-L = laplace(G)
-@test L == M*M'
+@testset "Hamiltonian" begin
+    G = Cube(4)
+    tour = hamiltonian_cycle(G)
+    @test length(tour) == NV(G)
+end
+
+@testset "Girth" begin
+    G = Cube(4)
+    @test girth(G) == 4
+    G = RandomTree(10)
+    @test girth(G) == 0
+end
+
+@testset "Bisect" begin
+    G = RandomTree(10)
+    A,B = bisect(G)
+    @test G.V == union(A,B)
+    @test length(intersect(A,B)) == 0
+    @test length(cross_edges(G,A,B)) == 1
+end
+
+@testset "Transitive" begin
+    G = RandomTree(10)
+    D = transitive_orientation(G)
+    @test G == simplify(D)
+    @test num_trans_orientations(G) == 2
 end
