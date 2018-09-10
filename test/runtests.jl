@@ -3,7 +3,7 @@ using SimpleGraphs
 using LinearAlgebra
 using SparseArrays
 using SimplePartitions
-
+using Polynomials
 
 
 @testset "Core" begin
@@ -181,4 +181,61 @@ end
     D = transitive_orientation(G)
     @test G == simplify(D)
     @test num_trans_orientations(G) == 2
+end
+
+@testset "Polynomials" begin
+    G = Complete(3,4)
+    p = indep_poly(G)
+    @test degree(p) == 4
+
+    p = matching_poly(G)
+    @test coeffs(p) == [0, -24, 0, 36, 0, -12, 0, 1]
+
+    p = interlace(G)
+    @test coeffs(p) == [0, 2, 3, 4, 3, 1]
+end
+
+
+# DIRECTED GRAPH STUFF
+
+@testset "Basic Directed" begin
+    G = StringDigraph()
+    add!(G,"alpha","bravo")
+    add!(G,"bravo","charlie")
+    @test NV(G)==3
+    @test NE(G)==2
+    @test sum(out_deg(G)) == sum(in_deg(G))
+
+    H = simplify(relabel(G))
+    @test H == Path(3)
+end
+
+@testset "Digraph Constructors" begin
+    G = DirectedPath(10)
+    add!(G,10,1)
+    @test G == DirectedCycle(10)
+
+    G = DirectedComplete(10, false)
+    @test NE(G) == 10*9
+    G = DirectedComplete(10,true)
+    @test NE(G) == 10*10
+
+    G = RandomTournament(10)
+    @test NE(G)==45
+end
+
+@testset "Directed Distance" begin
+    G = DirectedCycle(10)
+    @test diam(G) == 9
+end
+
+@testset "Directed Matrices" begin
+    G = RandomTournament(10)
+    A = adjacency(G)
+    B = A + A'
+    @test B ==adjacency(Complete(10))
+
+    G = RandomTournament(10)
+    M = incidence(G)
+    @test M*M' == laplace(Complete(10))
 end
