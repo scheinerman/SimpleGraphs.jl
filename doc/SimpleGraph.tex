@@ -23,12 +23,6 @@ goal is to make working with graphs as painless as possible. The
 loops, no multiple edges). Vertices in a \verb|SimpleGraph| are of a
 given Julia data type, which might be \verb|Any|.
 
-To begin, get the repository with this Julia command:
-\begin{verbatim}
-] clone https://github.com/scheinerman/SimpleGraphs.jl.git
-\end{verbatim}
-This only has to be done once. To use the \verb|SimpleGraph| type,
-give the command \verb|using SimpleGraphs|.
 
 
 The key constructor is
@@ -37,7 +31,7 @@ type. Alternatively, \verb|G=SimpleGraph{T}()| sets up \verb|G| to be a
 graph in which all vertices must be of type \verb|T|. Two special
 cases are built into this module: \verb|IntGraph()| is a synonym for
 \verb|SimpleGraph{Int}()| and \verb|StringGraph()| is a synonym for
-\verb|SimpleGraph{ASCIIString}|.
+\verb|SimpleGraph{String}|.
 
 Vertices and edges are added to a graph with \verb|add!| and deleted
 with \verb|delete!|. Membership is checked with \verb|has|.
@@ -131,10 +125,10 @@ Finally, the \verb|vertex_type| function can be used to query the
 data type of the vertices in the graph.
 \begin{verbatim}
 julia> G = StringGraph()
-SimpleGraph{ASCIIString} (0 vertices, 0 edges)
+SimpleGraph{String} (0 vertices, 0 edges)
 
 julia> vertex_type(G)
-ASCIIString (constructor with 1 method)
+String (constructor with 1 method)
 \end{verbatim}
 
 
@@ -222,7 +216,7 @@ These are functions that create new graphs.
 
 \item \verb|StringGraph|
 
-  This is a synonym for \verb|SimpleGraph{ASCIIString}|. Use
+  This is a synonym for \verb|SimpleGraph{String}|. Use
   \verb|G=StringGraph()| to create a graph whose vertices are
   character strings.
 
@@ -284,14 +278,14 @@ true
   \item \verb|Cube|
 
     Create the cube graph. The $2^n$ vertices of \verb|Cube(n)| are
-    \verb|ASCIIString| objects. For example:
+    \verb|String| objects. For example:
 \small
 \begin{verbatim}
 julia> G = Cube(3)
-SimpleGraph{ASCIIString} (8 vertices, 12 edges)
+SimpleGraph{String} (8 vertices, 12 edges)
 
 julia> vlist(G)
-8-element Array{ASCIIString,1}:
+8-element Array{String,1}:
  "000"
  "001"
  "010"
@@ -302,7 +296,7 @@ julia> vlist(G)
  "111"
 
 julia> elist(G)
-12-element Array{(ASCIIString,ASCIIString),1}:
+12-element Array{(String,String),1}:
  ("000","001")
  ("000","010")
  ("000","100")
@@ -867,10 +861,10 @@ However, there are some instances in which an error might be raised.
   example:
 \begin{verbatim}
 julia> G = StringGraph()
-SimpleGraph{ASCIIString} (0 vertices, 0 edges)
+SimpleGraph{String} (0 vertices, 0 edges)
 
 julia> add!(G,4)
-ERROR: no method convert(Type{ASCIIString},Int64)
+ERROR: no method convert(Type{String},Int64)
 \end{verbatim}
 
 \item An error is raised if one attempts to find the neighborhood or
