@@ -76,6 +76,34 @@ end
     @test is_acyclic(G)
 end
 
+@testset "Constructors" begin
+    G = Complete(5)
+    @test NE(G) == 10
+    G = Complete(4,5)
+    @test NE(G) == 20
+    G = Complete([5,5,5])
+    @test NE(G') == 30
+
+    G = RandomTree(10)
+    @test NE(G) == 9
+    G = Grid(3,3)
+    @test NV(G) == 9
+    G = Wheel(10)
+    @test NV(G) == 10
+    G = Cube(4)
+    @test NV(G) == 16
+    G = BuckyBall()
+    @test NE(G) == 90
+    G = Petersen()
+    @test NE(G) == 15
+    G = Paley(13)
+    @test NE(G) == NE(G')
+    G = RandomRegular(10,3)
+    @test NE(G) == 15
+
+end
+
+
 @testset "More" begin
 G = Complete(4,4)
 @test length(euler(G))==NE(G)+1
