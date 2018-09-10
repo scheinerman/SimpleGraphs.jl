@@ -26,13 +26,6 @@ This module defines two data types for working with graphs:
   direction, `(v,u)`.
 
 
-To get started, get the package like this:
-```julia
-]clone https://github.com/scheinerman/SimpleGraphs.jl.git
-```
-Then, in any Julia session or program, give the command
-`using SimpleGraphs`.
-
 ## Graph types
 
 The `SimpleGraphs` module defines two data types:
