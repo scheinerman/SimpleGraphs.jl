@@ -1,8 +1,6 @@
 
 using LinearAlgebra, Statistics
 
-import Base.show, LinearAlgebra.scale!
-
 export embed, remove_embedding, has_embedding
 export set_fill_color, set_line_color, get_fill_color, get_line_color
 
@@ -341,7 +339,7 @@ end
 """
 function circular!(X::GraphEmbedding)
     X.xy = circular_embedding(X.G)
-    scale!(X)
+    rescale!(X)
     return
 end
 
@@ -474,7 +472,7 @@ function transform(G::SimpleGraph,
 end
 
 
-function LinearAlgebra.scale!(X::GraphEmbedding, m::T) where T<:Real
+function rescale!(X::GraphEmbedding, m::T) where T<:Real
     A = zeros(T,2,2)
     A[1,1] = m
     A[2,2] = m
@@ -482,10 +480,10 @@ function LinearAlgebra.scale!(X::GraphEmbedding, m::T) where T<:Real
     transform!(X,A,b)
 end
 
-function LinearAlgebra.scale!(X::GraphEmbedding)
+function rescale!(X::GraphEmbedding)
     L = mean(edge_length(X))
     if L != 0
-        scale!(X,1/L)
+        rescale!(X,1/L)
     else
       @warn "Cannot scale by 0. No action taken."
     end
@@ -500,12 +498,12 @@ length of an edge equals 1.
 """
 function scale(G::SimpleGraph, m::T) where T<:Real
   X = get_embedding_direct(G)
-  scale!(X,m)
+  rescale!(X,m)
 end
 
 function scale(G::SimpleGraph)
   X = get_embedding_direct(G)
-  scale!(X)
+  rescale!(X)
 end
 
 
