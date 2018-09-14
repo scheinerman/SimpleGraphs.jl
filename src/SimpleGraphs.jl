@@ -42,4 +42,6 @@ include("d_simple_matrices.jl")
 include("d_dist.jl")
 
 
+include("embedding/GraphEmbeddings.jl")
+
 end # module SimpleGraphs

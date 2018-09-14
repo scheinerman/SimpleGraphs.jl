@@ -6,4 +6,6 @@ Polynomials
 SimplePartitions
 Graphs
 IterTools
-Iterators 
+Iterators
+Optim
+LightXML
