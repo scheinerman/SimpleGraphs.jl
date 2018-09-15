@@ -24,6 +24,6 @@ function spectral!(X::GraphEmbedding,xcol::Int=2,ycol::Int=3)
         v = VV[k]
         X.xy[v] = [x[k],y[k]]
     end
-    scale!(X)
+    rescale!(X)
     return X
 end

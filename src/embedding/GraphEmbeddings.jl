@@ -242,11 +242,11 @@ function embed(G::SimpleGraph, algorithm::Symbol=:circular; args...)
     stress!(X)
     return nothing
   end
-
-  if algorithm == :distxy
-    distxy!(X,tolerance,verbose)
-    return nothing
-  end
+  #
+  # if algorithm == :distxy
+  #   distxy!(X,tolerance,verbose)
+  #   return nothing
+  # end
 
   if algorithm == :combined
     embed(G,:spring,iterations = iterations)
