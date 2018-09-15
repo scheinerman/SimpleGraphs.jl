@@ -13,8 +13,8 @@ export getxy
 export set_vertex_size, get_vertex_size
 export edge_length
 
-const DEFAULT_MARKER_SIZE = 10
-MARKER_SIZE = DEFAULT_MARKER_SIZE
+const DEFAULT_MARKER_SIZE = 6
+# MARKER_SIZE = DEFAULT_MARKER_SIZE
 
 
 """
@@ -178,9 +178,6 @@ The `algorithm` defaults to `:circular` and may be one of the following:
 * `:spring`: use the `spring` layout from `GraphLayout`. Optional argument:
   * `iterations`.
 * `:stress`: use the `stress` layout from `GraphLayout`.
-* `:distxy`: is my inefficient version of `stress`. Optional arguments:
-  * `tolerance` -- small positive real number indicating when to stop iterating.
-  * `verbose`-- a boolean specifying if verbose output is produced.
 * `:spectral`: use the `spectral` embedding. Optional arguments:
   * `xcol` -- which eigenvalue to use for the `x` coordinate.
   * `ycol` -- which eigenvalue to use for the `y` coordinate
@@ -586,25 +583,32 @@ x,y-coordinates. This is a way of saving an embedding.
 """
 getxy(G::SimpleGraph) = deepcopy(get_embedding_direct(G).xy)
 
-"""
-`edge_length(X::GraphEmbedding,e)` gives the distance between the
-embedded endpoints of the edge `e` in the drawing `X`
-"""
+
 function edge_length(X::GraphEmbedding, e)
     p1 = X.xy[e[1]]
     p2 = X.xy[e[2]]
     return norm(p1-p2)
 end
 
-"""
-`edge_length(X::GraphEmbedding)` returns an array containing the
-lengths of the edges in this drawing.
-"""
 function edge_length(X::GraphEmbedding)
     EE = elist(X.G)
 
     return [ edge_length(X,e) for e in EE ]
 end
+
+
+"""
+`edge_length(G)` returns an array containing the
+lengths of the edges in the current embedding of `G`.
+"""
+edge_length(G::SimpleGraph) = edge_length(G.cache[:GraphEmbedding])
+
+"""
+`edge_length(G,e)` gives the distance between the
+embedded endpoints of the edge `e` in the drawing `G`.
+"""
+edge_length(G::SimpleGraph,ee) = edge_length(G.cache[:GraphEmbedding],ee)
+
 
 
 #include("distxy.jl") # distxy! has been replaced by stress!
