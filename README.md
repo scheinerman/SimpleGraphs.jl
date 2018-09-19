@@ -20,7 +20,13 @@ This module defines two data types for working with graphs:
   vertex `v`. There may also be a directed edge in the opposite
   direction, `(v,u)`.
 
-See also the `DrawSimpleGraphs` module for viewing graphs.
+
+Additional functionality can be found in these modules:
++ `DrawSimpleGraphs` for visualization.
++ `SimpleGraph Algorithms` for functions relying on [integer] linear programming.
++ `SimpleGraphRepresentations` for creating and analyzing some special
+classes of graphs.
+
 
 ## User's Guide
 
