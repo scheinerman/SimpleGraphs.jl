@@ -112,6 +112,9 @@ function Path(verts::Array{T}) where {T}
 end
 
 # Create a cycle graph on n vertices
+"""
+`Cycle(n)` creates a cycle with vertex set `1:n`.
+"""
 function Cycle(n::Int)
     if n<3
         error("Cycle requires 3 or more vertices")
