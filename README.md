@@ -27,7 +27,7 @@ See also the `DrawSimpleGraphs` module for viewing graphs.
 Please see the [Wiki](https://github.com/scheinerman/SimpleGraphs.jl/wiki) for
 extensive information pertaining to the `SimpleGraph` type.
 
-The `SimpleDigraphs` type is not so well developed nor documented. See the
+The `SimpleDigraph` type is not so well developed nor documented. See the
 source files in the `src` directory.
 
 
