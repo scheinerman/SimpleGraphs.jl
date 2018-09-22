@@ -537,7 +537,7 @@ of an `r`-by-`c` chess board. Two vertices are adjacent if a Knight
 can go from one of these squares to the other in a single move.
 """
 function Knight(r::Int=8,c::Int=8)
-    vtcs = collect(Iterators.product(1:r,1:c))
+    vtcs = collect(Base.Iterators.product(1:r,1:c))
     G = SimpleGraph{Tuple{Int64,Int64}}()
     for v in vtcs
         add!(G,v)
