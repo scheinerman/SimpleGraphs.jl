@@ -229,6 +229,11 @@ end
     @test diam(G) == 9
 end
 
+@testset "Strong Connectivity" begin
+    G = TorusDigraph(5,5)
+    @test is_strongly_connected(G)
+end
+
 @testset "Directed Matrices" begin
     G = RandomTournament(10)
     A = adjacency(G)
