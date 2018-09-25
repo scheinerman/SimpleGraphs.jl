@@ -4,7 +4,7 @@ export SimpleDigraph, IntDigraph, StringDigraph
 export is_looped, allow_loops!, forbid_loops!, remove_loops!, loops
 export out_deg, in_deg, deg, dual_deg
 export in_neighbors, out_neighbors, simplify, vertex_split
-export isStronglyConnected
+export is_strongly_connected
 
 """
 `SimpleDigraph()` creates a new directed graph with vertices of `Any`
@@ -373,7 +373,7 @@ end
 """
 test if a directed graph is strongly connected
 """
-function isStronglyConnected(G::SimpleDigraph{S}) where {S}
+function is_strongly_connected(G::SimpleDigraph{S}) where {S}
     vlist = collect(G.V)
     start = vlist[1]
     visited = zeros(Int,length(vlist))
