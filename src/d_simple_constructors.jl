@@ -161,10 +161,12 @@ function TorusDigraph(n::Int=4, m::Int=3)
     if v[2] + 1 <= n
       w = (v[1],v[2]+1)
       add!(G,v,w)
-    elseif v[1] == m
+    end
+    if v[1] == m
       w = (1,v[2])
       add!(G,v,w)
-    elseif v[2] == n
+    end
+    if v[2] == n
       w = (v[1],1)
       add!(G,v,w)
     end
