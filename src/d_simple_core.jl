@@ -400,7 +400,7 @@ end
 """
 perform a depth first search on graph G starting at vertex v
 """
-function DFS(G::SimpleDigraph{S}, v, visited::int[]) where {S}
+function DFS(G::SimpleDigraph{S}, v, visited::Array{Int,1}) where S
     vlist = collect(G.V)
     visited[findfirst(isequal(v),vlist)] = 1
     for i in G.N[v]

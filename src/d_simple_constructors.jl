@@ -142,7 +142,7 @@ function for creating a Torus Graph
 """
 function TorusDigraph(n::Int=4, m::Int=3)
 
-G = SimpleDigraph();
+  G = SimpleDigraph();
 
   #create vertices
   vlist = Tuple{Int,Int}[]
@@ -157,6 +157,7 @@ G = SimpleDigraph();
     if v[1] + 1 <= m
       w = (v[1]+1,v[2])
       add!(G,v,w)
+    end
     if v[2] + 1 <= n
       w = (v[1],v[2]+1)
       add!(G,v,w)
@@ -165,7 +166,7 @@ G = SimpleDigraph();
       add!(G,v,w)
     elseif v[2] == n
       w = (v[1],1)
-      add!(g,v,w)
+      add!(G,v,w)
     end
   end
 
