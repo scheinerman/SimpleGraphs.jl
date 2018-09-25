@@ -4,6 +4,7 @@ export SimpleDigraph, IntDigraph, StringDigraph
 export is_looped, allow_loops!, forbid_loops!, remove_loops!, loops
 export out_deg, in_deg, deg, dual_deg
 export in_neighbors, out_neighbors, simplify, vertex_split
+export isStronglyConnected
 
 """
 `SimpleDigraph()` creates a new directed graph with vertices of `Any`
@@ -334,7 +335,6 @@ function relabel(G::SimpleDigraph{S}) where {S}
     n = length(verts)
     label = Dict{S,Int}()
     sizehint!(label,n)
-
     for idx = 1:n
         label[verts[idx]] = idx
     end
@@ -367,4 +367,52 @@ function vertex_split(G::SimpleDigraph{S}) where {S}
     end
 
     return H
+end
+
+
+"""
+test if a directed graph is strongly connected
+"""
+function isStronglyConnected(G::SimpleDigraph{S}) where {S}
+    vlist = collect(G.V)
+    start = vlist[1]
+    visited = zeros(Int,length(vlist))
+    if (!DFS(G,start,visited))
+        return false
+    end
+
+    #reverse directions of the graph
+    reverseG = SimpleDigraph{S}()
+    for v in vlist
+        add!(reverseG,v)
+    end
+    for e in elist(G)
+        add!(reverseG,e[2],e[1])
+    end
+
+    #perform another DFS on the reverseG, is Strongly Connected if pass both tests
+    visited = zeros(Int, length(vlist))
+    DFS(reverseG,start,visited)
+end
+
+
+
+"""
+perform a depth first search on graph G starting at vertex v
+"""
+function DFS(G::SimpleDigraph{S}, v, visited::int[]) where {S}
+    vlist = collect(G.V)
+    visited[findfirst(isequal(v),vlist)] = 1
+    for i in G.N[v]
+        index = findfirst(isequal(i),vlist)
+        if (visited[index] != 1)
+            DFS(G,vlist[index],visited)
+        end
+    end
+    for k = 1:length(visited)
+        if visited[k] == 0
+            return false
+        end
+    end
+    return true
 end

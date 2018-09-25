@@ -1,5 +1,5 @@
 export DirectedPath, DirectedCycle, DirectedComplete
-export RandomDigraph, RandomTournament
+export RandomDigraph, RandomTournament, TorusDigraph
 
 """
 `DirectedPath(n)` creates a directed cycles with vertices `1:n`.
@@ -135,4 +135,39 @@ function ShiftDigraph(alphabet=[0,1], n::Int=3)
 
     return G
 
+end
+
+"""
+function for creating a Torus Graph
+"""
+function TorusDigraph(n::Int=4, m::Int=3)
+
+G = SimpleDigraph();
+
+  #create vertices
+  vlist = Tuple{Int,Int}[]
+  for i = 1:m
+    for j = 1:n
+      push!(vlist,(i,j))
+    end
+  end
+
+  #create edges
+  for v in vlist
+    if v[1] + 1 <= m
+      w = (v[1]+1,v[2])
+      add!(G,v,w)
+    if v[2] + 1 <= n
+      w = (v[1],v[2]+1)
+      add!(G,v,w)
+    elseif v[1] == m
+      w = (1,v[2])
+      add!(G,v,w)
+    elseif v[2] == n
+      w = (v[1],1)
+      add!(g,v,w)
+    end
+  end
+
+  return G
 end
