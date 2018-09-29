@@ -371,7 +371,7 @@ end
 
 
 """
-test if a directed graph is strongly connected
+test if a directed graph is strongly connected by using DFS
 """
 function isStronglyConnected(G::SimpleDigraph{S}) where {S}
     vlist = collect(G.V)
