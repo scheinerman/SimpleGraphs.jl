@@ -36,6 +36,11 @@ extensive information pertaining to the `SimpleGraph` type.
 The `SimpleDigraph` type is not so well developed nor documented. See the
 source files in the `src` directory.
 
+## Thanks
+
+Thank you to JHU students Tara Abrishami and Laura Bao for contributions
+to this project.
+
 
 ## Please Help
 
@@ -43,5 +48,7 @@ This is a work in process with a lot of more features that
 can/should be added. If you're interested in contributing, please
 contact me. I'm especially interested in JHU undergraduates getting
 involved.
+
+
 
 Ed Scheinerman (ers@jhu.edu)
