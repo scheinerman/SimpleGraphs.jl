@@ -476,6 +476,7 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
         if length(Nu) == 1
             v = Nu[1]
             append!(trail,u)
+            delete!(G,u,v)
             delete!(G,u)
             u = v
         else
