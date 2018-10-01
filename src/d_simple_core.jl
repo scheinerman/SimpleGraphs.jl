@@ -419,7 +419,7 @@ function DFS(G::SimpleDigraph{S}, v, visited::Array{Int,1}) where S
 end
 
 
-function directed_euler(G::SimpleDigraph{T}, u::T, v::T)
+function directed_euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
     notrail = T[]
     #check in_degrees and out_degrees of start and end vertex first
     if u == v
@@ -447,7 +447,7 @@ end
 
 
 # determine if an edge in a directed graph is a cut edge
-function is_cut_edge(G::SimpleDigrpah{T}, u::T, v::T)
+function is_cut_edge(G::SimpleDigrpah{T}, u::T, v::T) where {T}
     if !has(G,u,v)
         error("No such edge in this graph")
     end
