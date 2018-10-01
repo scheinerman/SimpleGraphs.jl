@@ -469,13 +469,14 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
     while true
         if NV(G) == 1
             append!(trail, u)
+            return trail
         end
 
         Nu = out_neighbors(G,u)
         if length(Nu) == 1
             v = Nu[1]
-            delete!(G,v)
-            append!(trail,v)
+            append!(trail,u)
+            delete!(G,u)
             u = v
         else
             for w in Nu
