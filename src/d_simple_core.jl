@@ -490,6 +490,7 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
                     break
                 end
             end
+            # if all edges are cut-edge, then no euler path
             if ctrl == true
                 empty = T[]
                 return empty
