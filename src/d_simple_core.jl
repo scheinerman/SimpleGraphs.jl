@@ -471,14 +471,14 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
             append!(trail, u)
         end
 
-        NV = out_neighbors(G,u)
-        if length(NV) == 1
-            v = NV[1]
+        Nu = out_neighbors(G,u)
+        if length(Nu) == 1
+            v = Nu[1]
             delete!(G,v)
             append!(trail,v)
             u = v
         else
-            for w in NV
+            for w in Nu
                 if !is_cut_edge(G,u,w)
                     delete!(G,u,w)
                     append!(trail, u)
