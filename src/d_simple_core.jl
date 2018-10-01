@@ -447,7 +447,7 @@ end
 
 
 # determine if an edge in a directed graph is a cut edge
-function is_cut_edge(G::SimpleDigrpah{T}, u::T, v::T) where {T}
+function is_cut_edge(G::SimpleDigraph{T}, u::T, v::T) where {T}
     if !has(G,u,v)
         error("No such edge in this graph")
     end
