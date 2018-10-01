@@ -1,3 +1,4 @@
+"""
 export directed_euler, is_cut_edge
 
 function directed_euler(G::SimpleDigraph{T}, u::T, v::T)
@@ -71,3 +72,4 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
     end
     error("This can't happen")
 end
+"""
