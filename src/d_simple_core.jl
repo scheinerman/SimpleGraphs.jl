@@ -467,6 +467,7 @@ end
 function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
     trail = T[]
     while true
+        ctrl = true;
         if NV(G) == 1
             append!(trail, u)
             return trail
@@ -485,8 +486,13 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
                     delete!(G,u,w)
                     append!(trail, u)
                     u = w
+                    ctrl = false;
                     break
                 end
+            end
+            if ctrl == true
+                empty = T[]
+                return empty
             end
         end
     end
