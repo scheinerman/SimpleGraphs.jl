@@ -1,4 +1,4 @@
-export directed_euler
+export directed_euler, is_cut_edge
 
 function directed_euler(G::SimpleDigraph{T}, u::T, v::T)
     notrail = T[]
