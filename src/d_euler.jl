@@ -8,8 +8,8 @@ function directed_euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
             return notrail
         end
     else
-        if out_deg(G,u) - out_deg(G,v) != 1 ||
-            in_deg(G,v) - out_deg(G,u) != 1
+        if out_deg(G,u) - in_deg(G,u) != 1 ||
+            in_deg(G,v) - out_deg(G,v) != 1
             return notrail
         end
     end
@@ -19,6 +19,8 @@ function directed_euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
     if length(euler(simpleG,u,v)) == 0
         return notrail
     end
+    #check if connected
+    #check if in_deg == out_deg for all other vertices
 
     GG = deepcopy(G)
     return euler_work!(GG, u)
