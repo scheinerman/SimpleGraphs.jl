@@ -60,13 +60,13 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
         if length(Nu) == 1
             v = Nu[1]
             append!(trail,u)
-            delete!(G,u,v)
+    #        delete!(G,u,v)
             delete!(G,u)
             u = v
         else
             for w in Nu
                 if !is_cut_edge(G,u,w)
-                    delete!(G,u,w)
+        #            delete!(G,u,w)
                     append!(trail, u)
                     u = w
                     ctrl = false;
