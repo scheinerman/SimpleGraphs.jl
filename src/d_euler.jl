@@ -48,7 +48,7 @@ end
 
 # helper function to determine if there is euler path
 # function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
-function euler_work(G::SimpleDigraph{T}, u::T) where {T}
+function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
     trail = T[]
     #possibilities of non-cut-edges to traverse
 #    choice = T[]
