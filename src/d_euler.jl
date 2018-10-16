@@ -67,34 +67,13 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
             u = v
         else
             for w in Nu
-                #check how many edges it is possible to traverse
                 if !is_cut_edge(G,u,w)
                     delete!(G,u,w)
                     append!(trail,u)
                     u = w
                     break
-                #    append!(choice, w)
                 end
             end
-            # if all edges are cut-edge, then no euler path
-    #        if (length(choice) == 0)
-    #            empty = T[]
-    #            return empty
-    #        end
-
-    #        if (length(choice) == 1)
-    #            delete!(G,u,choice[1])
-    #            append!(trail, u)
-    #            u = choice[1]
-    #            continue
-    #        end
-    #        for w in choice
-    #            tryeuler(G,w)
-    #        print(length(choice))
-    #        delete!(G,u,choice[2])
-    #        append!(trail, u)
-    #        print(u)
-    #        u = choice[2]
         end
     end
     error("Not gonna happen")
