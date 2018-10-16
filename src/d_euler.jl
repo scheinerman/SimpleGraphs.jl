@@ -36,7 +36,7 @@ function is_cut_edge(G::SimpleDigraph{T}, u::T, v::T) where {T}
     end
 
     delete!(G,u,v)
-    P = find_path(G,u,v)
+    P = find_path(G,v,u)
     if (length(P) == 0)
         add!(G,u,v)
         return true
@@ -47,38 +47,54 @@ function is_cut_edge(G::SimpleDigraph{T}, u::T, v::T) where {T}
 end
 
 # helper function to determine if there is euler path
-function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
+# function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
+function tryeuler(G::SimpleDigraph{T}, u::T) where {T}
     trail = T[]
+    #possibilities of non-cut-edges to traverse
+#    choice = T[]
     while true
-        ctrl = true;
-        if NV(G) == 1
+        Nu = out_neighbors(G,u)
+        if (length(Nu)) == 0
             append!(trail, u)
             return trail
         end
 
-        Nu = out_neighbors(G,u)
         if length(Nu) == 1
             v = Nu[1]
             append!(trail,u)
-    #        delete!(G,u,v)
+            delete!(G,u,v)
             delete!(G,u)
             u = v
         else
             for w in Nu
+                #check how many edges it is possible to traverse
                 if !is_cut_edge(G,u,w)
-        #            delete!(G,u,w)
-                    append!(trail, u)
-                    u = w
-                    ctrl = false;
+                    delete!(G,u,w)
+                    append!(trail,u)
                     break
+                #    append!(choice, w)
                 end
             end
             # if all edges are cut-edge, then no euler path
-            if ctrl == true
-                empty = T[]
-                return empty
-            end
+    #        if (length(choice) == 0)
+    #            empty = T[]
+    #            return empty
+    #        end
+
+    #        if (length(choice) == 1)
+    #            delete!(G,u,choice[1])
+    #            append!(trail, u)
+    #            u = choice[1]
+    #            continue
+    #        end
+    #        for w in choice
+    #            tryeuler(G,w)
+    #        print(length(choice))
+    #        delete!(G,u,choice[2])
+    #        append!(trail, u)
+    #        print(u)
+    #        u = choice[2]
         end
     end
-    error("This can't happen")
+    error("Not gonna happen")
 end
