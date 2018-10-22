@@ -5,7 +5,7 @@ function isSafe(v::T, G::SimpleDigraph{T}, path::Array{T}) where {T}
     prev = path[length(path)]
 
     #check if the added vertex is an out_neighbor of the previous vertex
-    Nv = out_neighbors(prev)
+    Nv = out_neighbors(G, prev)
     if (!in(v,Nv))
         return false
     end
@@ -22,7 +22,7 @@ function hamCycle(G::SimpleDigraph{T}, path::Array{T}) where {T}
     #if all vertices are included in the cycle
     if length(path) == NV(G)
         #check if last vertex is connected to first vertex in path
-        Nv = out_neighbors(path[length(path)])
+        Nv = out_neighbors(G, path[length(path)])
         if in(path[0], Nv)
             return true
         else
