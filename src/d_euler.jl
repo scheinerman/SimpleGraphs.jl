@@ -79,7 +79,7 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
     error("Not gonna happen")
 end
 
-function isSafe(v::T, G::SimpleGraph{T}, path::T[]) where {T}
+function isSafe(v::T, G::SimpleGraph{T}, path::T[])
     prev = path[length(path)]
 
     #check if the added vertex is an out_neighbor of the previous vertex
