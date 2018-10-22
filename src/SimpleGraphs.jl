@@ -43,6 +43,6 @@ include("d_dist.jl")
 include("d_euler.jl")
 
 include("embedding/GraphEmbeddings.jl")
-#include("d_ham.jl")
+include("d_ham.jl")
 
 end # module SimpleGraphs
