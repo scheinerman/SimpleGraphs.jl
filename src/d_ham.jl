@@ -1,7 +1,7 @@
 export directed_ham_cycle
 
 #check if it is safe to add vertex v to the path
-function trySafe(v::T, G::SimpleDigraph{T}, path::Array{T}) where {T}
+function isSafe(v::T, G::SimpleDigraph{T}, path::Array{T}) where {T}
     prev = path[length(path)]
 
     #check if the added vertex is an out_neighbor of the previous vertex
