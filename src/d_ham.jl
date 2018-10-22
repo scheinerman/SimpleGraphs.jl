@@ -1,8 +1,8 @@
 export directed_ham_cycle
 
 #check if it is safe to add vertex v to the path
-function isSafe(v::T, G::SimpleDigraph{T}, path::Stack{T}) where {T}
-    prev = top(path)
+function isSafe(v::T, G::SimpleDigraph{T}, path::Deque{T}) where {T}
+    prev = back(path)
 
     #check if the added vertex is an out_neighbor of the previous vertex
     Nv = out_neighbors(G, prev)
@@ -21,12 +21,12 @@ function isSafe(v::T, G::SimpleDigraph{T}, path::Stack{T}) where {T}
     return true
 end
 
-function hamCycle(G::SimpleDigraph{T}, path::Stack{T}) where {T}
+function hamCycle(G::SimpleDigraph{T}, path::Deque{T}) where {T}
     #if all vertices are included in the cycle
     if length(path) == NV(G)
         #check if last vertex is connected to first vertex in path
-        Nv = out_neighbors(G, top(path))
-        if in(path[1], Nv)
+        Nv = out_neighbors(G, back(path))
+        if in(front(path), Nv)
             return true
         else
             return false
@@ -50,7 +50,7 @@ end
 
 #check if a directed graph contains a hamiltonian cycle
 function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
-    result = Stack{T}()
+    result = Deque{T}()
     vlist = collect(G.V)
 
     #check if there are any isolated vertices
@@ -65,7 +65,7 @@ function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
         if (hamCycle(G,result))
             return result
         end
-        result = Stack{T}()
+        result = Deque{T}()
     end
 
     return result
