@@ -6,7 +6,7 @@ function isSafe(v::T, G::SimpleDigraph{T}, path::Stack{T}) where {T}
 
     #check if the added vertex is an out_neighbor of the previous vertex
     Nv = out_neighbors(G, prev)
-    if length(Nu) == 0
+    if length(Nv) == 0
         return false
     end
     if (!in(v, Nv))
