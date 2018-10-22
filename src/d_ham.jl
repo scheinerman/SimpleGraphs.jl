@@ -1,7 +1,7 @@
 export directed_ham_cycle
 
 #check if it is safe to add vertex v to the path
-function isSafe(v::T, G::SimpleDigraph{T}, path::Array{T}) where {T}
+function trySafe(v::T, G::SimpleDigraph{T}, path::Array{T}) where {T}
     prev = path[length(path)]
 
     #check if the added vertex is an out_neighbor of the previous vertex
@@ -23,7 +23,7 @@ function hamCycle(G::SimpleDigraph{T}, path::Array{T}) where {T}
     if length(path) == NV(G)
         #check if last vertex is connected to first vertex in path
         Nv = out_neighbors(G, path[length(path)])
-        if in(path[0], Nv)
+        if in(path[1], Nv)
             return true
         else
             return false
@@ -56,7 +56,6 @@ function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
         return result
     end
 
-    marked = zeros(Int, length(vlist))
 
     for v in vlist
         append!(result,v)
