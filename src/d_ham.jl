@@ -1,4 +1,4 @@
-export directed_ham_cycle
+export hamiltonian_cycle
 
 #check if it is safe to add vertex v to the path
 function isSafe(v::T, G::SimpleDigraph{T}, path::Deque{T}) where {T}
@@ -69,4 +69,9 @@ function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
     end
 
     return result
+end
+
+#export the result as an array
+function hamiltonian_cycle(G::SimpleDigraph{T}) where {T}
+    return collect(directed_ham_cycle(G));
 end

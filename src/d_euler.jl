@@ -1,6 +1,6 @@
-export directed_euler, is_cut_edge
+export euler, is_cut_edge
 
-function directed_euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
+function euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
     notrail = T[]
     #check in_degrees and out_degrees of start and end vertex first
     if u == v
