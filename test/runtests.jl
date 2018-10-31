@@ -228,11 +228,24 @@ end
     G = DirectedCycle(10)
     @test diam(G) == 9
 end
+#
+# @testset "Directed Euler" begin
+#     G = TorusDigraph(4,4)
+#     P = euler(G)
+#     @test length(P) == NE(G)
+# end
+
+@testset "Directed Hamiltonian Cycle" begin
+    G = TorusDigraph(4,4)
+    P = hamiltonian_cycle(G)
+    @test length(P) == NV(G)
+end
 
 @testset "Strong Connectivity" begin
     G = TorusDigraph(5,5)
     @test is_strongly_connected(G)
 end
+
 
 @testset "Directed Matrices" begin
     G = RandomTournament(10)
