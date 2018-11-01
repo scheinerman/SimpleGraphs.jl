@@ -10,6 +10,9 @@ using LinearAlgebra
 using Statistics
 using IterTools
 using Random
+using AbstractLattices
+
+import AbstractLattices.dist 
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
