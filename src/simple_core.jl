@@ -1,5 +1,6 @@
 import Base.show, Base.==, Base.adjoint, Base.*
 import Base.getindex
+import LightXML.name
 
 export SimpleGraph, IntGraph, StringGraph
 export show, NV, NE, has, vertex_type, fastN!, name
