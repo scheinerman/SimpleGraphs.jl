@@ -2,7 +2,7 @@
 # needed again. Note that if the graph is modified, the cache should be
 # wiped clean.
 
-export cache_clear, cache_on, cache_off, cache_recall, cache_check
+export cache_clear, cache_on, cache_off, cache_recall, cache_check, cache_save
 # but we don't export cache_save
 
 

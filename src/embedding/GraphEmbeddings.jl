@@ -4,6 +4,8 @@ using LinearAlgebra, Statistics
 export embed, remove_embedding, has_embedding
 export set_vertex_color, set_line_color, get_vertex_color, get_line_color
 
+export set_fill_color
+
 
 export GraphEmbedding, show
 # export draw, draw_labels, unclip
