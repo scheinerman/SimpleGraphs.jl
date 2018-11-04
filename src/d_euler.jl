@@ -63,7 +63,6 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
             v = Nu[1]
             push!(trail,u)
             delete!(G,u,v)
-            delete!(G,u)
             u = v
         else
             for w in Nu
