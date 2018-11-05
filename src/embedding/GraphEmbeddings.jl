@@ -2,7 +2,9 @@
 using LinearAlgebra, Statistics
 
 export embed, remove_embedding, has_embedding
-export set_fill_color, set_line_color, get_fill_color, get_line_color
+export set_vertex_color, set_line_color, get_vertex_color, get_line_color
+
+export set_fill_color
 
 
 export GraphEmbedding, show
@@ -98,10 +100,10 @@ function set_embedding_direct(G::SimpleGraph, X::GraphEmbedding)
 end
 
 """
-`set_fill_color(G,color)` sets the color that gets drawn in the
+`set_vertex_color(G,color)` sets the color that gets drawn in the
 interior of the vertices. (All vertices get the same color.)
 """
-function set_fill_color(G::SimpleGraph, color::String="white")
+function set_vertex_color(G::SimpleGraph, color::String="white")
   if !has_embedding(G)
     embed(G)
   end
@@ -110,10 +112,10 @@ function set_fill_color(G::SimpleGraph, color::String="white")
 end
 
 """
-`get_fill_color(G)` returns the color used to fill in vertices.
-See `set_fill_color`.
+`get_vertex_color(G)` returns the color used to fill in vertices.
+See `set_vertex_color`.
 """
-function get_fill_color(G::SimpleGraph)
+function get_vertex_color(G::SimpleGraph)
   if !has_embedding(G)
     embed(G)
   end

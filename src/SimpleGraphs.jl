@@ -10,6 +10,9 @@ using LinearAlgebra
 using Statistics
 using IterTools
 using Random
+using AbstractLattices
+
+import AbstractLattices.dist 
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
@@ -41,8 +44,8 @@ include("d_simple_constructors.jl")
 include("d_simple_matrices.jl")
 include("d_dist.jl")
 include("d_euler.jl")
+include("d_ham.jl")
 
 include("embedding/GraphEmbeddings.jl")
-include("d_ham.jl")
 
 end # module SimpleGraphs

@@ -24,9 +24,10 @@ function euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
 
     GG = deepcopy(G)
     return euler_work!(GG, u)
-
 end
 
+euler(G::SimpleDigraph,u) = euler(G,u,u)
+euler(G::SimpleDigraph) = euler(G,first(G.V))
 
 
 # determine if an edge in a directed graph is a cut edge
