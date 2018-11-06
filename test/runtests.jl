@@ -232,7 +232,7 @@ end
 # @testset "Directed Euler" begin
 #     G = TorusDigraph(4,4)
 #     P = euler(G)
-#     @test length(P) == NE(G)
+#     @test length(P) == NE(G)+1
 # end
 
 @testset "Directed Hamiltonian Cycle" begin
