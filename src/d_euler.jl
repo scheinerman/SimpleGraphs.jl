@@ -51,8 +51,6 @@ end
 # function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
 function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
     trail = T[]
-    #possibilities of non-cut-edges to traverse
-#    choice = T[]
     while true
         Nu = out_neighbors(G,u)
         if (length(Nu)) == 0
