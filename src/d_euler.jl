@@ -57,7 +57,6 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
             push!(trail, u)
             return trail
         end
-
         if length(Nu) == 1
             v = Nu[1]
             push!(trail,u)
