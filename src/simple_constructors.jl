@@ -173,6 +173,16 @@ function Grid(n::Int, m::Int)
             add!(G,(u,v),(u+1,v))
         end
     end
+
+    # embedding
+    d = Dict{Any, Array{Float64,1}}()
+    for v in G.V
+        x,y = v
+        d[v] = [Float64(x),Float64(y)]
+    end
+    embed(G,d)
+    recenter(G)
+
     name(G,"Grid graph of size $n-by-$m")
     return G
 end
