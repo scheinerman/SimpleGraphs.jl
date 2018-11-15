@@ -121,7 +121,7 @@ end
     @test is_acyclic(G)
     @test is_cut_edge(G,3,4)
     @test radius(G) == 5
-    @test center(G) == Set([5,6])
+    @test graph_center(G) == Set([5,6])
 
     G = Complete(5,5)'
     @test num_components(G) == 2
