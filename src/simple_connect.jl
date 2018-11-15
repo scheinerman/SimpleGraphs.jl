@@ -2,7 +2,7 @@
 
 export components, num_components, is_connected, spanning_forest
 export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
-export eccentricity, radius, center
+export eccentricity, radius, graph_center
 
 """
 `components(G)` returns the vertex sets of the connected components of
@@ -226,12 +226,12 @@ function eccentricity(G::SimpleGraph, v)
 end
 
 """
-`center(G)` returns the set of vertices of a `SimpleGraph` with minimum
+`graph_center(G)` returns the set of vertices of a `SimpleGraph` with minimum
 eccentricities.
 """
-function center(G::SimpleGraph)::Set
-    if cache_check(G,:center)
-        return cache_recall(G,:center)
+function graph_center(G::SimpleGraph)::Set
+    if cache_check(G,:graph_center)
+        return cache_recall(G,:graph_center)
     end
     if G.cache_flag
         dist(G) # force all pairs distance computation
@@ -245,7 +245,7 @@ function center(G::SimpleGraph)::Set
     end
 
     A = Set( v for v in keys(xtable) if xtable[v]==min_r)
-    cache_save(G,:center, A)
+    cache_save(G,:graph_center, A)
     return A
 end
 
