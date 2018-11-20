@@ -140,6 +140,11 @@ end
     @test v == 3*ones(Int,10)
 end
 
+@testset "Twins" begin
+    G = Complete(5,3)
+    @test twins(G) == bipartition(G)
+end
+
 @testset "Coloring" begin
     G = RandomTree(10)
     d = two_color(G)

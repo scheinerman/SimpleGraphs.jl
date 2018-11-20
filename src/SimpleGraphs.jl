@@ -12,7 +12,7 @@ using IterTools
 using Random
 using AbstractLattices
 
-import AbstractLattices.dist 
+import AbstractLattices.dist
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
@@ -38,6 +38,7 @@ include("trans_orient.jl")
 include("interlace.jl")
 include("matching_poly.jl")
 include("indep_poly.jl")
+include("twins.jl")
 
 include("d_simple_core.jl")
 include("d_simple_constructors.jl")
