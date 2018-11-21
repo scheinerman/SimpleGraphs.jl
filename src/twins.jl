@@ -26,6 +26,9 @@ end
 
 
 function twins(G)::Partition
+    if cache_check(G,:twins)
+      return cache_recall(G,:twins)
+    end
     VV = vlist(G)
     n  = NV(G)
 
@@ -39,5 +42,6 @@ function twins(G)::Partition
             end
         end
     end
+    cache_save(G,:twins,P)
     return P
 end
