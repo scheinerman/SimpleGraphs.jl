@@ -25,6 +25,8 @@ using Polynomials
     H = SimpleGraph(A)
     @test G==H
 
+    @test get_edge(G,1,2) == get_edge(G,2,1)
+
     G = StringGraph()
     add!(G,"alpha","beta")
     @test G["alpha", "beta"]

@@ -3,7 +3,7 @@ import Base.getindex
 import LightXML.name
 
 export SimpleGraph, IntGraph, StringGraph
-export show, NV, NE, has, vertex_type, fastN!, name
+export show, NV, NE, has, vertex_type, fastN!, name, get_edge
 export vlist, elist, neighbors, getindex, deg, deg_hist
 
 """
@@ -183,6 +183,23 @@ NE(G::SimpleGraph) = length(G.E)
 """
 has(G::AbstractSimpleGraph, v) = in(v,G.V)
 has(G::SimpleGraph, v, w) = in((v,w), G.E) || in((w,v), G.E)
+
+
+"""
+`get_edge(G,u,v)` returns either `(u,v)` or `(v,u)` matching  how
+the edge joining `u` and `v` is stored in the edge set of `G`.
+An error is thrown if `u` and `v` are not adjacent vertices of `G`.
+"""
+function get_edge(G::SimpleGraph{T},u,v)::Tuple{T,T} where T
+    if !has(G,u,v)
+        error("($u,$v) is not an edge of this graph")
+    end
+    if in((u,v),G.E)
+        return u,v
+    end
+    return v,u
+end
+
 
 # fastN(G,true) creates an additional data structure to speed up
 # neighborhood lookups.
