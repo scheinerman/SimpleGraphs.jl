@@ -427,7 +427,7 @@ graph with no non-nontrivial automorphisms.
 """
 function Frucht()
   G = Cycle(12)
-  more_edges = [ 1 6; 2 4; 3 11; 5 7; 8 10; 9 12]
+  more_edges = [ (1,6), (2,4), (3,11), (5,7), (8,10), (9,12) ]
   add_edges!(G,more_edges)
   name(G,"Frucht graph")
   return G

@@ -84,26 +84,20 @@ end
 
 """
 `add_edges!(G,edge_table)` adds edges to the graph `G`. The argument
-`edge_table` is an `m`-by-`2` array of vertices. Each row of the table
-represents an edge to add to `G`. Returns the number of edges
-successfully added to `G`.
+`edge_table` is an iterable list (array or set) of edges to be
+added (two-tuples). Returns the number of edges added to the graph.
 
 This works both when `G` is a `SimpleGraph` and when `G` is
 a `SimpleDigraph`.
 """
-function add_edges!(G::AbstractSimpleGraph, edge_table::Array{T,2}) where {T}
-  r,c = size(edge_table)
-  if c != 2
-    error("Edge table must be an m-by-2 array of vertices")
-  end
-  m0 = NE(G)
-  for i=1:r
-    u = edge_table[i,1]
-    v = edge_table[i,2]
-    add!(G,u,v)
-  end
-  return NE(G)-m0
+function add_edges!(G::AbstractSimpleGraph, edge_list)::Int
+    m0 = NE(G)
+    for e in edge_list
+        add!(G,e[1],e[2])
+    end
+    return NE(G)-m0
 end
+
 
 # edge deletion
 """

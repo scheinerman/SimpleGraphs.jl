@@ -34,7 +34,7 @@ end
 
 @testset "Ops" begin
     G = IntGraph(3)
-    ee = [ 1 2; 2 3; 1 3]
+    ee = [ (1,2), (2,3), (1,3)]
     add_edges!(G,ee)
     delete!(G,1,2)
     @test NE(G) == 2
