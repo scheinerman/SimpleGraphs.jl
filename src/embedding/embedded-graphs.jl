@@ -7,17 +7,17 @@ unit distance graph with chromatic number equal to 4.
 function Spindle()
     G = IntGraph(7)
     edges = [
-        1 2
-        1 3
-        2 3
-        2 4
-        3 4
-        1 5
-        1 6
-        5 6
-        5 7
-        6 7
-        4 7 ]
+        (1, 2),
+        (1, 3),
+        (2, 3),
+        (2, 4),
+        (3, 4),
+        (1, 5),
+        (1, 6),
+        (5, 6),
+        (5, 7),
+        (6, 7),
+        (4, 7) ]
     add_edges!(G,edges)
 
     d = Dict{Int,Vector}()
