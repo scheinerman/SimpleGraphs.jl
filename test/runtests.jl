@@ -4,6 +4,8 @@ using LinearAlgebra
 using SparseArrays
 using SimplePartitions
 using Polynomials
+using Pkg
+Pkg.add(PackageSpec(name="SimpleTools", rev="master"))
 
 
 @testset "Core" begin
