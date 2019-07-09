@@ -1,5 +1,4 @@
 using Test
-using SimpleGraphs
 using LinearAlgebra
 using SparseArrays
 using SimplePartitions
@@ -7,6 +6,8 @@ using Polynomials
 using Pkg
 Pkg.add(PackageSpec(name="SimpleTools", rev="master"))
 Pkg.resolve()
+using SimpleTools
+using SimpleGraphs
 
 @testset "Core" begin
     G = Path(10)
