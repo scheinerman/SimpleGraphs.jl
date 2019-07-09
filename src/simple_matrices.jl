@@ -1,6 +1,7 @@
 # Functions to create standard graph matrices
-#import Base.eigvals
-export adjacency, char_poly, laplace, incidence, dist_matrix, eigvals
+
+import SimpleTools.char_poly
+export adjacency, laplace, incidence, dist_matrix, eigvals, char_poly
 using SparseArrays
 # Adjaceny Matrix
 
@@ -41,15 +42,14 @@ matrix.
 function laplace(G::SimpleGraph)
     A = adjacency(G)
     d = collect(sum(A,dims=1))[:]
-    # D = diagm(d) # deprecated version
     D = Matrix(Diagonal(d))
     L = D-A
     return L
 end
 
 # incidence matrix
-"""
 
+"""
 `incidence(G)` returns the vertex-edge incidence matrix of `G`.
 
 Notes:
@@ -117,15 +117,28 @@ function char_poly(G::AbstractSimpleGraph, func::Function=adjacency)
     if cache_check(G,:char_poly) && func==adjacency
       return cache_recall(G,:char_poly)
     end
-    evs = eigvals(G,func)
-    P = poly(evs)
-    cs = round.(Int,real(coeffs(P)))
-    P =  Poly(cs)
+    M = func(G)
+    p = char_poly(M)
     if func==adjacency
-        cache_save(G,:char_poly,P)
+        cache_save(G,:char_poly,p)
     end
-    return P
+    return p
 end
+
+# OLD VERSION
+# function char_poly(G::AbstractSimpleGraph, func::Function=adjacency)
+#     if cache_check(G,:char_poly) && func==adjacency
+#       return cache_recall(G,:char_poly)
+#     end
+#     evs = eigvals(G,func)
+#     P = poly(evs)
+#     cs = round.(Int,real(coeffs(P)))
+#     P =  Poly(cs)
+#     if func==adjacency
+#         cache_save(G,:char_poly,P)
+#     end
+#     return P
+# end
 
 
 """
