@@ -6,7 +6,7 @@ using SimplePartitions
 using Polynomials
 using Pkg
 Pkg.add(PackageSpec(name="SimpleTools", rev="master"))
-
+Pkg.resolve()
 
 @testset "Core" begin
     G = Path(10)
