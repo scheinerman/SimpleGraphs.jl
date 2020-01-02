@@ -29,10 +29,10 @@ function indep_poly(G::SimpleGraph, cache_flag::Bool=true)
         Nv = G[v]
 
         G1 = deepcopy(G)
-        delete!(G1,v)
+        SimpleGraphs.delete!(G1,v)
         p1 = indep_poly(G1,false)
         for w in Nv
-            delete!(G1,w)
+            SimpleGraphs.delete!(G1,w)
         end
         p2 = indep_poly(G1,false)
 

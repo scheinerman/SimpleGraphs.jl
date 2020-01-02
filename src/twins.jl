@@ -18,8 +18,8 @@ function twins(G::SimpleGraph,u,v)::Bool
     Nu = Set(G[u])
     Nv = Set(G[v])
 
-    delete!(Nu,v)
-    delete!(Nv,u)
+    SimpleGraphs.delete!(Nu,v)
+    SimpleGraphs.delete!(Nv,u)
 
     return Nu==Nv
 end

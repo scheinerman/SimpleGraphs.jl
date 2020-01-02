@@ -119,7 +119,7 @@ function makeSimplex!(G::SimpleGraph, multiplexes::Array, col::Dict)
   pushfirst!(multiplexes, length(simp))
   for e in elist(G)
     if col[e] in colorSet
-      delete!(G, e[1], e[2])
+      SimpleGraphs.delete!(G, e[1], e[2])
     end
   end
 end

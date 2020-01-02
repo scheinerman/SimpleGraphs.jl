@@ -86,7 +86,7 @@ function remove_loops!(G::SimpleDigraph)
         return nothing
     end
     for v in G.V
-        delete!(G,v,v)
+        SimpleGraphs.delete!(G,v,v)
     end
     nothing
 end
@@ -231,29 +231,29 @@ function add!(G::SimpleDigraph{T}, v, w) where {T}
 end
 
 # Delete an edge from this digraph
-function delete!(G::SimpleDigraph, v, w)
+function SimpleGraphs.delete!(G::SimpleDigraph, v, w)
     if !has(G,v,w)
         return false
     end
-    delete!(G.N[v],w)
-    delete!(G.NN[w],v)
+    SimpleGraphs.delete!(G.N[v],w)
+    SimpleGraphs.delete!(G.NN[w],v)
     return true
 end
 
 # Delete a vertex from this digraph
-function delete!(G::SimpleDigraph, v)
+function SimpleGraphs.delete!(G::SimpleDigraph, v)
     if !has(G,v)
         return false
     end
     for w in G.N[v]
-        delete!(G,v,w)
+        SimpleGraphs.delete!(G,v,w)
     end
     for u in G.NN[v]
-        delete!(G,u,v)
+        SimpleGraphs.delete!(G,u,v)
     end
-    delete!(G.V,v)
-    delete!(G.N,v)
-    delete!(G.NN,v)
+    SimpleGraphs.delete!(G.V,v)
+    SimpleGraphs.delete!(G.N,v)
+    SimpleGraphs.delete!(G.NN,v)
     return true
 end
 
@@ -287,7 +287,7 @@ function simplify(D::SimpleDigraph{T}) where {T}
 end
 
 # Equality check
-function isequal(G::SimpleDigraph, H::SimpleDigraph)
+function SimpleGraphs.isequal(G::SimpleDigraph, H::SimpleDigraph)
     if G.V != H.V || NE(G) != NE(H)
         return false
     end

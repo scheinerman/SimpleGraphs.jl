@@ -123,13 +123,13 @@ function euler_work!(G::SimpleGraph{T}, u::T) where {T}
         # if only one neighbor delete and move on
         if length(Nu)==1
             w = Nu[1]
-            delete!(G,u)
+            SimpleGraphs.delete!(G,u)
             append!(trail,[u])
             u = w
         else
             for w in Nu
                 if ! is_cut_edge(G,u,w)
-                    delete!(G,u,w)
+                    SimpleGraphs.delete!(G,u,w)
                     append!(trail,[u])
                     u = w
                     break

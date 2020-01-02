@@ -8,7 +8,7 @@ export cartesian, lex, relabel, trim
 export disjoint_union, union, join
 
 # check for graph equality
-function isequal(G::SimpleGraph, H::SimpleGraph)
+function SimpleGraphs.delete!(G::SimpleGraph, H::SimpleGraph)
     if G.V != H.V || NE(G) != NE(H)
         return false
     end
@@ -26,6 +26,11 @@ function isequal(G::SimpleGraph, H::SimpleGraph)
     # otherwise faster to check edge sets this way
     return G.E==H.E
 end
+
+function SimpleGraphs.isequal(G::SimpleGraph, H::SimpleGraph)
+    return G.V == H.V && G.E == H.E
+end
+
 
 function ==(G::SimpleGraph, H::SimpleGraph)
     return isequal(G,H)
@@ -106,7 +111,7 @@ from the graph.
 
 `delete!(G,v,w)` deletes the edge `(v,w)` from `G`.
 """
-function delete!(G::SimpleGraph, v, w)
+function SimpleGraphs.delete!(G::SimpleGraph, v, w)
     flag = false
     if has(G,v,w)
         cache_clear(G)
@@ -122,18 +127,18 @@ function delete!(G::SimpleGraph, v, w)
 end
 
 # vertex deletion
-function delete!(G::SimpleGraph, v)
+function SimpleGraphs.delete!(G::SimpleGraph, v)
     flag = false
     if has(G,v)
         cache_clear(G)
         flag = true
         Nv = G[v]
         for w in Nv
-            delete!(G,v,w)
+            SimpleGraphs.delete!(G,v,w)
         end
-        delete!(G.V, v)
+        SimpleGraphs.delete!(G.V, v)
         if G.Nflag
-            delete!(G.N,v)
+            SimpleGraphs.delete!(G.N,v)
         end
     end
     return flag
@@ -162,7 +167,7 @@ function contract!(G::SimpleGraph, u, v)
     for x in Nv
         add!(G,u,x)
     end
-    delete!(G,v)
+    SimpleGraphs.delete!(G,v)
     return true
 end
 
@@ -233,18 +238,9 @@ function induce(G::SimpleDigraph{T}, A::Set) where {T}
         add!(H,v)
     end
 
-    # The method we choose depends on the size of A. For small A, best
-    # to iterate over pairs of elements of A. For large A, best to
-    # iterate over G.E
-    a = length(A)
-
-    if a<2
-        return H
-    end
-
     for x in A
         for y in A
-            if x!=y && has(G,x,y)
+            if has(G,x,y)
                 add!(H,x,y)
             end
         end
@@ -325,7 +321,7 @@ function complement!(G::SimpleGraph)
         for j=i+1:n
             w = V[j]
             if has(G,v,w)
-                delete!(G,v,w)
+                SimpleGraphs.delete!(G,v,w)
             else
                 add!(G,v,w)
             end
@@ -479,7 +475,7 @@ function trim(G::SimpleGraph, d::Int = 0)
     while NV(H) > 0 && minimum(deg(H)) <= d
         for v in H.V
             if deg(H,v) <= d
-                delete!(H,v)
+                SimpleGraphs.delete!(H,v)
             end
         end
     end

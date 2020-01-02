@@ -36,7 +36,7 @@ function is_cut_edge(G::SimpleDigraph{T}, u::T, v::T) where {T}
         error("No such edge in this graph")
     end
 
-    delete!(G,u,v)
+    SimpleGraphs.delete!(G,u,v)
     P = find_path(G,v,u)
     if (length(P) == 0)
         add!(G,u,v)
@@ -60,12 +60,12 @@ function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
         if length(Nu) == 1
             v = Nu[1]
             push!(trail,u)
-            delete!(G,u,v)
+            SimpleGraphs.delete!(G,u,v)
             u = v
         else
             for w in Nu
                 if !is_cut_edge(G,u,w)
-                    delete!(G,u,w)
+                    SimpleGraphs.delete!(G,u,w)
                     push!(trail,u)
                     u = w
                     break

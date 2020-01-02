@@ -306,7 +306,7 @@ function is_cut_edge(G::SimpleGraph, u, v)
         error("No such edge in this graph")
     end
 
-    delete!(G,u,v)
+    SimpleGraphs.delete!(G,u,v)
     P = find_path(G,u,v)
     result = false
     if length(P)==0

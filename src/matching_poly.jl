@@ -21,11 +21,11 @@ function matching_poly(G::SimpleGraph, cache_flag::Bool=true)
         v,w = e
 
         G1 = deepcopy(G)
-        delete!(G1,v,w)
+        SimpleGraphs.delete!(G1,v,w)
         p1 = matching_poly(G1,false)
 
-        delete!(G1,v)
-        delete!(G1,w)
+        SimpleGraphs.delete!(G1,v)
+        SimpleGraphs.delete!(G1,w)
         p2 = matching_poly(G1,false)
 
         p = p1 - p2

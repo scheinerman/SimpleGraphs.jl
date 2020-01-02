@@ -6,7 +6,7 @@ if absent. **No error checking is done**.
 """
 function toggle!(G::SimpleGraph,x,y)
     if has(G,x,y)
-        delete!(G,x,y)
+        SimpleGraphs.delete!(G,x,y)
     else
         add!(G,x,y)
     end
@@ -97,12 +97,12 @@ function interlace(G::SimpleGraph, saver::Bool=true)
         b = e[2]
 
         G1 = deepcopy(G)
-        delete!(G1,a)
+        SimpleGraphs.delete!(G1,a)
         p1 = interlace(G1,false)
 
         G2 = deepcopy(G)
         pivot!(G2,a,b)
-        delete!(G2,b)
+        SimpleGraphs.delete!(G2,b)
         p2 = interlace(G2,false)
 
         p = p1+p2

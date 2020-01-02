@@ -21,7 +21,7 @@ function girth_cycle(G::SimpleGraph{T}) where {T}
 
   for e in elist(GG)
     u,v = e
-    delete!(GG,u,v)
+    SimpleGraphs.delete!(GG,u,v)
     P = find_path(GG,u,v)
     add!(GG,u,v)
     nP = length(P)
