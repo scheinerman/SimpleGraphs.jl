@@ -21,6 +21,8 @@ abstract type AbstractSimpleGraph end
 export AbstractSimpleGraph
 
 include("simple_core.jl")
+include("d_simple_core.jl")
+
 include("cache.jl")
 include("simple_ops.jl")
 include("simple_constructors.jl")
@@ -40,7 +42,6 @@ include("matching_poly.jl")
 include("indep_poly.jl")
 include("twins.jl")
 
-include("d_simple_core.jl")
 include("d_simple_constructors.jl")
 include("d_simple_matrices.jl")
 include("d_dist.jl")

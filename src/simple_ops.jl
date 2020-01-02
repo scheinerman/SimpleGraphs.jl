@@ -170,7 +170,7 @@ end
 # subgraph G[A]. Note that A must be a subset of V(G).
 """
 `induce(G,A)` creates the induced subgraph of `G` with vertices in the
-set `A`.
+set `A`. The graph may be either a `SimpleGraph` or a `SimpleDigraph`.
 """
 function induce(G::SimpleGraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
@@ -217,6 +217,43 @@ function induce(G::SimpleGraph{T}, A::Set) where {T}
     end
     return H
 end
+
+# Digraph version
+function induce(G::SimpleDigraph{T}, A::Set) where {T}
+    # Check that A is a subset of V(G)
+    for v in A
+        if ~has(G,v)
+            error("The set A must be a subset of V(G)")
+        end
+    end
+    H = SimpleDigraph{T}()  # place to hold the answer
+
+    # add all the vertices in A to H
+    for v in A
+        add!(H,v)
+    end
+
+    # The method we choose depends on the size of A. For small A, best
+    # to iterate over pairs of elements of A. For large A, best to
+    # iterate over G.E
+    a = length(A)
+
+    if a<2
+        return H
+    end
+
+    for x in A
+        for y in A
+            if x!=y && has(G,x,y)
+                add!(H,x,y)
+            end
+        end
+    end
+    return H
+end
+
+
+
 
 # Create the line graph of a given graph
 """
