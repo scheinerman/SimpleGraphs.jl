@@ -149,9 +149,12 @@ function dist(G::AbstractSimpleGraph,u,v)
     if !has(G,u) || !has(G,v)
         error("One or both of $u and $v are not vertices of this graph")
     end
-    if cache_check(G,:dist)
+    if typeof(G) <: SimpleGraph && cache_check(G,:dist)
         d = cache_recall(G,:dist)
         return d[u,v]
+    end
+    if u==v
+        return 0
     end
     return length(find_path(G,u,v))-1
 end
