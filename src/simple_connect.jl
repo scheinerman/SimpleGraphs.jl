@@ -89,9 +89,9 @@ function find_path(G::AbstractSimpleGraph,s,t)
         error("Source and/or target vertex is not in this graph")
     end
     if s==t
-        result = Array{T}(undef,1)
-        result[1] = s
-        return result
+        #   result = Array{T}(undef,1)
+        #   result[1] = s
+        return [s]
     end
 
     # set up a queue for vertex exploration
