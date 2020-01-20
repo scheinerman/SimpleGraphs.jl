@@ -2,7 +2,7 @@
 
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
-export Grid, Wheel, Cube, BuckyBall, Johnson
+export Grid, Wheel, Cube, BuckyBall, Johnson, Doyle
 export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton
 
 """
@@ -630,4 +630,30 @@ function Hoffman()
   G = SimpleGraph(A)
   name(G,"Hoffman graph")
   return G
+end
+
+
+
+
+"""
+`Doyle()` creates the Doyle/Holt graph.
+See article on [Mathworld](http://mathworld.wolfram.com/DoyleGraph.html)
+"""
+function Doyle()
+    T = Tuple{Int,Int}
+    G = SimpleGraph{T}()
+    for a=0:8
+        for b=0:2
+            v = (a,b)
+            aa = mod(4a+1,9)
+            bb = mod(b-1,3)
+            w = (aa,bb)
+            add!(G,v,w)
+            aa = mod(4a-1,9)
+            w = (aa,bb)
+            add!(G,v,w)
+        end
+    end
+    name(G,"Doyle graph")
+    return G
 end
