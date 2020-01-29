@@ -2,7 +2,7 @@ export hamiltonian_cycle
 
 #check if it is safe to add vertex v to the path
 function isSafe(v::T, G::SimpleDigraph{T}, path::Deque{T}) where {T}
-    prev = back(path)
+    prev = last(path)
 
     #check if the added vertex is an out_neighbor of the previous vertex
     Nv = out_neighbors(G, prev)
@@ -25,8 +25,8 @@ function hamCycle(G::SimpleDigraph{T}, path::Deque{T}) where {T}
     #if all vertices are included in the cycle
     if length(path) == NV(G)
         #check if last vertex is connected to first vertex in path
-        Nv = out_neighbors(G, back(path))
-        if in(front(path), Nv)
+        Nv = out_neighbors(G, last(path))
+        if in(first(path), Nv)
             return true
         else
             return false
