@@ -142,7 +142,8 @@ function for creating a Torus Graph
 """
 function TorusDigraph(n::Int=4, m::Int=3)
 
-  G = SimpleDigraph();
+  T = Tuple{Int,Int}
+  G = SimpleDigraph{T}();
 
   #create vertices
   vlist = Tuple{Int,Int}[]
