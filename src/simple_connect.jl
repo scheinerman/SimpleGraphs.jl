@@ -1,6 +1,6 @@
 # Various functions regarding graph connectivity
 
-export components, num_components, is_connected, spanning_forest
+export components, num_components, is_connected, spanning_forest, random_spanning_forest
 export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
 export eccentricity, radius, graph_center
 
@@ -78,6 +78,53 @@ function spanning_forest(G::SimpleGraph{T}) where {T}
     cache_save(G,:spanning_forest,H)
     return H
 end
+
+
+"""
+`random_spanning_forest(G)` returns a random spanning forest of the graph `G`.
+Each component of the result spans a component of `G`.
+
+This differs from `spanning_forest` in that repeated invocations of this function
+can return different results.
+"""
+function random_spanning_forest(G::SimpleGraph)
+    VT = vertex_type(G)
+    ET = Tuple{VT,VT}
+
+    T = SimpleGraph{VT}()  # output
+
+    VV = vlist(G)
+    EE = elist(G)
+
+    for v in VV
+        add!(T,v)
+    end
+
+    wt = Dict{ET,Float64}()
+    for e in EE
+        wt[e] = rand()
+    end
+
+    wt_list = [ wt[e] for e in EE ]
+    p = sortperm(wt_list)
+    E_list = [ EE[j] for j in p ]
+
+    P = Partition(G.V)
+
+    for e in E_list
+        a,b = e
+        if !in_same_part(P,a,b)
+            add!(T,a,b)
+            merge_parts!(P,a,b)
+        end
+    end
+    return T
+end
+
+
+
+
+
 
 """
 `find_path(G,s,t)` finds a shortest path from `s` to `t`. If no
