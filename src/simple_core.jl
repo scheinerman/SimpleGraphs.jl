@@ -132,7 +132,7 @@ function IntGraph(n::Int)
     return G
 end
 
-function IntGraph(A::Matrix)
+function IntGraph(A::AbstractMatrix)
   r,c = size(A)
   @assert r==c "Matrix must be square"
   @assert A==A' "Matrix must be symmetric"
@@ -153,7 +153,7 @@ end
 `1:n` where `A` is an `n`-by-`n` symmetric matrix specifying the graph's
 adjacency matrix.
 """
-SimpleGraph(A::Matrix) = IntGraph(A)
+SimpleGraph(A::AbstractMatrix) = IntGraph(A)
 
 
 """

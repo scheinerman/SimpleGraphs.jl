@@ -27,6 +27,8 @@ using SimpleGraphs
     A = adjacency(G)
     H = SimpleGraph(A)
     @test G==H
+    H = SimpleGraph(convert(BitMatrix,A))
+    @test G==H
 
     @test get_edge(G,1,2) == get_edge(G,2,1)
 
