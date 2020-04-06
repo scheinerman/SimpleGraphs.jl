@@ -1,0 +1,30 @@
+name = "SimpleGraphs"
+uuid = "55797a34-41de-5266-9ec1-32ac4eb504d3"
+
+[deps]
+AbstractLattices = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+LightXML = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+Primes = "27ebfcd6-29c5-5fa9-bf4b-fb8fc14df3ae"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SimplePartitions = "ec83eff0-a5b5-5643-ae32-5cbf6eedec9d"
+SimpleRandom = "a6525b86-64cd-54fa-8f65-62fc48bdc0e8"
+SimpleTools = "4696fa5f-36f0-5b18-99a6-fef83351280f"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+[compat]
+julia = "≥ 0.7.0"
+
+[extras]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Pkg", "LinearAlgebra", "SparseArrays", "Test"]
