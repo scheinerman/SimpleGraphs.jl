@@ -1,5 +1,6 @@
 name = "SimpleGraphs"
 uuid = "55797a34-41de-5266-9ec1-32ac4eb504d3"
+version = "0.4.0"
 
 [deps]
 AbstractLattices = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
@@ -18,7 +19,17 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
-julia = "≥ 0.7.0"
+julia = "1"
+AbstractLattices = "0"
+DataStructures = "0"
+IterTools = "1"
+LightXML = "0"
+Optim = "0"
+Polynomials = "1"
+Primes = "0"
+SimplePartitions = "0"
+SimpleRandom = "0"
+SimpleTools = "0"
 
 [extras]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"

@@ -88,7 +88,7 @@ function interlace(G::SimpleGraph, saver::Bool=true)
         return cache_recall(G,:interlace)
     end
     if NE(G)==0
-        return Poly([0,1])^NV(G)
+        return Polynomial([0,1])^NV(G)
     end
 
     if is_connected(G)
@@ -115,7 +115,7 @@ function interlace(G::SimpleGraph, saver::Bool=true)
 
     # if not connected, break into components and use multiplicativity
     comps = parts(components(G))
-    p = Poly([1])
+    p = Polynomial([1])
     for S in comps
         H = induce(G,S)
         pH = interlace(H,false)

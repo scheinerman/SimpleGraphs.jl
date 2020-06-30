@@ -10,14 +10,14 @@ function indep_poly(G::SimpleGraph, cache_flag::Bool=true)
     end
 
     if NV(G)==0
-        p =  Poly([1])
+        p =  Polynomial([1])
         if cache_flag
             cache_save(G,:indep_poly,p)
         end
         return p
     end
     if NE(G)==0
-        p = Poly([1,1])^NV(G)
+        p = Polynomial([1,1])^NV(G)
         if cache_flag
             cache_save(G,:indep_poly,p)
         end
@@ -36,7 +36,7 @@ function indep_poly(G::SimpleGraph, cache_flag::Bool=true)
         end
         p2 = indep_poly(G1,false)
 
-        p = p1 + Poly([0,1])*p2
+        p = p1 + Polynomial([0,1])*p2
         if cache_flag
             cache_save(G,:indep_poly,p)
         end
@@ -44,7 +44,7 @@ function indep_poly(G::SimpleGraph, cache_flag::Bool=true)
     end
 
     comps = parts(components(G))
-    p = Poly([1])
+    p = Polynomial([1])
     for S in comps
         H = induce(G,S)
         pH = indep_poly(H,false)
