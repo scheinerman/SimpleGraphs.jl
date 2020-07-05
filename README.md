@@ -36,7 +36,8 @@ Please see the [Wiki](https://github.com/scheinerman/SimpleGraphs.jl/wiki) for
 extensive information pertaining to the `SimpleGraph` type.
 
 The `SimpleDigraph` type is not so well developed nor documented. See the
-source files in the `src` directory.
+source files in the `src` directory. Likewise, the `SimpleHypergraph` 
+type is in early stages of development.
 
 ## Thanks
 
