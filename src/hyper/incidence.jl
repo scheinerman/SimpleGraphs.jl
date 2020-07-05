@@ -27,3 +27,23 @@ function incidence(H::SimpleHypergraph)
     end
     return M
 end
+
+
+
+# conversely, convert a matrix into a hypergraph
+"""
+`SimpleHypergraph(A)` where `A` is an `n`-by-`m` matrix creates a
+hypergraph with `n` vertices and `m` edges determined by the nonzero entries
+in the columns of `A`. This is a sort of inverse operation to `incidence`.
+"""
+function SimpleHypergraph(A::AbstractArray{T,2})::SimpleHypergraph{Int} where T<:Number
+    n,m = size(A)
+    H = IntHypergraph(n)
+
+    for j=1:m
+        a = A[:,j]
+        e = Set( findall(a .!= 0) )
+        add!(H,e)
+    end
+    return H
+end

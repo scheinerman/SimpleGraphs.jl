@@ -304,4 +304,11 @@ end
     @test is_uniform(H)
     @test G.V == H.V
     @test NE(H) == NE(G)
+
+    A = rand(6,10) .> 0.5
+    H = SimpleHypergraph(A)
+    B = Float64.(A)
+    K = SimpleHypergraph(B)
+    @test H==K
+
 end

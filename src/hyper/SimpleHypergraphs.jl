@@ -35,6 +35,9 @@ type `String`.
 """
 StringHypergraph = SimpleHypergraph{String}()
 
+
+(==)(H::SimpleHypergraph, K::SimpleHypergraph) = H.V==K.V && H.E==K.E
+
 include("add-delete.jl")
 include("query.jl")
 include("graph.jl")
