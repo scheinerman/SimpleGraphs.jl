@@ -47,7 +47,8 @@ include("d_simple_matrices.jl")
 include("d_dist.jl")
 include("d_euler.jl")
 include("d_ham.jl")
-
 include("embedding/GraphEmbeddings.jl")
+
+include("hyper/SimpleHypergraphs.jl")
 
 end # module SimpleGraphs

@@ -19,6 +19,8 @@ This module defines two data types for working with graphs:
   may be at most one directed edge `(u,v)` from a vertex `u` to a
   vertex `v`. There may also be a directed edge in the opposite
   direction, `(v,u)`.
++ The `SimpleHypergraph` type representing *hypergraphs* in which 
+  edges may be any subset of the vertex set.
 
 
 Additional functionality can be found in these modules:
