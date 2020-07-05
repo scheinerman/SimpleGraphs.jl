@@ -31,6 +31,9 @@ function SimpleGraph(H::SimpleHypergraph{T})::SimpleGraph{T} where T
 end
 
 """
+`SimpleHypergraph{T}()` creates a new hypergraph in which vertices have
+type `T`. **Warning**: Do not use `T=Any`.
+
 `SimpleHypergraph(G::SimpleGraph)` converts a graph to
 the equivalent two-uniform hypergraph.
 """
