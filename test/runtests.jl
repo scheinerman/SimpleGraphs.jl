@@ -311,4 +311,7 @@ end
     K = SimpleHypergraph(B)
     @test H==K
 
+    H = CompleteHypergraph(6,3)
+    @test NE(H) == 20
+
 end
