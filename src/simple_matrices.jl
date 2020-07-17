@@ -1,6 +1,6 @@
 # Functions to create standard graph matrices
 
-import SimpleTools.char_poly
+import LinearAlgebraX: char_poly
 export adjacency, laplace, incidence, dist_matrix, eigvals, char_poly
 using SparseArrays
 # Adjaceny Matrix

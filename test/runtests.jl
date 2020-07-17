@@ -2,11 +2,11 @@ using Test
 using LinearAlgebra
 using SparseArrays
 using SimplePartitions
-using Polynomials
-using Pkg
-Pkg.add(PackageSpec(name = "SimpleTools", rev = "master"))
-Pkg.resolve()
-using SimpleTools
+using SimplePolynomials # Polynomials
+# using Pkg
+# Pkg.add(PackageSpec(name = "SimpleTools", rev = "master"))
+# Pkg.resolve()
+# using SimpleTools
 using SimpleGraphs
 
 @testset "Core" begin
@@ -198,7 +198,7 @@ end
 @testset "Polynomials" begin
     G = Complete(3, 4)
     p = indep_poly(G)
-    @test degree(p) == 4
+    @test coeffs(p) == [1;  7;  9;  5;  1]
 
     p = matching_poly(G)
     @test coeffs(p) == [0, -24, 0, 36, 0, -12, 0, 1]

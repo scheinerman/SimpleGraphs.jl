@@ -5,12 +5,13 @@ module SimpleGraphs
 using DataStructures
 using SimpleRandom
 using Primes # needed for Paley graphs
-using Polynomials
 using LinearAlgebra
 using Statistics
 using IterTools
 using Random
 using AbstractLattices
+using SimplePolynomials
+using LinearAlgebraX
 
 
 

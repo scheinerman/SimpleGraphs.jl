@@ -9,7 +9,9 @@ function matching_poly(G::SimpleGraph, cache_flag::Bool=true)
         return cache_recall(G,:matching_poly)
     end
     if NE(G)==0
-        p = Polynomial([0,1])^NV(G)
+        x = getx()
+        p = x^NV(G)
+        # p = Polynomial([0,1])^NV(G)
         if cache_flag
             SimpleGraphs.cache_save(G,:matching_poly,p)
         end
@@ -36,7 +38,7 @@ function matching_poly(G::SimpleGraph, cache_flag::Bool=true)
     end
 
     comps = parts(components(G))
-    p = Polynomial([1])
+    p = SimplePolynomial(1)
     for S in comps
         H = induce(G,S)
         pH = matching_poly(H,false)

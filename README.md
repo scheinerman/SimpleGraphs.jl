@@ -8,10 +8,19 @@
 
 [![codecov.io](http://codecov.io/github/scheinerman/SimpleGraphs.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/SimpleGraphs.jl?branch=master)
 
+---
+
+## New version release notes
+
+As of version 0.5.0 the polynomials returned by functions such as
+`char_poly` are of type `SimplePolynomial`.
+
+---
 
 
 
-This module defines two data types for working with graphs:
+
+This module defines three data types for working with graphs:
 
 + The `SimpleGraph` type represents *undirected* graphs without loops
   or multiple edges.
@@ -19,7 +28,7 @@ This module defines two data types for working with graphs:
   may be at most one directed edge `(u,v)` from a vertex `u` to a
   vertex `v`. There may also be a directed edge in the opposite
   direction, `(v,u)`.
-+ The `SimpleHypergraph` type representing *hypergraphs* in which 
++ The `SimpleHypergraph` type representing *hypergraphs* in which
   edges may be any subset of the vertex set.
 
 
@@ -36,7 +45,7 @@ Please see the [Wiki](https://github.com/scheinerman/SimpleGraphs.jl/wiki) for
 extensive information pertaining to the `SimpleGraph` type.
 
 The `SimpleDigraph` type is not so well developed nor documented. See the
-source files in the `src` directory. Likewise, the `SimpleHypergraph` 
+source files in the `src` directory. Likewise, the `SimpleHypergraph`
 type is in early stages of development.
 
 ## Thanks
