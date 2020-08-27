@@ -275,6 +275,11 @@ end
 
 # Convert a directed graph into a simple undirected graph by removing
 # directions (and loops)
+
+"""
+`simplify(G::SimpleDigraph)` converts a directed graph into a `SimpleGraph`
+by removing directions and loops.
+"""
 function simplify(D::SimpleDigraph{T}) where {T}
     G = SimpleGraph{T}()
     for v in D.V
