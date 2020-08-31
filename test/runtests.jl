@@ -276,7 +276,7 @@ end
     add!(H, [1, 2, 3])
     add!(H, [3, 4])
 
-    @test vertex_type(H) == Int
+    @test eltype(H) == Int
 
     @test sort(vlist(H)) == [1, 2, 3, 4]
     @test length(elist(H)) == 2

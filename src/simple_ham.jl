@@ -9,7 +9,7 @@ function hamiltonian_cycle(G::SimpleGraph)
     if cache_check(G,:hamiltonian_cycle)
       return cache_recall(G,:hamiltonian_cycle)
     end
-    T = vertex_type(G)
+    T = eltype(G)
 
     # rule out some simple non-Hamiltonian graphs
     if NV(G) < 3 || minimum(deg(G)) < 2 || !is_connected(G)

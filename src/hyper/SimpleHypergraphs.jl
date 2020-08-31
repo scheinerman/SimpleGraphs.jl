@@ -5,6 +5,9 @@ struct SimpleHypergraph{T}
     E::Set{Set{T}}              # edge set
     VE::Dict{T, Set{Set{T}}}    # VE[v] is the set of edges containing v
     function SimpleHypergraph{T}() where T
+        if T==Any 
+            error("Do not create hypergraphs with vertex type Any")
+        end 
         VV = Set{T}()
         EE = Set{Set{T}}()
         VVEE = Dict{T, Set{Set{T}}}()

@@ -43,7 +43,7 @@ mutable struct GraphEmbedding
     end
 
     function GraphEmbedding(GG::SimpleGraph,d::Dict)
-        T = vertex_type(GG)
+        T = eltype(GG)
         dd = Dict{T,Vector{Float64}}()
 
         try
@@ -398,7 +398,7 @@ function spring!(X::GraphEmbedding, nits::Int=100)
 
     x,y = layout_spring_adj(A,MAXITER=nits)
 
-    d = Dict{vertex_type(X.G), Vector{Float64}}()
+    d = Dict{eltype(X.G), Vector{Float64}}()
     for i = 1:n
         v = vv[i]
         d[v] = [x[i], y[i]]
@@ -425,7 +425,7 @@ function stress!(X::GraphEmbedding)
 
     xy = my_layout_stressmajorize_adj(A,2,nothing,currentxy)
 
-    d = Dict{vertex_type(X.G), Vector{Float64}}()
+    d = Dict{eltype(X.G), Vector{Float64}}()
     for i = 1:n
         v = vv[i]
         d[v] = collect(xy[i,:])

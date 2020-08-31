@@ -12,7 +12,7 @@ function transitive_orientation(G::SimpleGraph)
   err_msg = "This graph does not have a transitive orientation"
   vertices = deepcopy(vlist(G))
   edges = deepcopy(elist(G))
-  V = vertex_type(G)
+  V = eltype(G)
   diredges = Tuple{V,V}[]
   D = SimpleDigraph{V}()
   while length(diredges) != 0 || length(edges) != 0
@@ -67,7 +67,7 @@ function num_trans_orientations(G2::SimpleGraph)
     return cache_recall(G2,:num_trans_orientations)
   end
   G = deepcopy(G2)
-  V = vertex_type(G)
+  V = eltype(G)
   col = Dict{Tuple{V,V}, Int}()
   try
     col = makeColorClass(G)
@@ -91,7 +91,7 @@ function makeSimplex!(G::SimpleGraph, multiplexes::Array, col::Dict)
   vert1 = edge[1]
   vert2 = edge[2]
   colorSet = Set()
-  T = vertex_type(G)
+  T = eltype(G)
   simp = Set{T}()
   push!(simp, vert1)
   push!(simp, vert2)
@@ -129,7 +129,7 @@ function makeColorClass(G1::SimpleGraph)
   G = deepcopy(G1)
   vertices = deepcopy(vlist(G))
   edge = deepcopy(elist(G))
-  V = vertex_type(G)
+  V = eltype(G)
   diredge = Tuple{V,V}[]
   D = SimpleDigraph{V}()
   E = SimpleGraph{V}()

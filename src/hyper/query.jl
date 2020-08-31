@@ -56,12 +56,7 @@ function deg(H::SimpleHypergraph{T}, v::T)::Int where T
     return length(H[v])
 end
 
-
-"""
-`vertex_type(H::SimpleHypergraph)` returns the datatype
-of the vertices.
-"""
-function vertex_type(H::SimpleHypergraph{T}) where T
+function eltype(H::SimpleHypergraph{T}) where T
     return T
 end
 

@@ -50,7 +50,7 @@ Dict{Int64,String} with 3 entries:
 """
 
 function convert_simple(G::AbstractSimpleGraph)
-    T = vertex_type(G)
+    T = eltype(G)
     n = NV(G)
     has_dir = isa(G,SimpleDigraph)
 

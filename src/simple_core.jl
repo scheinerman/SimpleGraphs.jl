@@ -1,9 +1,9 @@
-import Base.show, Base.==, Base.adjoint, Base.*
+import Base.show, Base.==, Base.adjoint, Base.*, Base.eltype
 import Base.getindex
 import LightXML.name
 
 export SimpleGraph, IntGraph, StringGraph
-export show, NV, NE, has, vertex_type, fastN!, name, get_edge
+export show, NV, NE, has, typ, fastN!, name, get_edge
 export vlist, elist, neighbors, getindex, deg, deg_hist
 
 """
@@ -42,7 +42,7 @@ function name(G::SimpleGraph)
   if cache_check(G,:name)
     return cache_recall(G,:name)
   end
-  return "SimpleGraph{$(vertex_type(G))}"
+  return "SimpleGraph{$(eltype(G))}"
 end
 
 function name(G::SimpleGraph, the_name::String)
@@ -157,10 +157,14 @@ SimpleGraph(A::AbstractMatrix) = IntGraph(A)
 
 
 """
-`vertex_type(G)` returns the data type of the vertices this graph may hold.
+`eltype(G::SimpleGraph)`, `eltype(G::SimpleDigraph)`, `eltype(G::SimpleHypergraph)`
+
+Returns the data type of the vertices this graph may hold.
 For example, if `G=IntGraph()` then this returns `Int64`.`
 """
-vertex_type(G::SimpleGraph{T}) where {T} = T
+eltype(G::SimpleGraph{T}) where {T} = T
+
+@deprecate vertex_type eltype
 
     # number of vertices and edges
 
@@ -244,7 +248,7 @@ end
 # has been crafted to work with either SimpleGraph or SimpleDigraph
 # arguments.
 function vertex2idx(G::AbstractSimpleGraph)
-    T = vertex_type(G)
+    T = eltype(G)
     d = Dict{T,Int}()
     V = vlist(G)
     n = NV(G)

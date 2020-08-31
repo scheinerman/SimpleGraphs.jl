@@ -34,7 +34,7 @@ function bisect(G::SimpleGraph,
         println("pivot = $pivot")
     end
 
-    T = vertex_type(G)
+    T = eltype(G)
     VV = vlist(G)
     n  = NV(G)
     L  = laplace(G)

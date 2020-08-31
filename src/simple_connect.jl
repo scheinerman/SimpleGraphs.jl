@@ -88,7 +88,7 @@ This differs from `spanning_forest` in that repeated invocations of this functio
 can return different results.
 """
 function random_spanning_forest(G::SimpleGraph)
-    VT = vertex_type(G)
+    VT = eltype(G)
     ET = Tuple{VT,VT}
 
     T = SimpleGraph{VT}()  # output
@@ -131,7 +131,7 @@ end
 such path exists, an empty list is returned.
 """
 function find_path(G::AbstractSimpleGraph,s,t)
-    T = vertex_type(G)
+    T = eltype(G)
     if ~has(G,s) || ~has(G,t)
         error("Source and/or target vertex is not in this graph")
     end
@@ -208,7 +208,7 @@ end
 
 # find all distances from a given vertex
 function dist(G::AbstractSimpleGraph, v)
-    T = vertex_type(G)
+    T = eltype(G)
     d = Dict{T,Int}()
     if !has(G,v)
         error("Given vertex is not in this graph")
@@ -245,7 +245,7 @@ function dist(G::AbstractSimpleGraph)
       return cache_recall(G,:dist)
     end
 
-    T = vertex_type(G)
+    T = eltype(G)
     dd = Dict{Tuple{T,T},Int}()
     vtcs = vlist(G)
 

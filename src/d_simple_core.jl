@@ -29,7 +29,7 @@ IntDigraph() = SimpleDigraph{Int}()
 
 
 function show(io::IO, G::SimpleDigraph)
-    print(io,"SimpleDigraph{$(vertex_type(G))} (n=$(NV(G)), m=$(NE(G)))")
+    print(io,"SimpleDigraph{$(eltype(G))} (n=$(NV(G)), m=$(NE(G)))")
 end
 
 
@@ -39,7 +39,7 @@ end
 """
 StringDigraph() = SimpleDigraph{String}()
 
-vertex_type(G::SimpleDigraph{T}) where {T} = T
+eltype(G::SimpleDigraph{T}) where {T} = T
 
 """
 `IntDigraph()` creates a new directed graph with vertices of type
