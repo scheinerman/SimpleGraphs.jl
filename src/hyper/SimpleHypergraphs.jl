@@ -41,6 +41,35 @@ StringHypergraph = SimpleHypergraph{String}()
 
 (==)(H::SimpleHypergraph, K::SimpleHypergraph) = H.V==K.V && H.E==K.E
 
+"""
+`simplify(H::SimpleHypergraph)` converts a hypergraph into a simple graph, `G`.
+The vertices of `G` are the same as those in `H`. Two vertices of `G` are adjacent
+iff they lie in a common edge of `H`.
+"""
+function simplify(H::SimpleHypergraph{T}) where T 
+    G = SimpleGraph{T}()
+
+    # copy the vertices into G 
+    for v in H.V 
+        add!(G,v)
+    end
+
+    # for each edge, make a clique 
+    for e in H.E 
+        ee = collect(e)
+        k = length(ee)
+        for i=1:k-1
+            v = ee[i]
+            for j=i+1:k 
+                w = ee[j]
+                add!(G,v,w)
+            end 
+        end
+    end
+
+    return G 
+end
+
 include("add-delete.jl")
 include("query.jl")
 include("graph.jl")

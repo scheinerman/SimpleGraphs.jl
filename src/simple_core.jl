@@ -384,3 +384,5 @@ import Base.hash
 function hash(G::SimpleGraph, h::UInt64 = UInt64(0))
     return hash(G.V,h) + hash(G.E,h)
 end
+
+simplify(G::SimpleGraph) = deepcopy(G)
