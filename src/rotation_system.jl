@@ -1,4 +1,4 @@
-export rand_rot, default_rot, set_rot, get_rot, check_rot, faces, euler_char
+export rand_rot, set_rot, get_rot, check_rot, faces, euler_char
 
 
 """
@@ -11,14 +11,14 @@ function rand_rot(G::SimpleGraph{T}) where T
         a = shuffle(RingList(G[v]))
         d[v] = a 
     end
-    return d
+    set_rot(G,d)
 end 
 
 """
-`default_rot(G::SimpleGraph)` creates a default 
+`_default_rot(G::SimpleGraph)` creates a default 
 rotation system for the graph.
 """
-function default_rot(G::SimpleGraph{T}) where T 
+function _default_rot(G::SimpleGraph{T}) where T 
     d = Dict{T,RingList{T}}()
     for v in G.V 
         d[v] = RingList(G[v])
@@ -30,7 +30,7 @@ end
 `set_rot(G::SimpleGraph,d)` makes `d` the rotation system 
 for this graph (held in the graph's cache).
 
-If `d` is omitted, the result of `default_rot(G)` is used.
+If `d` is omitted, the a default rotation is used.
 """
 function set_rot(G::SimpleGraph,d)
     if !check_rot(G,d)
@@ -39,7 +39,7 @@ function set_rot(G::SimpleGraph,d)
     cache_save(G,:RotationSystem,d)
     nothing 
 end 
-set_rot(G::SimpleGraph) = set_rot(G, default_rot(G))
+set_rot(G::SimpleGraph) = set_rot(G, _default_rot(G))
 
 
 """
