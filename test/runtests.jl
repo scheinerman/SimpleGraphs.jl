@@ -315,3 +315,12 @@ end
     @test NE(H) == 20
 
 end
+
+
+@testset "Rotation Systems" begin
+    G = Grid(3,3)
+    @test euler_char(G) == 2
+    G = Cycle(5)
+    set_rot(G)
+    @test euler_char(G) == 2
+end

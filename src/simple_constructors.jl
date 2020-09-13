@@ -184,8 +184,68 @@ function Grid(n::Int, m::Int)
     recenter(G)
 
     name(G,"Grid graph of size $n-by-$m")
+    set_rot(G,grid_rot(n,m))
     return G
 end
+
+"""
+`grid_rot(r,c)` creates a rotation system for the graph `Grid(r,c)`
+corresponding to a planar embedding. 
+
+Example
+=======
+```
+julia> G = Grid(4,6);
+
+julia> d = grid_rot(4,6);
+
+julia> set_rot(G,d);
+
+julia> euler_char(G)
+2
+```
+"""
+function grid_rot(r::Int, c::Int)  # uncertain if I should expose this
+
+    T = Tuple{Int,Int}
+    d = Dict{T, RingList{T}}()
+
+    if r==1 || c==1
+        return default_rot(Grid(r,c))
+    end
+    
+    # corners
+    d[(1,1)] = RingList( (1,2), (2,1) )
+    d[(1,c)] = RingList( (1,c-1), (2,c) )
+    d[(r,1)] = RingList( (r-1,1), (r,2) )
+    d[(r,c)] = RingList( (r,c-1), (r-1,c) )
+
+    # left/right columns
+    for a=2:r-1
+        d[(a,1)] = RingList( (a,2), (a-1,1), (a+1,1) )
+        d[(a,c)] = RingList( (a-1,c), (a,c-1), (a+1,c) )
+    end
+
+    # top/bottom rows
+    for b=2:c-1
+        d[(1,b)] = RingList( (1,b-1), (2,b), (1,b+1)  )
+        d[(r,b)] = RingList( (r,b+1), (r-1,b), (r,b-1) )
+    end
+
+    # interior
+
+    for a=2:r-1
+        for b=2:c-1
+            d[(a,b)] = RingList( (a,b+1), (a-1,b), (a,b-1), (a+1,b))
+        end
+    end
+
+    return d
+end
+
+
+
+
 
 # Create an Erdos-Renyi random graph
 """

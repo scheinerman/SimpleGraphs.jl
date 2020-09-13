@@ -1,6 +1,6 @@
 name = "SimpleGraphs"
 uuid = "55797a34-41de-5266-9ec1-32ac4eb504d3"
-version = "0.5.3"
+version = "0.6.0"
 
 [deps]
 AbstractLattices = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
@@ -18,6 +18,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
 SimplePolynomials = "cc47b68c-3164-5771-a705-2bc0097375a0"
 LinearAlgebraX = "9b3f67b0-2d00-526e-9884-9e4938f8fb88"
+RingLists = "286e9d63-9694-5540-9e3c-4e6708fa07b2"
 
 [compat]
 julia = "1"
@@ -32,6 +33,7 @@ SimpleRandom = "0"
 Combinatorics = "1"
 SimplePolynomials = "0"
 LinearAlgebraX = "0"
+RingLists = "0"
 
 [extras]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"

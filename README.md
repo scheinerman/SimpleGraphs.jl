@@ -12,11 +12,11 @@
 
 ## New version release notes
 
-As of version 0.5.0 the polynomials returned by functions such as
++ As of version 0.5.0 the polynomials returned by functions such as
 `char_poly` are of type `SimplePolynomial`.
-
-As of version 0.5.2 the function `vertex_type` is deprecated. Use 
++ As of version 0.5.2 the function `vertex_type` is deprecated. Use 
 `eltype` instead. 
++ Version 0.6.0 introduces *rotation systems* which are combinatorial representations of embeddings on oriented surfaces.
 
 ---
 

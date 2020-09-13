@@ -12,6 +12,7 @@ using Random
 using AbstractLattices
 using SimplePolynomials
 using LinearAlgebraX
+using RingLists
 
 
 
@@ -44,6 +45,7 @@ include("interlace.jl")
 include("matching_poly.jl")
 include("indep_poly.jl")
 include("twins.jl")
+include("rotation_system.jl")
 
 include("d_simple_constructors.jl")
 include("d_simple_matrices.jl")
