@@ -46,9 +46,8 @@ set_rot(G::SimpleGraph) = set_rot(G, default_rot(G))
 `get_rot(G::SimpleGraph,v)` returns a `RingList` of the neighbors of `v`.
 This assumes that `G` has an associate rotation system.
 
-`get_rot(G::SimpleGraph)` returns the rotation system associated with `G`
-(or an error if there is no rotation system). This is *not* a copy but 
-direct access, so be careful!
+`get_rot(G::SimpleGraph)` returns  a copy of the rotation system associated with `G`
+(or an error if there is no rotation system). 
 """
 function get_rot(G::SimpleGraph, v)
     if !has(G,v)
@@ -59,7 +58,8 @@ function get_rot(G::SimpleGraph, v)
 end 
 function get_rot(G::SimpleGraph)
     if cache_check(G,:RotationSystem)
-        return G.cache[:RotationSystem]
+        return cache_recall(G,:RotationSystem)
+        # return G.cache[:RotationSystem]
     end
     error("This graph does not have a rotation system")
 end 
