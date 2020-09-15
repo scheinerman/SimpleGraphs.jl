@@ -16,6 +16,8 @@ function tutte(G::SimpleGraph{T}, outside::Vector{T}) where T
     n = NV(G)
     VV = vlist(G)
 
+    outside = unique(outside)  # remove dups
+
     lookup(v) = findfirst([v == w for w in VV])
 
     A = zeros(n,n)

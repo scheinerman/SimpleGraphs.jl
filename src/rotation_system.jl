@@ -1,4 +1,5 @@
 export rand_rot, set_rot, get_rot, check_rot, faces, euler_char
+export embed_rot, NF
 
 
 """
@@ -63,6 +64,28 @@ function get_rot(G::SimpleGraph)
     end
     error("This graph does not have a rotation system")
 end 
+
+
+
+"""
+`embed_rot(G::SimpleGraph)` assigns a rotation system to `G`
+corresponding to its current `xy` embedding.
+"""
+function embed_rot(G::SimpleGraph{T}) where T 
+    xy = getxy(G)
+    d = Dict{T,RingList{T}}()
+    for v in G.V 
+        o = Complex(xy[v]...)    # location of v as a complex number
+        Nv = G[v]  # neighbors of v as a list 
+
+        Z = [ Complex(xy[w]...) for w in Nv ]  # neighbor locations as complex nums
+        th = [ mod(angle(o-z),2pi) for z in Z ]  # angles of edges from v 
+        p = sortperm(th)
+        d[v] = RingList( Nv[p] )
+    end 
+    set_rot(G,d)
+end
+
 
 """
 `check_rot(G::SimpleGraph,d::Dict)`  checks if `d` is a valid 
@@ -138,6 +161,12 @@ function faces(G::SimpleGraph{T}) where T
 
     return result
 end
+
+"""
+`NF(G)` returns the number of faces in the graph `G`
+given its current rotation system.
+"""
+NF(G::SimpleGraph) = length(faces(G))
 
 """
 `euler_char(G::SimpleGraph)` computes the Euler characteristic 
