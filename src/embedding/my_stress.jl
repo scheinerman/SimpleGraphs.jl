@@ -54,19 +54,27 @@ Reference:
         pages={239--250},
     }
 """
-function my_layout_stressmajorize_adj(δ, p::Int=2, w=nothing, X0=randn(size(δ, 1), p);
-        maxiter = 400size(X0, 1)^2, abstols=√(eps(eltype(X0))),
-        reltols=√(eps(eltype(X0))), abstolx=√(eps(eltype(X0))),
-        verbose = false, returnall = false)
+function my_layout_stressmajorize_adj(
+    δ,
+    p::Int = 2,
+    w = nothing,
+    X0 = randn(size(δ, 1), p);
+    maxiter = 400size(X0, 1)^2,
+    abstols = √(eps(eltype(X0))),
+    reltols = √(eps(eltype(X0))),
+    abstolx = √(eps(eltype(X0))),
+    verbose = false,
+    returnall = false,
+)
 
-    @assert size(X0, 2)==p
+    @assert size(X0, 2) == p
 
-    if w==nothing
-        w = δ.^-2
+    if w == nothing
+        w = δ .^ -2
         w[.!isfinite.(w)] .= 0
     end
 
-    @assert size(X0, 1)==size(δ, 1)==size(δ, 2)==size(w, 1)==size(w, 2)
+    @assert size(X0, 1) == size(δ, 1) == size(δ, 2) == size(w, 1) == size(w, 2)
     Lw = weightedlaplacian(w)
     pinvLw = pinv(Lw)
     newstress = stress(X0, δ, w)
@@ -76,7 +84,7 @@ function my_layout_stressmajorize_adj(δ, p::Int=2, w=nothing, X0=randn(size(δ,
     for iter = 1:maxiter
         itcounter = iter
         #TODO the faster way is to drop the first row and col from the iteration
-        X = pinvLw * (LZ(X0, δ, w)*X0)
+        X = pinvLw * (LZ(X0, δ, w) * X0)
         @assert all(isfinite.(X))
         newstress, oldstress = stress(X, δ, w), newstress
         verbose && info("""Iteration $iter
@@ -104,23 +112,23 @@ Input:
 
 See (1) of Reference
 """
-function stress(X, d=fill(1.0, size(X, 1), size(X, 1)), w=nothing)
+function stress(X, d = fill(1.0, size(X, 1), size(X, 1)), w = nothing)
     s = 0.0
     n = size(X, 1)
-    if w==nothing
-        w = d.^-2
+    if w == nothing
+        w = d .^ -2
         w[.!isfinite.(w)] = 0
     end
-    @assert n==size(d, 1)==size(d, 2)==size(w, 1)==size(w, 2)
-    for j=1:n, i=1:j-1
-        s += w[i, j] * (norm(X[i,:] - X[j,:]) - d[i,j])^2
+    @assert n == size(d, 1) == size(d, 2) == size(w, 1) == size(w, 2)
+    for j = 1:n, i = 1:j-1
+        s += w[i, j] * (norm(X[i, :] - X[j, :]) - d[i, j])^2
     end
     @assert isfinite.(s)
     s
 end
 
 function _checksquare(M::Matrix)
-    r,c = size(M)
+    r, c = size(M)
     return r
 end
 """
@@ -132,14 +140,14 @@ function weightedlaplacian(w)
     n = _checksquare(w)
     T = eltype(w)
     Lw = zeros(T, n, n)
-    for i=1:n
+    for i = 1:n
         D = zero(T)
-        for j=1:n
-            i==j && continue
+        for j = 1:n
+            i == j && continue
             Lw[i, j] = -w[i, j]
             D += w[i, j]
         end
-        Lw[i, i]=D
+        Lw[i, i] = D
     end
     Lw
 end
@@ -154,15 +162,15 @@ Input: Z: current layout (coordinates)
 function LZ(Z, d, w)
     n = size(Z, 1)
     L = zeros(n, n)
-    for i=1:n
+    for i = 1:n
         D = 0.0
-        for j=1:n
-            i==j && continue
-            nrmz = norm(Z[i,:] - Z[j,:])
-            nrmz==0 && continue
+        for j = 1:n
+            i == j && continue
+            nrmz = norm(Z[i, :] - Z[j, :])
+            nrmz == 0 && continue
             δ = w[i, j] * d[i, j]
-            L[i, j] = -δ/nrmz
-            D -= -δ/nrmz
+            L[i, j] = -δ / nrmz
+            D -= -δ / nrmz
         end
         L[i, i] = D
     end

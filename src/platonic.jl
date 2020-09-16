@@ -12,7 +12,7 @@ end
 """
 `Tetrahedron()` creates the tetrahedron `SimpleGraph`.
 """
-Tetrahedron() = Complete(4)
+Tetrahedron() = Wheel(4)
 
 """
 `Dodecahedron()` creates the dodecahedron `SimpleGraph`.

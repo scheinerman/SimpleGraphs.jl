@@ -10,7 +10,7 @@ function bounds(X::GraphEmbedding)
     ymax = -Inf
 
     for pt in values(X.xy)
-        x,y = pt[1],pt[2]
+        x, y = pt[1], pt[2]
         if x < xmin
             xmin = x
         end
@@ -35,7 +35,7 @@ end
 function make_scaler(X::GraphEmbedding)
     (xmin, xmax, ymin, ymax) = bounds(X)
 
-    f(x,y) = ( round(Int,72*(x-xmin+0.5)), round(Int,72*(ymax-y+0.5)))
+    f(x, y) = (round(Int, 72 * (x - xmin + 0.5)), round(Int, 72 * (ymax - y + 0.5)))
 
     return f
 end
@@ -43,28 +43,29 @@ end
 
 
 function add_key!(dict_node::XMLElement, key::AbstractString)
-    x = new_child(dict_node,"key")
-    add_text(x,key)
+    x = new_child(dict_node, "key")
+    add_text(x, key)
 end
 
-function add_value!(dict_node::XMLElement,
-                    val_type::AbstractString, val::AbstractString)
-    x = new_child(dict_node,val_type)
-    add_text(x,val)
+function add_value!(dict_node::XMLElement, val_type::AbstractString, val::AbstractString)
+    x = new_child(dict_node, val_type)
+    add_text(x, val)
 end
 
 
-function add_key_value!(dict_node::XMLElement,
-                       key::AbstractString,
-                       val_type::AbstractString,
-                        val::AbstractString)
-    add_key!(dict_node,key)
-    add_value!(dict_node,val_type, val)
+function add_key_value!(
+    dict_node::XMLElement,
+    key::AbstractString,
+    val_type::AbstractString,
+    val::AbstractString,
+)
+    add_key!(dict_node, key)
+    add_value!(dict_node, val_type, val)
 end
 
 function add_dict!(node::XMLElement, key::AbstractString)
     add_key!(node, key)
-    x = new_child(node,"dict")
+    x = new_child(node, "dict")
     return x
 end
 
@@ -79,23 +80,23 @@ an OmniGraffle document of this drawing.
 * `filename` is the name of the OmniGraffle document (be sure to end with `.graffle`)
 * `rad` is the radius of the circles representing the vertices
 """
-function graffle(G::SimpleGraph, filename="julia.graffle", rad::Int=9)
+function graffle(G::SimpleGraph, filename = "julia.graffle", rad::Int = 9)
 
     X = get_embedding_direct(G)
 
     # minimal header
     xdoc = XMLDocument()
 
-    xtop = create_root(xdoc,"plist")
+    xtop = create_root(xdoc, "plist")
     outer = new_child(xtop, "dict")
 
-    add_key_value!(outer,"GraphDocumentVersion", "integer", "12")
-    add_key!(outer,"AutoAdjust")
-    new_child(outer,"true")
+    add_key_value!(outer, "GraphDocumentVersion", "integer", "12")
+    add_key!(outer, "AutoAdjust")
+    new_child(outer, "true")
 
-    add_key!(outer,"GraphicsList")
+    add_key!(outer, "GraphicsList")
 
-    glist = new_child(outer,"array")
+    glist = new_child(outer, "array")
 
     #return xdoc
 
@@ -104,7 +105,7 @@ function graffle(G::SimpleGraph, filename="julia.graffle", rad::Int=9)
     VV = vlist(X.G)
     n = NV(X.G)
 
-    lookup = Dict{Any,Int}(zip(VV,1:n))
+    lookup = Dict{Any,Int}(zip(VV, 1:n))
 
 
 
@@ -112,13 +113,13 @@ function graffle(G::SimpleGraph, filename="julia.graffle", rad::Int=9)
 
     for v in VV
         k = lookup[v]
-        vtx = new_child(glist,"dict")
+        vtx = new_child(glist, "dict")
 
         # Location
         pt = X.xy[v]
-        x,y = f(pt[1],pt[2])
+        x, y = f(pt[1], pt[2])
         location = "{{$x,$y},{$(rad),$(rad)}}"
-        add_key_value!(vtx,"Bounds", "string", location)
+        add_key_value!(vtx, "Bounds", "string", location)
 
         # Class
         add_key_value!(vtx, "Class", "string", "ShapedGraphic")
@@ -133,9 +134,9 @@ function graffle(G::SimpleGraph, filename="julia.graffle", rad::Int=9)
         add_key_value!(vtx, "Shape", "string", "Circle")
 
         # Style
-        a = add_dict!(vtx,"Style")
-        b = add_dict!(a,"shadow")
-        add_key_value!(b,"Draws", "string", "NO")
+        a = add_dict!(vtx, "Style")
+        b = add_dict!(a, "shadow")
+        add_key_value!(b, "Draws", "string", "NO")
     end
 
 
@@ -147,30 +148,30 @@ function graffle(G::SimpleGraph, filename="julia.graffle", rad::Int=9)
         b = lookup[e[2]]
         id += 1
 
-        edge = new_child(glist,"dict")
+        edge = new_child(glist, "dict")
 
         # Class
-        add_key_value!(edge,"Class", "string", "LineGraphic")
+        add_key_value!(edge, "Class", "string", "LineGraphic")
 
         # ID
-        add_key_value!(edge,"ID", "integer", string(id))
+        add_key_value!(edge, "ID", "integer", string(id))
 
         # Layer
         add_key_value!(edge, "Layer", "integer", string(1))
 
         # Head
-        h = add_dict!(edge,"Head")
+        h = add_dict!(edge, "Head")
         add_key_value!(h, "ID", "integer", string(a))
 
         # Tail
-        t = add_dict!(edge,"Tail")
+        t = add_dict!(edge, "Tail")
         add_key_value!(t, "ID", "integer", string(b))
 
 
         # Style
-        a = add_dict!(edge,"Style")
-        b = add_dict!(a,"shadow")
-        add_key_value!(b,"Draws", "string", "NO")
+        a = add_dict!(edge, "Style")
+        b = add_dict!(a, "shadow")
+        add_key_value!(b, "Draws", "string", "NO")
 
 
     end

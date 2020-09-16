@@ -33,26 +33,27 @@ named parameters as follows:
 * `vertex_size`: Use this to specify the radius of the vertices. The
   default is `3`.
 """
-function geogebra(G::SimpleGraph,
-                  file_name::String="geogebra.txt";
-                  vertex_labels::Bool=false,
-                  vertex_color::String="black",
-                  vertex_colors::Dict=Dict(),
-                  vertex_size::Int=3
-                  )
+function geogebra(
+    G::SimpleGraph,
+    file_name::String = "geogebra.txt";
+    vertex_labels::Bool = false,
+    vertex_color::String = "black",
+    vertex_colors::Dict = Dict(),
+    vertex_size::Int = 3,
+)
     X = get_embedding_direct(G)
     VV = vlist(X.G)
     n = NV(X.G)
-    F = open(file_name,"w")
+    F = open(file_name, "w")
 
-    for i=1:n
+    for i = 1:n
         v = VV[i]
         vname = string(v)
-        (x,y) = X.xy[v]
-        x = round(x,3)
-        y = round(y,3)
-        println(F,"v_{$i} = CopyFreeObject[Point[{$x,$y}]]")
-        println(F,"SetPointSize[v_{$i}, $(string(vertex_size))]")
+        (x, y) = X.xy[v]
+        x = round(x, 3)
+        y = round(y, 3)
+        println(F, "v_{$i} = CopyFreeObject[Point[{$x,$y}]]")
+        println(F, "SetPointSize[v_{$i}, $(string(vertex_size))]")
 
         color = ""
         try
@@ -60,20 +61,20 @@ function geogebra(G::SimpleGraph,
         catch
             color = vertex_color
         end
-        println(F,"SetColor[v_{$i}, \"$color\"]")
+        println(F, "SetColor[v_{$i}, \"$color\"]")
 
 
-        println(F,"SetCaption[v_{$i}, \"$vname\"]")
-        println(F,"ShowLabel[v_{$i}, $(string(vertex_labels))]")
+        println(F, "SetCaption[v_{$i}, \"$vname\"]")
+        println(F, "ShowLabel[v_{$i}, $(string(vertex_labels))]")
     end
 
-    for i=1:n-1
+    for i = 1:n-1
         u = VV[i]
-        for j=i+1:n
+        for j = i+1:n
             v = VV[j]
-            if has(X.G,u,v)
-                println(F,"e_{$i,$j} = Segment[v_{$i},v_{$j}]")
-                println(F,"ShowLabel[e_{$i,$j}, false]")
+            if has(X.G, u, v)
+                println(F, "e_{$i,$j} = Segment[v_{$i},v_{$j}]")
+                println(F, "ShowLabel[e_{$i,$j}, false]")
             end
         end
     end

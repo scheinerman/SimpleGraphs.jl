@@ -17,27 +17,28 @@ function Spindle()
         (5, 6),
         (5, 7),
         (6, 7),
-        (4, 7) ]
-    add_edges!(G,edges)
+        (4, 7),
+    ]
+    add_edges!(G, edges)
 
     d = Dict{Int,Vector}()
-    a = sqrt(3)/2
+    a = sqrt(3) / 2
 
-    pts = [ 0 1/2 -1/2 0 ; 0 a a 2a ]
+    pts = [0 1 / 2 -1 / 2 0; 0 a a 2a]
 
-    theta = acos(5/6)/2
-    R = [ cos(theta) -sin(theta); sin(theta) cos(theta) ]
+    theta = acos(5 / 6) / 2
+    R = [cos(theta) -sin(theta); sin(theta) cos(theta)]
 
-    p1 = R*pts
-    for k=1:4
-        d[k] = p1[:,k]
+    p1 = R * pts
+    for k = 1:4
+        d[k] = p1[:, k]
     end
 
-    p2 = R'*pts
-    for k=5:7
-        d[k] = p2[:,k-3]
+    p2 = R' * pts
+    for k = 5:7
+        d[k] = p2[:, k-3]
     end
-    embed(G,d)
-    SimpleGraphs.name(G,"Moser Spindle")
+    embed(G, d)
+    SimpleGraphs.name(G, "Moser Spindle")
     return G
 end
