@@ -11,31 +11,31 @@ if the graph is not bipartite. The output is a `Dict` mapping the
 vertex set to the values 1 and 2.
 """
 function two_color(G::SimpleGraph{T}) where {T}
-    if cache_check(G,:two_color)
-      return cache_recall(G,:two_color)
+    if cache_check(G, :two_color)
+        return cache_recall(G, :two_color)
     end
     f = Dict{T,Int}()
     for A in parts(components(G))
         a = first(A)
         f[a] = 1
         Q = Deque{T}()
-        push!(Q,a)
-        while length(Q)>0
+        push!(Q, a)
+        while length(Q) > 0
             v = pop!(Q)
             Nv = G[v]
             for w in Nv
-                if haskey(f,w)
-                    if f[w]==f[v]
+                if haskey(f, w)
+                    if f[w] == f[v]
                         error("Graph is not bipartite")
                     end
                 else
-                    f[w] = 3-f[v]
-                    push!(Q,w)
+                    f[w] = 3 - f[v]
+                    push!(Q, w)
                 end
             end
         end
     end
-    cache_save(G,:two_color,f)
+    cache_save(G, :two_color, f)
     return f
 end
 
@@ -48,8 +48,8 @@ using SimplePartitions
 error if the graph is not bipartite. Output is a `Partition`.
 """
 function bipartition(G::SimpleGraph{T}) where {T}
-  f = two_color(G)
-  return Partition(f)
+    f = two_color(G)
+    return Partition(f)
 end
 
 # Color a graph by the greedy algorithm in the sequence specified by
@@ -73,19 +73,19 @@ function greedy_color(G::SimpleGraph{T}, seq::Array{T,1}) where {T}
     for v in seq
         colors_used = falses(maxf)  # array if color is used by N[v]
         for w in G[v]
-            if haskey(f,w)  # w already colored
-                colors_used[f[w]]=true  # mark that color is used
+            if haskey(f, w)  # w already colored
+                colors_used[f[w]] = true  # mark that color is used
             end
         end
         # give first unused color to v
-        for k in 1:maxf
+        for k = 1:maxf
             if colors_used[k] == false
                 f[v] = k
                 break
             end
         end
         # but if that fails, extend the number of colors available
-        if !haskey(f,v)
+        if !haskey(f, v)
             maxf += 1
             f[v] = maxf
         end
@@ -99,9 +99,9 @@ end
 # it be?
 function deg_sorted_vlist(G::SimpleGraph)
     bye = x -> -x[1]
-    list = [ (deg(G,v) , v) for v in G.V ]
-    sort!(list, by=bye)
-    outlist = [ item[2] for item in list ]
+    list = [(deg(G, v), v) for v in G.V]
+    sort!(list, by = bye)
+    outlist = [item[2] for item in list]
     return outlist
 end
 
@@ -109,7 +109,7 @@ end
 # order of degree.
 function greedy_color(G::SimpleGraph{T}) where {T}
     seq = deg_sorted_vlist(G)
-    return greedy_color(G,seq)
+    return greedy_color(G, seq)
 end
 
 # Generate multiple random orders of the vertex set and apply
@@ -122,16 +122,16 @@ end
 random permutations of the vertex set. After `reps` iterations, the
 best coloring found is returned.
 """
-function random_greedy_color(G::SimpleGraph{T}, reps::Int=1) where {T}
+function random_greedy_color(G::SimpleGraph{T}, reps::Int = 1) where {T}
     n = NV(G)
     bestf = greedy_color(G)  # degree order default start
-    best  = maximum(values(bestf))
+    best = maximum(values(bestf))
     seq = vlist(G)
     println("Initial coloring uses ", best, " colors")
 
-    for k in 1:reps
+    for k = 1:reps
         Random.shuffle!(seq)
-        f = greedy_color(G,seq)
+        f = greedy_color(G, seq)
         mx = maximum(values(f))
         if mx < best
             bestf = f

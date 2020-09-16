@@ -16,11 +16,11 @@ mutable struct SimpleDigraph{T} <: AbstractSimpleGraph
     N::Dict{T,Set{T}}      # map vertices to out-neighbors
     NN::Dict{T,Set{T}}     # map vertices to in-neighbors
     looped::Bool           # flag to indicate if loops are allowed
-    function SimpleDigraph{T}() where T
+    function SimpleDigraph{T}() where {T}
         V = Set{T}()
         N = Dict{T,Set{T}}()
         NN = Dict{T,Set{T}}()
-        G = new(V,N,NN,true)
+        G = new(V, N, NN, true)
     end
 end
 
@@ -29,7 +29,7 @@ IntDigraph() = SimpleDigraph{Int}()
 
 
 function show(io::IO, G::SimpleDigraph)
-    print(io,"SimpleDigraph{$(eltype(G))} (n=$(NV(G)), m=$(NE(G)))")
+    print(io, "SimpleDigraph{$(eltype(G))} (n=$(NV(G)), m=$(NE(G)))")
 end
 
 
@@ -49,8 +49,8 @@ eltype(G::SimpleDigraph{T}) where {T} = T
 """
 function IntDigraph(n::Int)
     G = IntDigraph()
-    for v=1:n
-        add!(G,v)
+    for v = 1:n
+        add!(G, v)
     end
     return G
 end
@@ -86,7 +86,7 @@ function remove_loops!(G::SimpleDigraph)
         return nothing
     end
     for v in G.V
-        SimpleGraphs.delete!(G,v,v)
+        SimpleGraphs.delete!(G, v, v)
     end
     nothing
 end
@@ -112,8 +112,8 @@ function loops(G::SimpleDigraph{T}) where {T}
     end
     loop_set = Set{T}()
     for v in G.V
-        if has(G,v,v)
-            push!(loop_set,v)
+        if has(G, v, v)
+            push!(loop_set, v)
         end
     end
     loop_list = collect(loop_set)
@@ -133,7 +133,7 @@ end
 the directed graph.
 """
 out_deg(G::SimpleDigraph, v) = length(G.N[v])
-out_deg(G::SimpleDigraph) = sort([out_deg(G,v) for v in G.V], rev=true)
+out_deg(G::SimpleDigraph) = sort([out_deg(G, v) for v in G.V], rev = true)
 
 # Likewise for indegrees
 
@@ -144,11 +144,11 @@ out_deg(G::SimpleDigraph) = sort([out_deg(G,v) for v in G.V], rev=true)
 the directed graph.
 """
 in_deg(G::SimpleDigraph, v) = length(G.NN[v])
-in_deg(G::SimpleDigraph) = sort([in_deg(G,v) for v in G.V], rev=true)
+in_deg(G::SimpleDigraph) = sort([in_deg(G, v) for v in G.V], rev = true)
 
 # The degree of a vertex is the sum of in and out degrees
-deg(G::SimpleDigraph, v) = in_deg(G,v) + out_deg(G,v)
-deg(G::SimpleDigraph) = sort([ deg(G,v) for v in G.V], rev=true)
+deg(G::SimpleDigraph, v) = in_deg(G, v) + out_deg(G, v)
+deg(G::SimpleDigraph) = sort([deg(G, v) for v in G.V], rev = true)
 
 # dual_deg gives the two-tuple (out,in)-degrees
 
@@ -158,8 +158,8 @@ in degree of the vertex `v`.
 
 `dual_deg(G)` gives a list of all the dual degrees.
 """
-dual_deg(G::SimpleDigraph, v) = (out_deg(G,v), in_deg(G,v))
-dual_deg(G::SimpleDigraph) = sort([ dual_deg(G,v) for v in G.V ], rev=true)
+dual_deg(G::SimpleDigraph, v) = (out_deg(G, v), in_deg(G, v))
+dual_deg(G::SimpleDigraph) = sort([dual_deg(G, v) for v in G.V], rev = true)
 
 
 # out neighbors of a vertex
@@ -192,17 +192,17 @@ end
 function NE(G::SimpleDigraph)
     total::Int = 0
     for v in G.V
-        total += out_deg(G,v)
+        total += out_deg(G, v)
     end
     return total
 end
 
 # Check if this digraph has a given edge
-has(G::SimpleDigraph, v, w) = has(G,v) && in(w,G.N[v])
+has(G::SimpleDigraph, v, w) = has(G, v) && in(w, G.N[v])
 
 # Add a vertex to a digraph
 function add!(G::SimpleDigraph{T}, v) where {T}
-    if has(G,v)
+    if has(G, v)
         return false
     end
     push!(G.V, v)
@@ -213,47 +213,47 @@ end
 
 # Add an edge to a digraph
 function add!(G::SimpleDigraph{T}, v, w) where {T}
-    if !G.looped && v==w
+    if !G.looped && v == w
         return false
     end
-    if has(G,v,w)
+    if has(G, v, w)
         return false
     end
-    if !has(G,v)
-        add!(G,v)
+    if !has(G, v)
+        add!(G, v)
     end
-    if !has(G,w)
-        add!(G,w)
+    if !has(G, w)
+        add!(G, w)
     end
-    push!(G.N[v],w)
-    push!(G.NN[w],v)
+    push!(G.N[v], w)
+    push!(G.NN[w], v)
     return true
 end
 
 # Delete an edge from this digraph
 function SimpleGraphs.delete!(G::SimpleDigraph, v, w)
-    if !has(G,v,w)
+    if !has(G, v, w)
         return false
     end
-    SimpleGraphs.delete!(G.N[v],w)
-    SimpleGraphs.delete!(G.NN[w],v)
+    SimpleGraphs.delete!(G.N[v], w)
+    SimpleGraphs.delete!(G.NN[w], v)
     return true
 end
 
 # Delete a vertex from this digraph
 function SimpleGraphs.delete!(G::SimpleDigraph, v)
-    if !has(G,v)
+    if !has(G, v)
         return false
     end
     for w in G.N[v]
-        SimpleGraphs.delete!(G,v,w)
+        SimpleGraphs.delete!(G, v, w)
     end
     for u in G.NN[v]
-        SimpleGraphs.delete!(G,u,v)
+        SimpleGraphs.delete!(G, u, v)
     end
-    SimpleGraphs.delete!(G.V,v)
-    SimpleGraphs.delete!(G.N,v)
-    SimpleGraphs.delete!(G.NN,v)
+    SimpleGraphs.delete!(G.V, v)
+    SimpleGraphs.delete!(G.N, v)
+    SimpleGraphs.delete!(G.NN, v)
     return true
 end
 
@@ -262,7 +262,7 @@ function elist(G::SimpleDigraph{T}) where {T}
     E = Set{Tuple{T,T}}()
     for v in G.V
         for w in G.N[v]
-            push!(E, (v,w))
+            push!(E, (v, w))
         end
     end
     result = collect(E)
@@ -283,10 +283,10 @@ by removing directions and loops.
 function simplify(D::SimpleDigraph{T}) where {T}
     G = SimpleGraph{T}()
     for v in D.V
-        add!(G,v)
+        add!(G, v)
     end
     for e in elist(D)
-        add!(G,e[1],e[2])
+        add!(G, e[1], e[2])
     end
     return G
 end
@@ -298,7 +298,7 @@ function SimpleGraphs.isequal(G::SimpleDigraph, H::SimpleDigraph)
     end
 
     for e in elist(G)
-        if !has(H,e[1],e[2])
+        if !has(H, e[1], e[2])
             return false
         end
     end
@@ -306,11 +306,11 @@ function SimpleGraphs.isequal(G::SimpleDigraph, H::SimpleDigraph)
 end
 
 function ==(G::SimpleDigraph, H::SimpleDigraph)
-    return isequal(G,H)
+    return isequal(G, H)
 end
 
 function hash(G::SimpleDigraph, h::UInt64 = UInt64(0))
-    return hash(G.V,h) + hash(G.N,h)
+    return hash(G.V, h) + hash(G.N, h)
 end
 
 
@@ -322,14 +322,14 @@ end
 function relabel(G::SimpleDigraph{S}, label::Dict{S,T}) where {S,T}
     H = SimpleDigraph{T}()
     for v in G.V
-        add!(H,label[v])
+        add!(H, label[v])
     end
 
     E = elist(G)
     for e in E
         u = label[e[1]]
         v = label[e[2]]
-        add!(H,u,v)
+        add!(H, u, v)
     end
     return H
 end
@@ -339,12 +339,12 @@ function relabel(G::SimpleDigraph{S}) where {S}
     verts = vlist(G)
     n = length(verts)
     label = Dict{S,Int}()
-    sizehint!(label,n)
+    sizehint!(label, n)
     for idx = 1:n
         label[verts[idx]] = idx
     end
 
-    return relabel(G,label)
+    return relabel(G, label)
 end
 
 # Split vertices of a digraph to make a bipartite undirected graph. If
@@ -361,14 +361,14 @@ function vertex_split(G::SimpleDigraph{S}) where {S}
     H = SimpleGraph{Tuple{S,Int}}()
 
     for v in vlist(G)
-        add!(H,(v,1))
-        add!(H,(v,2))
+        add!(H, (v, 1))
+        add!(H, (v, 2))
     end
 
     for e in elist(G)
-        u = (e[1],1)
-        v = (e[2],2)
-        add!(H,u,v)
+        u = (e[1], 1)
+        v = (e[2], 2)
+        add!(H, u, v)
     end
 
     return H
@@ -381,23 +381,23 @@ test if a directed graph is strongly connected by using DFS
 function is_strongly_connected(G::SimpleDigraph{S}) where {S}
     vlist = collect(G.V)
     start = vlist[1]
-    visited = zeros(Int,length(vlist))
-    if (!DFS(G,start,visited))
+    visited = zeros(Int, length(vlist))
+    if (!DFS(G, start, visited))
         return false
     end
 
     #reverse directions of the graph
     reverseG = SimpleDigraph{S}()
     for v in vlist
-        add!(reverseG,v)
+        add!(reverseG, v)
     end
     for e in elist(G)
-        add!(reverseG,e[2],e[1])
+        add!(reverseG, e[2], e[1])
     end
 
     #perform another DFS on the reverseG, is Strongly Connected if pass both tests
     visited = zeros(Int, length(vlist))
-    DFS(reverseG,start,visited)
+    DFS(reverseG, start, visited)
 end
 
 
@@ -405,13 +405,13 @@ end
 """
 perform a depth first search on graph G starting at vertex v
 """
-function DFS(G::SimpleDigraph{S}, v, visited::Array{Int,1}) where S
+function DFS(G::SimpleDigraph{S}, v, visited::Array{Int,1}) where {S}
     vlist = collect(G.V)
-    visited[findfirst(isequal(v),vlist)] = 1
+    visited[findfirst(isequal(v), vlist)] = 1
     for i in G.N[v]
-        index = findfirst(isequal(i),vlist)
+        index = findfirst(isequal(i), vlist)
         if (visited[index] != 1)
-            DFS(G,vlist[index],visited)
+            DFS(G, vlist[index], visited)
         end
     end
     for k = 1:length(visited)

@@ -5,7 +5,7 @@ matrix of `H`in sparse form. Wrap in `Matrix` for full storage version.
 function incidence(H::SimpleHypergraph)
     n = NV(H)
     m = NE(H)
-    M = spzeros(Int,n,m)
+    M = spzeros(Int, n, m)
 
     VV = vlist(H)
     EE = elist(H)
@@ -16,12 +16,12 @@ function incidence(H::SimpleHypergraph)
     end
 
 
-    for i=1:n
+    for i = 1:n
         v = VV[i]
-        for j=1:m
+        for j = 1:m
             e = EE[j]
-            if in(v,e)
-                M[i,j] = 1
+            if in(v, e)
+                M[i, j] = 1
             end
         end
     end
@@ -36,14 +36,14 @@ end
 hypergraph with `n` vertices and `m` edges determined by the nonzero entries
 in the columns of `A`. This is a sort of inverse operation to `incidence`.
 """
-function SimpleHypergraph(A::AbstractArray{T,2})::SimpleHypergraph{Int} where T<:Number
-    n,m = size(A)
+function SimpleHypergraph(A::AbstractArray{T,2})::SimpleHypergraph{Int} where {T<:Number}
+    n, m = size(A)
     H = IntHypergraph(n)
 
-    for j=1:m
-        a = A[:,j]
-        e = Set( findall(a .!= 0) )
-        add!(H,e)
+    for j = 1:m
+        a = A[:, j]
+        e = Set(findall(a .!= 0))
+        add!(H, e)
     end
     return H
 end

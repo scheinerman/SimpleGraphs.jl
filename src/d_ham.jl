@@ -14,7 +14,7 @@ function isSafe(v::T, G::SimpleDigraph{T}, path::Deque{T}) where {T}
     end
 
     #check if the vertex already exists in the path
-    if (in(v,path))
+    if (in(v, path))
         return false
     end
 
@@ -39,7 +39,7 @@ function hamCycle(G::SimpleDigraph{T}, path::Deque{T}) where {T}
         if (isSafe(v, G, path))
             push!(path, v)
             #cycle
-            if (hamCycle(G,path) == true)
+            if (hamCycle(G, path) == true)
                 return true
             end
             pop!(path)
@@ -61,8 +61,8 @@ function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
 
 
     for v in vlist
-        push!(result,v)
-        if (hamCycle(G,result))
+        push!(result, v)
+        if (hamCycle(G, result))
             return result
         end
         result = Deque{T}()
@@ -73,5 +73,5 @@ end
 
 #export the result as an array
 function hamiltonian_cycle(G::SimpleDigraph{T}) where {T}
-    return collect(directed_ham_cycle(G));
+    return collect(directed_ham_cycle(G))
 end

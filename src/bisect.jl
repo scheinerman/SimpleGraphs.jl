@@ -21,10 +21,7 @@ This can be invoked as follows:
 A plain call to `bisect(G)` is equivalent to `bisect(G,"zero")` (which
 is the same as `bisect(G,"user", 0.0)`).
 """
-function bisect(G::SimpleGraph,
-                where::AbstractString="zero",
-                pivot::Real=0.0
-               )
+function bisect(G::SimpleGraph, where::AbstractString = "zero", pivot::Real = 0.0)
 
     verbose = false
 
@@ -36,10 +33,10 @@ function bisect(G::SimpleGraph,
 
     T = eltype(G)
     VV = vlist(G)
-    n  = NV(G)
-    L  = laplace(G)
+    n = NV(G)
+    L = laplace(G)
     # x  = collect( eig(L)[2][:,2] )
-    x = collect( eigen(L).vectors[:,2])
+    x = collect(eigen(L).vectors[:, 2])
 
     if verbose
         println(sort(x))
@@ -48,30 +45,30 @@ function bisect(G::SimpleGraph,
     piv = 0.0
 
 
-    if where=="equal"
-        pairs = sort(collect(zip(x,VV)))
-        vtcs  = [ p[2] for p in pairs ]
+    if where == "equal"
+        pairs = sort(collect(zip(x, VV)))
+        vtcs = [p[2] for p in pairs]
 
         if verbose
             println(pairs)
             println(vtcs)
         end
 
-        mid = floor(Int, n/2)
+        mid = floor(Int, n / 2)
         if verbose
             println("Equal partition of the vertex set: $mid and $(n-mid)")
         end
         A = Set{T}(vtcs[1:mid])
         B = Set{T}(vtcs[mid+1:end])
-        return A,B
+        return A, B
     end
 
 
-    if where=="median"
+    if where == "median"
         piv = median(x)
-    elseif where=="user"
+    elseif where == "user"
         piv = pivot
-    elseif where=="zero"
+    elseif where == "zero"
         piv = 0.0
     else
         error("Unknown \"where\" specifier: $where")
@@ -84,16 +81,16 @@ function bisect(G::SimpleGraph,
     A = Set{T}()
     B = Set{T}()
 
-    for k=1:n
+    for k = 1:n
         v = VV[k]
         if x[k] >= piv
-            push!(A,v)
+            push!(A, v)
         else
-            push!(B,v)
+            push!(B, v)
         end
     end
 
-    return A,B
+    return A, B
 end
 
 # import IterTools.product
@@ -105,8 +102,8 @@ of vertices of `G`.
 """
 function cross_edges(G::SimpleGraph, A, B)
 
-    AB = Base.Iterators.product(A,B)
+    AB = Base.Iterators.product(A, B)
 
-    result = Set(filter(e -> has(G,e[1],e[2]), collect(AB)))
+    result = Set(filter(e -> has(G, e[1], e[2]), collect(AB)))
     return result
 end

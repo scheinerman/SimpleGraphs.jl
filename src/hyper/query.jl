@@ -1,4 +1,4 @@
-export  is_uniform
+export is_uniform
 
 """
 `NV(H::SimpleHypergraph)` is the number of vertices in `H`.
@@ -12,9 +12,9 @@ NE(H::SimpleHypergraph) = length(H.E)
 
 
 
-function show(io::IO, H::SimpleHypergraph{T}) where T
+function show(io::IO, H::SimpleHypergraph{T}) where {T}
     suffix = " (n=$(NV(H)), m=$(NE(H)))"
-    print(io,"SimpleHypergraph{$T}"*suffix)
+    print(io, "SimpleHypergraph{$T}" * suffix)
 end
 
 
@@ -24,20 +24,20 @@ end
 `has(H::SimpleHypergraph{T}, e::Set{T})` tests if `e` is an edge of `H`.
 Also works if `e` is a `Vector{T}` or a list of two or more arguments.
 """
-function has(H::SimpleHypergraph{T}, v::T)::Bool where T
+function has(H::SimpleHypergraph{T}, v::T)::Bool where {T}
     return in(v, H.V)
 end
 
-function has(H::SimpleHypergraph{T}, e::Set{T})::Bool where T
-    return in(e,H.E)
+function has(H::SimpleHypergraph{T}, e::Set{T})::Bool where {T}
+    return in(e, H.E)
 end
 
-function has(H::SimpleHypergraph{T}, e::Vector{T})::Bool where T
-    return has(H,Set(e))
+function has(H::SimpleHypergraph{T}, e::Vector{T})::Bool where {T}
+    return has(H, Set(e))
 end
 
-function has(H::SimpleHypergraph{T}, e::T...)::Bool where T
-    return has(H,set(e))
+function has(H::SimpleHypergraph{T}, e::T...)::Bool where {T}
+    return has(H, set(e))
 end
 
 """
@@ -45,18 +45,18 @@ end
 that contain vertex `v`. This throws an error if `v` is not a vertex
 of `H`.
 """
-function getindex(H::SimpleHypergraph{T}, v::T)::Set{Set{T}} where T
-    if !has(H,v)
+function getindex(H::SimpleHypergraph{T}, v::T)::Set{Set{T}} where {T}
+    if !has(H, v)
         error("No such vertex: $v")
     end
     return H.VE[v]
 end
 
-function deg(H::SimpleHypergraph{T}, v::T)::Int where T
+function deg(H::SimpleHypergraph{T}, v::T)::Int where {T}
     return length(H[v])
 end
 
-function eltype(H::SimpleHypergraph{T}) where T
+function eltype(H::SimpleHypergraph{T}) where {T}
     return T
 end
 
@@ -78,11 +78,11 @@ end
 
 
 
-function is_uniform(H::SimpleHypergraph{T})::Bool where T
+function is_uniform(H::SimpleHypergraph{T})::Bool where {T}
     if NE(H) < 2
         return true
     end
     klist = length.(collect(H.E))  # get sizes of all edges
     n = length(unique(klist))      # throw away duplicates
-    return n==1
+    return n == 1
 end

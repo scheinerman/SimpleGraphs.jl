@@ -22,12 +22,12 @@ mutable struct SimpleGraph{T} <: AbstractSimpleGraph
     Nflag::Bool        # Tells if N is used or not (default on)
     cache::Dict{Symbol,Any}   # save previous expensive results
     cache_flag::Bool          # decide if we use cache or no
-    function SimpleGraph{T}(Nflag::Bool=true) where T
+    function SimpleGraph{T}(Nflag::Bool = true) where {T}
         V = Set{T}()
         E = Set{Tuple{T,T}}()
         N = Dict{T,Set{T}}()
         cache = Dict{Symbol,Any}()
-        G = new(V,E,N,Nflag,cache,true)
+        G = new(V, E, N, Nflag, cache, true)
     end
 end
 
@@ -39,25 +39,25 @@ empty, then the name is set to the default `SimpleGraph{T}` where
 `T` is the vertex type.
 """
 function name(G::SimpleGraph)
-  if cache_check(G,:name)
-    return cache_recall(G,:name)
-  end
-  return "SimpleGraph{$(eltype(G))}"
+    if cache_check(G, :name)
+        return cache_recall(G, :name)
+    end
+    return "SimpleGraph{$(eltype(G))}"
 end
 
 function name(G::SimpleGraph, the_name::String)
-  G.cache[:name] = the_name
-  if length(the_name) == 0
-    cache_clear(G,:name)
-  end
-  nothing
+    G.cache[:name] = the_name
+    if length(the_name) == 0
+        cache_clear(G, :name)
+    end
+    nothing
 end
 
 
 
 function show(io::IO, G::SimpleGraph)
     suffix = " (n=$(NV(G)), m=$(NE(G)))"
-    print(io,name(G)*suffix)
+    print(io, name(G) * suffix)
 end
 
 # Default constructor uses Any type vertices
@@ -84,7 +84,7 @@ StringGraph() = SimpleGraph{String}()
 
 function StringGraph(file::AbstractString)
     G = StringGraph()
-    load!(G,file)
+    load!(G, file)
     return G
 end
 
@@ -93,7 +93,7 @@ end
 # accomodate strings).
 function load!(G::SimpleGraph, file::AbstractString)
     f = open(file, "r")
-    while(~eof(f))
+    while (~eof(f))
         line = chomp(readline(f))
         tokens = split(line)
 
@@ -105,9 +105,9 @@ function load!(G::SimpleGraph, file::AbstractString)
             continue
         end
 
-        add!(G,tokens[1])
+        add!(G, tokens[1])
         if length(tokens) > 1
-            add!(G,tokens[1],tokens[2])
+            add!(G, tokens[1], tokens[2])
         end
     end
 end
@@ -126,25 +126,25 @@ IntGraph() = SimpleGraph{Int}()
 # edges.
 function IntGraph(n::Int)
     G = IntGraph()
-    for v=1:n
-        add!(G,v)
+    for v = 1:n
+        add!(G, v)
     end
     return G
 end
 
 function IntGraph(A::AbstractMatrix)
-  r,c = size(A)
-  @assert r==c "Matrix must be square"
-  @assert A==A' "Matrix must be symmetric"
-  G = IntGraph(r)
-  for i=1:r-1
-    for j=i+1:r
-      if A[i,j] != 0
-        add!(G,i,j)
-      end
+    r, c = size(A)
+    @assert r == c "Matrix must be square"
+    @assert A == A' "Matrix must be symmetric"
+    G = IntGraph(r)
+    for i = 1:r-1
+        for j = i+1:r
+            if A[i, j] != 0
+                add!(G, i, j)
+            end
+        end
     end
-  end
-  return G
+    return G
 end
 
 
@@ -166,7 +166,7 @@ eltype(G::SimpleGraph{T}) where {T} = T
 
 @deprecate vertex_type eltype
 
-    # number of vertices and edges
+# number of vertices and edges
 
 
 """
@@ -185,8 +185,8 @@ NE(G::SimpleGraph) = length(G.E)
 
 `has(G,v,w)` returns `true` iff `(v,w)` is an edge of `G`.
 """
-has(G::AbstractSimpleGraph, v) = in(v,G.V)
-has(G::SimpleGraph, v, w) = in((v,w), G.E) || in((w,v), G.E)
+has(G::AbstractSimpleGraph, v) = in(v, G.V)
+has(G::SimpleGraph, v, w) = in((v, w), G.E) || in((w, v), G.E)
 
 
 """
@@ -194,14 +194,14 @@ has(G::SimpleGraph, v, w) = in((v,w), G.E) || in((w,v), G.E)
 the edge joining `u` and `v` is stored in the edge set of `G`.
 An error is thrown if `u` and `v` are not adjacent vertices of `G`.
 """
-function get_edge(G::SimpleGraph{T},u,v)::Tuple{T,T} where T
-    if !has(G,u,v)
+function get_edge(G::SimpleGraph{T}, u, v)::Tuple{T,T} where {T}
+    if !has(G, u, v)
         error("($u,$v) is not an edge of this graph")
     end
-    if in((u,v),G.E)
-        return u,v
+    if in((u, v), G.E)
+        return u, v
     end
-    return v,u
+    return v, u
 end
 
 
@@ -215,7 +215,7 @@ structure holding the graph, but slows down look up of edges.
 
 **Note**: Fast neighborhood look up is on by default.
 """
-function fastN!(G::SimpleGraph{T},flg::Bool=true) where {T}
+function fastN!(G::SimpleGraph{T}, flg::Bool = true) where {T}
     # if no change, do nothing
     if flg == G.Nflag
         return flg
@@ -224,7 +224,7 @@ function fastN!(G::SimpleGraph{T},flg::Bool=true) where {T}
     # if setting the flag to false, erase the G.N data structure;
     # otherwise build it.
     if flg == false
-        G.N = Dict{T, Set{T}}()
+        G.N = Dict{T,Set{T}}()
         sizehint!(G.N, NV(G))
     else
         # build the G.N structure.
@@ -234,9 +234,9 @@ function fastN!(G::SimpleGraph{T},flg::Bool=true) where {T}
         end
         # now iterate over the edge set and populate G.N sets
         for e in G.E
-            v,w = e
-            push!(G.N[v],w)
-            push!(G.N[w],v)
+            v, w = e
+            push!(G.N[v], w)
+            push!(G.N[w], v)
         end
     end
     G.Nflag = flg
@@ -253,14 +253,14 @@ function vertex2idx(G::AbstractSimpleGraph)
     V = vlist(G)
     n = NV(G)
 
-    for k=1:n
+    for k = 1:n
         d[V[k]] = k
     end
 
     return d
 end
 
-    # get the vertices as a (sorted if possible) list
+# get the vertices as a (sorted if possible) list
 """
 `vlist(G)` returns the vertices of `G` as a list (array).
 """
@@ -285,14 +285,14 @@ function elist(G::SimpleGraph)
     return result
 end
 
-    # Get the neighbors of a vertex
+# Get the neighbors of a vertex
 """
 `neighbors(G,v)` returns a list of the neighbors of `v`.
 
 May also be invoked as `G[v]`.
 """
 function neighbors(G::SimpleGraph{T}, v) where {T}
-    if ~has(G,v)
+    if ~has(G, v)
         error("Graph does not contain requested vertex")
     end
 
@@ -302,8 +302,8 @@ function neighbors(G::SimpleGraph{T}, v) where {T}
     else
         N = T[]
         for w in G.V
-            if has(G,v,w)
-                append!(N,[w])
+            if has(G, v, w)
+                append!(N, [w])
             end
         end
     end
@@ -315,11 +315,11 @@ function neighbors(G::SimpleGraph{T}, v) where {T}
 end
 
 # Here is another way to access the neighbors of a vertex: G[v]
-getindex(G::SimpleGraph,v) = neighbors(G,v)
+getindex(G::SimpleGraph, v) = neighbors(G, v)
 
 # And here's a getindex way to check for edges: G[u,v] is a shortcut
 # for has(G,u,v).
-getindex(G::SimpleGraph,v,w) = has(G,v,w)
+getindex(G::SimpleGraph, v, w) = has(G, v, w)
 
 # Degree of a vertex
 """
@@ -328,7 +328,7 @@ getindex(G::SimpleGraph,v,w) = has(G,v,w)
 `deg(G)` gives the degree sequence (sorted).
 """
 function deg(G::SimpleGraph, v)
-    if ~has(G,v)
+    if ~has(G, v)
         error("Graph does not contain requested vertex")
     end
     if G.Nflag
@@ -340,14 +340,14 @@ end
 # Degree sequence
 function deg(G::SimpleGraph{T}) where {T}
     if G.Nflag
-        ds = [deg(G,v) for v in G.V]
+        ds = [deg(G, v) for v in G.V]
     else
         dd = Dict{T,Int}()
         for v in G.V
             dd[v] = 0
         end
         for e in G.E
-            v,w = e
+            v, w = e
             dd[v] += 1
             dd[w] += 1
         end
@@ -360,7 +360,7 @@ end
 
 # Report how many vertices we have each possible degree.
 # If G has n vertices, this returns an n-long vector whose
-    # k'th entry is the number of vertices of degree k-1.
+# k'th entry is the number of vertices of degree k-1.
 
 """
 `deg_hist(G)` gives a tally of how many vertices of each degree are
@@ -371,7 +371,7 @@ number of vertices of degree `k-1`.
 function deg_hist(G::SimpleGraph{T}) where {T}
     n = NV(G)
     degs = deg(G)
-    result = zeros(Int,n)
+    result = zeros(Int, n)
     for d in degs
         result[d+1] += 1
     end
@@ -382,7 +382,7 @@ end
 import Base.hash
 
 function hash(G::SimpleGraph, h::UInt64 = UInt64(0))
-    return hash(G.V,h) + hash(G.E,h)
+    return hash(G.V, h) + hash(G.E, h)
 end
 
 simplify(G::SimpleGraph) = deepcopy(G)

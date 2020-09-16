@@ -323,4 +323,6 @@ end
     G = Cycle(5)
     set_rot(G)
     @test euler_char(G) == 2
+    G = Dodecahedron()
+    @test euler_char(G)==2
 end

@@ -2,7 +2,7 @@ import Base.isequal
 import Base.delete!, Base.union
 import Base.join
 
-export add!, delete!, contract!,  induce, add_edges!
+export add!, delete!, contract!, induce, add_edges!
 export line_graph, complement, complement!, adjoint
 export cartesian, lex, relabel, trim
 export disjoint_union, union, join
@@ -17,14 +17,14 @@ function SimpleGraphs.delete!(G::SimpleGraph, H::SimpleGraph)
         # sort(collect(H.V))
     catch  #if not sortable, resort to a slow method
         for e in G.E
-            if ! has(H,e[1],e[2])
+            if !has(H, e[1], e[2])
                 return false
             end
         end
         return true
     end
     # otherwise faster to check edge sets this way
-    return G.E==H.E
+    return G.E == H.E
 end
 
 function SimpleGraphs.isequal(G::SimpleGraph, H::SimpleGraph)
@@ -33,7 +33,7 @@ end
 
 
 function ==(G::SimpleGraph, H::SimpleGraph)
-    return isequal(G,H)
+    return isequal(G, H)
 end
 
 # adding vertices
@@ -45,7 +45,7 @@ of those vertices is not already in the graph, it is added to the
 vertex set.
 """
 function add!(G::SimpleGraph{T}, v) where {T}
-    if has(G,v)
+    if has(G, v)
         return false
     end
     cache_clear(G)
@@ -58,28 +58,28 @@ end
 
 # adding edges
 function add!(G::SimpleGraph{T}, v, w) where {T}
-    if v==w
+    if v == w
         return false
     end
 
     try
         if v > w
-            v,w = w,v
+            v, w = w, v
         end
     catch
     end
 
-    if ~has(G,v)
-        add!(G,v)
+    if ~has(G, v)
+        add!(G, v)
     end
-    if ~has(G,w)
-        add!(G,w)
+    if ~has(G, w)
+        add!(G, w)
     end
-    if has(G,v,w)
+    if has(G, v, w)
         return false
     end
     cache_clear(G)
-    push!(G.E, (v,w))
+    push!(G.E, (v, w))
     if G.Nflag
         push!(G.N[v], w)
         push!(G.N[w], v)
@@ -98,9 +98,9 @@ a `SimpleDigraph`.
 function add_edges!(G::AbstractSimpleGraph, edge_list)::Int
     m0 = NE(G)
     for e in edge_list
-        add!(G,e[1],e[2])
+        add!(G, e[1], e[2])
     end
-    return NE(G)-m0
+    return NE(G) - m0
 end
 
 
@@ -113,14 +113,14 @@ from the graph.
 """
 function SimpleGraphs.delete!(G::SimpleGraph, v, w)
     flag = false
-    if has(G,v,w)
+    if has(G, v, w)
         cache_clear(G)
         flag = true
-        delete!(G.E,(v,w))
-        delete!(G.E,(w,v))
+        delete!(G.E, (v, w))
+        delete!(G.E, (w, v))
         if G.Nflag
-            delete!(G.N[v],w)
-            delete!(G.N[w],v)
+            delete!(G.N[v], w)
+            delete!(G.N[w], v)
         end
     end
     return flag
@@ -129,16 +129,16 @@ end
 # vertex deletion
 function SimpleGraphs.delete!(G::SimpleGraph, v)
     flag = false
-    if has(G,v)
+    if has(G, v)
         cache_clear(G)
         flag = true
         Nv = G[v]
         for w in Nv
-            SimpleGraphs.delete!(G,v,w)
+            SimpleGraphs.delete!(G, v, w)
         end
         SimpleGraphs.delete!(G.V, v)
         if G.Nflag
-            SimpleGraphs.delete!(G.N,v)
+            SimpleGraphs.delete!(G.N, v)
         end
     end
     return flag
@@ -159,15 +159,15 @@ this is equivalent to first adding the edge to the graph and then
 contracting it.
 """
 function contract!(G::SimpleGraph, u, v)
-    if !has(G,u) || !has(G,v) || u==v
+    if !has(G, u) || !has(G, v) || u == v
         return false
     end
     cache_clear(G)
     Nv = G[v]
     for x in Nv
-        add!(G,u,x)
+        add!(G, u, x)
     end
-    SimpleGraphs.delete!(G,v)
+    SimpleGraphs.delete!(G, v)
     return true
 end
 
@@ -180,7 +180,7 @@ set `A`. The graph may be either a `SimpleGraph` or a `SimpleDigraph`.
 function induce(G::SimpleGraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
     for v in A
-        if ~has(G,v)
+        if ~has(G, v)
             error("The set A must be a subset of V(G)")
         end
     end
@@ -188,7 +188,7 @@ function induce(G::SimpleGraph{T}, A::Set) where {T}
 
     # add all the vertices in A to H
     for v in A
-        add!(H,v)
+        add!(H, v)
     end
 
     # The method we choose depends on the size of A. For small A, best
@@ -196,27 +196,27 @@ function induce(G::SimpleGraph{T}, A::Set) where {T}
     # iterate over G.E
     a = length(A)
 
-    if a<2
+    if a < 2
         return H
     end
 
     # case of small A, iterate over pairs from A
-    if a*(a-1) < 2*NE(G)
+    if a * (a - 1) < 2 * NE(G)
         alist = collect(A)
-        for i=1:a-1
+        for i = 1:a-1
             u = alist[i]
-            for j=i+1:a
+            for j = i+1:a
                 v = alist[j]
-                if has(G,u,v)
-                    add!(H,u,v)
+                if has(G, u, v)
+                    add!(H, u, v)
                 end
             end
         end
 
     else  # case of large A, iterate over G.E
         for e in G.E
-            if in(e[1],A) && in(e[2],A)
-                add!(H,e[1],e[2])
+            if in(e[1], A) && in(e[2], A)
+                add!(H, e[1], e[2])
             end
         end
     end
@@ -227,7 +227,7 @@ end
 function induce(G::SimpleDigraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
     for v in A
-        if ~has(G,v)
+        if ~has(G, v)
             error("The set A must be a subset of V(G)")
         end
     end
@@ -235,13 +235,13 @@ function induce(G::SimpleDigraph{T}, A::Set) where {T}
 
     # add all the vertices in A to H
     for v in A
-        add!(H,v)
+        add!(H, v)
     end
 
     for x in A
         for y in A
-            if has(G,x,y)
-                add!(H,x,y)
+            if has(G, x, y)
+                add!(H, x, y)
             end
         end
     end
@@ -261,15 +261,15 @@ function line_graph(G::SimpleGraph{T}) where {T}
     m = NE(G)
     E = elist(G)
     for e in E
-        add!(H,e)
+        add!(H, e)
     end
 
-    for i=1:m-1
+    for i = 1:m-1
         e = E[i]
-        for j=i+1:m
+        for j = i+1:m
             f = E[j]
-            if e[1]==f[1] || e[2]==f[1] || e[1]==f[2] || e[2]==f[2]
-                add!(H,e,f)
+            if e[1] == f[1] || e[2] == f[1] || e[1] == f[2] || e[2] == f[2]
+                add!(H, e, f)
             end
         end
     end
@@ -286,16 +286,16 @@ function complement(G::SimpleGraph{T}) where {T}
     V = vlist(G)
     n = NV(G)
 
-    for i=1:n
-        add!(H,V[i])
+    for i = 1:n
+        add!(H, V[i])
     end
 
-    for i=1:n-1
+    for i = 1:n-1
         v = V[i]
-        for j=i+1:n
+        for j = i+1:n
             w = V[j]
-            if ~has(G,v,w)
-                add!(H,v,w)
+            if ~has(G, v, w)
+                add!(H, v, w)
             end
         end
     end
@@ -316,14 +316,14 @@ function complement!(G::SimpleGraph)
     cache_clear(G)
     n = NV(G)
     V = vlist(G)
-    for i=1:n-1
+    for i = 1:n-1
         v = V[i]
-        for j=i+1:n
+        for j = i+1:n
             w = V[j]
-            if has(G,v,w)
-                SimpleGraphs.delete!(G,v,w)
+            if has(G, v, w)
+                SimpleGraphs.delete!(G, v, w)
             else
-                add!(G,v,w)
+                add!(G, v, w)
             end
         end
     end
@@ -339,21 +339,21 @@ function cartesian(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     K = SimpleGraph{Tuple{S,T}}()
     for v in G.V
         for w in H.V
-            add!(K,(v,w))
+            add!(K, (v, w))
         end
     end
 
     for e in G.E
-        (u,v) = e
+        (u, v) = e
         for w in H.V
-            add!(K, (u,w), (v,w))
+            add!(K, (u, w), (v, w))
         end
     end
 
     for e in H.E
-        (u,v) = e
+        (u, v) = e
         for w in G.V
-            add!(K, (w,u), (w,v))
+            add!(K, (w, u), (w, v))
         end
     end
 
@@ -364,8 +364,8 @@ end
 """
 For `SimpleGraph`s: `G*H` is equivalent to `cartesian(G,H)`.
 """
-function *(G::SimpleGraph{S},H::SimpleGraph{T}) where {S,T}
-    return cartesian(G,H)
+function *(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
+    return cartesian(G, H)
 end
 
 # The join of two graphs is formed by taking disjoint copies of the
@@ -376,10 +376,10 @@ end
 `G` and `H` together with all possible edges between those copies.
 """
 function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
-    K = disjoint_union(G,H)
+    K = disjoint_union(G, H)
     for v in G.V
         for w in H.V
-            add!(K, (v,1), (w,2) )
+            add!(K, (v, 1), (w, 2))
         end
     end
     return K
@@ -393,24 +393,24 @@ end
 may (and typically do) have common vertices or edges.
 """
 function union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
-    if S==T
+    if S == T
         K = SimpleGraph{S}()
     else
         K = SimpleGraph{Any}()
     end
 
     for v in G.V
-        add!(K,v)
+        add!(K, v)
     end
     for v in H.V
-        add!(K,v)
+        add!(K, v)
     end
 
     for e in G.E
-        add!(K,e[1],e[2])
+        add!(K, e[1], e[2])
     end
     for e in H.E
-        add!(K,e[1],e[2])
+        add!(K, e[1], e[2])
     end
     return K
 end
@@ -422,9 +422,9 @@ end
 function label_append(G::SimpleGraph{S}, a::Int) where {S}
     mapper = Dict{S,Tuple{S,Int}}()
     for v in G.V
-        mapper[v] = (v,a)
+        mapper[v] = (v, a)
     end
-    return relabel(G,mapper)
+    return relabel(G, mapper)
 end
 
 # The disjoint_union of two graphs, G and H, is a new graph consisting of
@@ -435,26 +435,26 @@ end
 of `G` and `H` (and no additional edges).
 """
 function disjoint_union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
-    GG = label_append(G,1)
-    HH = label_append(H,2)
-    if S==T
+    GG = label_append(G, 1)
+    HH = label_append(H, 2)
+    if S == T
         K = SimpleGraph{Tuple{S,Int}}()
     else
         K = SimpleGraph{Any}()
     end
 
     for v in GG.V
-        add!(K,v)
+        add!(K, v)
     end
     for v in HH.V
-        add!(K,v)
+        add!(K, v)
     end
 
     for e in GG.E
-        add!(K,e[1],e[2])
+        add!(K, e[1], e[2])
     end
     for e in HH.E
-        add!(K,e[1],e[2])
+        add!(K, e[1], e[2])
     end
     return K
 end
@@ -474,8 +474,8 @@ function trim(G::SimpleGraph, d::Int = 0)
     H = deepcopy(G)
     while NV(H) > 0 && minimum(deg(H)) <= d
         for v in H.V
-            if deg(H,v) <= d
-                SimpleGraphs.delete!(H,v)
+            if deg(H, v) <= d
+                SimpleGraphs.delete!(H, v)
             end
         end
     end
@@ -495,13 +495,13 @@ vertex `v` is renamed `d[v]`.
 function relabel(G::SimpleGraph{S}, label::Dict{S,T}) where {S,T}
     H = SimpleGraph{T}()
     for v in G.V
-        add!(H,label[v])
+        add!(H, label[v])
     end
 
     for e in G.E
         u = label[e[1]]
         v = label[e[2]]
-        add!(H,u,v)
+        add!(H, u, v)
     end
     return H
 end
@@ -511,13 +511,13 @@ function relabel(G::SimpleGraph{S}) where {S}
     verts = vlist(G)
     n = length(verts)
     label = Dict{S,Int}()
-    sizehint!(label,n)
+    sizehint!(label, n)
 
     for idx = 1:n
         label[verts[idx]] = idx
     end
 
-    return relabel(G,label)
+    return relabel(G, label)
 end
 
 
@@ -537,7 +537,7 @@ function lex(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     # Create vertex set
     for a in G.V
         for b in H.V
-            add!(K,(a,b))
+            add!(K, (a, b))
         end
     end
 
@@ -548,7 +548,7 @@ function lex(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
 
         for x in H.V
             for y in H.V
-                add!(K, (a,x), (b,y))
+                add!(K, (a, x), (b, y))
             end
         end
     end
@@ -558,7 +558,7 @@ function lex(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
         for e in H.E
             x = e[1]
             y = e[2]
-            add!(K, (a,x), (a,y))
+            add!(K, (a, x), (a, y))
         end
     end
 
@@ -568,4 +568,4 @@ end
 """
 Abbreviation for `lex(G,H)` for `SimpleGraph`s.
 """
-getindex(G::SimpleGraph, H::SimpleGraph) = lex(G,H)
+getindex(G::SimpleGraph, H::SimpleGraph) = lex(G, H)

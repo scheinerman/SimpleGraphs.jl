@@ -6,8 +6,8 @@ graph (if one exists) or an empty array (otherwise). This works
 reasonably well for small graphs.
 """
 function hamiltonian_cycle(G::SimpleGraph)
-    if cache_check(G,:hamiltonian_cycle)
-      return cache_recall(G,:hamiltonian_cycle)
+    if cache_check(G, :hamiltonian_cycle)
+        return cache_recall(G, :hamiltonian_cycle)
     end
     T = eltype(G)
 
@@ -17,7 +17,7 @@ function hamiltonian_cycle(G::SimpleGraph)
     end
 
     n = NV(G)
-    path = Array{T,1}(undef,n)  # we'll put the answer here
+    path = Array{T,1}(undef, n)  # we'll put the answer here
 
 
     used = Dict{T,Bool}()
@@ -30,53 +30,49 @@ function hamiltonian_cycle(G::SimpleGraph)
     used[v] = true
     path[1] = v
 
-    if ham_extend(G,VV,1,used,path)
-        cache_save(G,:hamiltonian_cycle,path)
+    if ham_extend(G, VV, 1, used, path)
+        cache_save(G, :hamiltonian_cycle, path)
         return path
     else
         path = T[]
-        cache_save(G,:hamiltonian_cycle,path)
+        cache_save(G, :hamiltonian_cycle, path)
         return path
     end
 end
 
 
-function ham_extend(G::SimpleGraph,
-                    VV::Array,
-                    idx::Int,
-                    used::Dict,
-                    path::Array)
+function ham_extend(G::SimpleGraph, VV::Array, idx::Int, used::Dict, path::Array)
     # println(path[1:idx])  # debug
     n = NV(G)
     v = path[idx]
 
     if idx == n
-        return has(G,path[1],path[n])
+        return has(G, path[1], path[n])
     end
 
     for w in G[v]
         if !used[w]
             path[idx+1] = w
             used[w] = true
-            if ham_extend(G,VV,idx+1,used,path)
+            if ham_extend(G, VV, idx + 1, used, path)
                 return true
             end
-            used[w]=false
+            used[w] = false
         end
     end
     return false
 end
 
-function ham_check(G,path::Array)
+function ham_check(G, path::Array)
     n = NV(G)
     if length(path) != n
         return false
     end
 
-    for k=1:n-1
-        if !has(G,path[k],path[k+1])
+    for k = 1:n-1
+        if !has(G, path[k], path[k+1])
             return false
         end
     end
-    return has(G,path[1],path[n])
+    return has(G, path[1], path[n])
 end

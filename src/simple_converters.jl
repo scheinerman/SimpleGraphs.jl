@@ -52,7 +52,7 @@ Dict{Int64,String} with 3 entries:
 function convert_simple(G::AbstractSimpleGraph)
     T = eltype(G)
     n = NV(G)
-    has_dir = isa(G,SimpleDigraph)
+    has_dir = isa(G, SimpleDigraph)
 
 
     d = vertex2idx(G)
@@ -62,13 +62,13 @@ function convert_simple(G::AbstractSimpleGraph)
         dinv[v] = k
     end
 
-    H = simple_graph(n,is_directed=has_dir)
+    H = simple_graph(n, is_directed = has_dir)
 
     EE = elist(G)
     for e in EE
         u = d[e[1]]
         v = d[e[2]]
-        add_edge!(H,u,v)
+        add_edge!(H, u, v)
     end
-    return (H,d,dinv)
+    return (H, d, dinv)
 end
