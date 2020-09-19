@@ -45,7 +45,8 @@ set_rot(G::SimpleGraph) = set_rot(G, _default_rot(G))
 
 """
 `get_rot(G::SimpleGraph,v)` returns a `RingList` of the neighbors of `v`.
-This assumes that `G` has an associate rotation system.
+This assumes that `G` has an associate rotation system. If not, one is 
+generated and an alert is generated.
 
 `get_rot(G::SimpleGraph)` returns  a copy of the rotation system associated with `G`
 (or an error if there is no rotation system). 
@@ -60,10 +61,15 @@ end
 function get_rot(G::SimpleGraph)
     if cache_check(G, :RotationSystem)
         return cache_recall(G, :RotationSystem)
-        # return G.cache[:RotationSystem]
     end
-    @info "Giving this graph, $G, a default rotation system"
-    set_rot(G)
+
+    if cache_check(G, :GraphEmbedding)
+        embed_rot(G)
+        @info "Giving this graph, $G, a rotation system based on its xy-embedding."
+    else
+        set_rot(G)
+        @info "Giving this graph, $G, a default rotation system."
+    end
     return get_rot(G)
 end
 
@@ -116,11 +122,11 @@ end
 
 
 """
-`trace_face(G::SimpleGraph, v,w)` uses the graph's rotation system to find a 
+`_trace_face(G::SimpleGraph, v,w)` uses the graph's rotation system to find a 
 face starting with the edge `(u,v)` (in that order). Also may be called 
-by `trace_face(G,(u,v))`.
+by `_trace_face(G,(u,v))`.
 """
-function trace_face(G::SimpleGraph{T}, uv::Tuple{T,T}) where {T}
+function _trace_face(G::SimpleGraph{T}, uv::Tuple{T,T}) where {T}
     data = T[]
     u, v = uv
     push!(data, u)
@@ -139,7 +145,7 @@ function trace_face(G::SimpleGraph{T}, uv::Tuple{T,T}) where {T}
 
     return RingList(boundary)
 end
-trace_face(G::SimpleGraph{T}, u::T, v::T) where {T} = trace_face(G, (u, v))
+_trace_face(G::SimpleGraph{T}, u::T, v::T) where {T} = _trace_face(G, (u, v))
 
 
 """
@@ -148,6 +154,8 @@ trace_face(G::SimpleGraph{T}, u::T, v::T) where {T} = trace_face(G, (u, v))
 planar embedding iff this returns `2`.
 
 Each face is a `RingList` of the (directed) edges bordering the face.
+
+*Requires that the graph is connected and has at least one edge.*
 """
 function faces(G::SimpleGraph{T}) where {T}
     FT = RingList{Tuple{T,T}}   # type of an oriented face 
@@ -155,9 +163,9 @@ function faces(G::SimpleGraph{T}) where {T}
 
     for e in G.E
         u, v = e
-        F = trace_face(G, u, v)
+        F = _trace_face(G, u, v)
         push!(result, F)
-        F = trace_face(G, v, u)
+        F = _trace_face(G, v, u)
         push!(result, F)
     end
 
@@ -167,16 +175,19 @@ end
 """
 `NF(G)` returns the number of faces in the graph `G`
 given its current rotation system.
+
+*Requires that the graph is connected and has at least one edge.*
 """
 NF(G::SimpleGraph) = length(faces(G))
 
 """
 `euler_char(G::SimpleGraph)` computes the Euler characteristic 
-of the graph `G` with its associated rotation system. Requires 
-(but does not check) that `G` is connected and has at least one 
-edge.
+of the graph `G` with its associated rotation system. 
+Specifically, `euler_char(G)` returns `NV(G) - NE(G) + NF(G)`.
+
+*Requires that the graph is connected and has at least one edge.*
 """
-euler_char(G::SimpleGraph) = NV(G) - NE(G) + length(faces(G))
+euler_char(G::SimpleGraph) = NV(G) - NE(G) + NF(G)
 
 
 
@@ -185,29 +196,31 @@ euler_char(G::SimpleGraph) = NV(G) - NE(G) + length(faces(G))
 `dual(G::SimpleGraph)` returns the dual graph of `G`.
 The vertices of the dual are the faces of `G` and they are 
 adjacent if and only if they share a common edge. 
+
+*Requires that the graph is connected and has at least one edge.*
 """
-function dual(G::SimpleGraph{T}) where T
-    F = collect(faces(G))  
+function dual(G::SimpleGraph{T}) where {T}
+    F = collect(faces(G))
     S = RingList{Tuple{T,T}}
     GG = SimpleGraph{S}()
     # the faces of G are the vertices of GG
     for f in F
-        add!(GG,f)
+        add!(GG, f)
     end
 
     # two faces are adjacent if one has (a,b) and the other (b,a)
     n = NV(GG)
-    for i=1:n-1 
+    for i = 1:n-1
         f = F[i]
-        for j=i+1:n 
+        for j = i+1:n
             g = F[j]
-            for e in f 
-                if in(reverse(e),g)
-                    add!(GG,f,g)
+            for e in f
+                if in(reverse(e), g)
+                    add!(GG, f, g)
                 end
             end
         end
     end
-    name(GG,"Dual of $(name(G))")
+    name(GG, "Dual of $(name(G))")
     return GG
 end

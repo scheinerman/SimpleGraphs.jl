@@ -192,6 +192,8 @@ be used as the starting point for one of the algorithms.
 function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
     X = get_embedding_direct(G)
     arg_dict = list2dict(collect(args))
+    n = NV(G)
+    m = NE(G)
 
     ## FULL LIST OF POSSIBLE ARGUMENTS PRE-PARSED HERE
 
@@ -231,6 +233,10 @@ function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
     end
 
     if algorithm == :spring
+        if n<3 || m==0
+            embed(G)
+            return
+        end 
         if iterations <= 0
             spring!(X)
         else
@@ -240,16 +246,19 @@ function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
     end
 
     if algorithm == :stress
+        if n<3 || m==0
+            embed(G)
+            return 
+        end 
         stress!(X)
         return nothing
     end
-    #
-    # if algorithm == :distxy
-    #   distxy!(X,tolerance,verbose)
-    #   return nothing
-    # end
-
+    
     if algorithm == :combined
+        if n<3 || m==0
+            embed(G)
+            return 
+        end 
         embed(G, :spring, iterations = iterations)
         scale(G)
         embed(G, :stress)
@@ -294,8 +303,17 @@ end
 function circular_embedding(G::SimpleGraph{T}) where {T}
     d = Dict{T,Vector{Float64}}()
     n = NV(G)
+    if n==0
+        return d 
+    end
 
     vv = vlist(G)  # vertices as a list
+
+    if n==1
+        v = vv[1]
+        d[v] = [0.0, 0.0]
+        return d
+    end 
 
     s = 2 * sin(pi / n)
 
@@ -349,7 +367,6 @@ end
 """
 function circular!(X::GraphEmbedding)
     X.xy = circular_embedding(X.G)
-    rescale!(X)
     return
 end
 
@@ -393,7 +410,6 @@ function private_dist(X::GraphEmbedding)
     return A, vv
 end
 
-# TEMPORARILY OFF LINE DURING TRANSITION TO JULIA 0.7
 
 include("my_spring.jl")
 
@@ -407,9 +423,21 @@ function spring!(X::GraphEmbedding, nits::Int = 100)
     n = NV(X.G)
     A, vv = private_adj(X)
 
+    d = Dict{eltype(X.G),Vector{Float64}}()
+    if n==0
+        X.xy = d 
+        return  
+    end 
+
+    if n==1
+        v = first(vv)
+        d[v] = [0.0, 0.0]
+        X.xy = d
+        return 
+    end
+
     x, y = layout_spring_adj(A, MAXITER = nits)
 
-    d = Dict{eltype(X.G),Vector{Float64}}()
     for i = 1:n
         v = vv[i]
         d[v] = [x[i], y[i]]
@@ -549,7 +577,9 @@ translate(G::SimpleGraph, b::Vector{T}) where {T<:Real} =
 
 function recenter!(X::GraphEmbedding)
     b = [0; 0]
-
+    if NV(X.G)==0
+        return 
+    end 
     for v in X.G.V
         b += X.xy[v]
     end

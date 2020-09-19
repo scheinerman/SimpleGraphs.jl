@@ -98,7 +98,9 @@ function my_layout_stressmajorize_adj(
         norm(X - X0) < abstolx && break
         X0 = X
     end
-    itcounter == maxiter && warn("Maximum number of iterations reached without convergence")
+    if itcounter == maxiter 
+        @warn "Maximum number of iterations reached without convergence"
+    end
     returnall ? (Xs, stresses) : Xs[end]
 end
 
