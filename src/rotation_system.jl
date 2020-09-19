@@ -1,5 +1,5 @@
 export rand_rot, set_rot, get_rot, check_rot, faces, euler_char
-export embed_rot, NF
+export embed_rot, NF, dual
 
 
 """
@@ -62,7 +62,9 @@ function get_rot(G::SimpleGraph)
         return cache_recall(G, :RotationSystem)
         # return G.cache[:RotationSystem]
     end
-    error("This graph does not have a rotation system")
+    @info "Giving this graph, $G, a default rotation system"
+    set_rot(G)
+    return get_rot(G)
 end
 
 
@@ -175,3 +177,37 @@ of the graph `G` with its associated rotation system. Requires
 edge.
 """
 euler_char(G::SimpleGraph) = NV(G) - NE(G) + length(faces(G))
+
+
+
+
+"""
+`dual(G::SimpleGraph)` returns the dual graph of `G`.
+The vertices of the dual are the faces of `G` and they are 
+adjacent if and only if they share a common edge. 
+"""
+function dual(G::SimpleGraph{T}) where T
+    F = collect(faces(G))  
+    S = RingList{Tuple{T,T}}
+    GG = SimpleGraph{S}()
+    # the faces of G are the vertices of GG
+    for f in F
+        add!(GG,f)
+    end
+
+    # two faces are adjacent if one has (a,b) and the other (b,a)
+    n = NV(GG)
+    for i=1:n-1 
+        f = F[i]
+        for j=i+1:n 
+            g = F[j]
+            for e in f 
+                if in(reverse(e),g)
+                    add!(GG,f,g)
+                end
+            end
+        end
+    end
+    name(GG,"Dual of $(name(G))")
+    return GG
+end

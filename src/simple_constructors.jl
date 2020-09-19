@@ -289,6 +289,17 @@ function Cube(n::Integer = 3)
         end
     end
     name(G, "Cube graph Q($n)")
+
+    if n<3
+        set_rot(G)
+    end 
+
+    if n==3 
+        F = [ "000", "001", "011", "010" ]
+        embed(G,:tutte,outside=F)
+        embed_rot(G) 
+    end 
+
     return G
 end
 

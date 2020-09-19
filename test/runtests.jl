@@ -325,4 +325,7 @@ end
     @test euler_char(G) == 2
     G = Dodecahedron()
     @test euler_char(G)==2
+    H = dual(G)
+    @test char_poly(Icosahedron()) == char_poly(H)
+
 end
