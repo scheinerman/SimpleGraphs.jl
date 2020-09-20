@@ -35,6 +35,12 @@ using SimpleGraphs
     G = StringGraph()
     add!(G, "alpha", "beta")
     @test G["alpha", "beta"]
+
+    G = SimpleGraph{Complex{Float64}}()
+    H = SimpleGraph{Complex{Float64}}()
+    add!(G,im,-im)
+    add!(H,-im,im)
+    @test G==H
 end
 
 @testset "Ops" begin

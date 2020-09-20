@@ -64,9 +64,12 @@ function add!(G::SimpleGraph{T}, v, w) where {T}
 
     try
         if v > w
-            v, w = w, v
+            v,w = w,v
         end
     catch
+        if hash(v) > hash(w)
+            v,w = w,v 
+        end 
     end
 
     if ~has(G, v)
