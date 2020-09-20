@@ -1,6 +1,6 @@
 name = "SimpleGraphs"
 uuid = "55797a34-41de-5266-9ec1-32ac4eb504d3"
-version = "0.6.6"
+version = "0.6.7"
 
 [deps]
 AbstractLattices = "398f06c4-4d28-53ec-89ca-5b2656b7603d"

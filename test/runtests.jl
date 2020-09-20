@@ -327,5 +327,5 @@ end
     @test euler_char(G)==2
     H = dual(G)
     @test char_poly(Icosahedron()) == char_poly(H)
-
+    @test euler_char(H) == 2
 end

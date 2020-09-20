@@ -190,7 +190,7 @@ Specifically, `euler_char(G)` returns `NV(G) - NE(G) + NF(G)`.
 euler_char(G::SimpleGraph) = NV(G) - NE(G) + NF(G)
 
 
-
+_shorten(F::RingList) = first.(F)
 
 """
 `dual(G::SimpleGraph)` returns the dual graph of `G`.
@@ -200,27 +200,50 @@ adjacent if and only if they share a common edge.
 *Requires that the graph is connected and has at least one edge.*
 """
 function dual(G::SimpleGraph{T}) where {T}
-    F = collect(faces(G))
-    S = RingList{Tuple{T,T}}
-    GG = SimpleGraph{S}()
+    Flist = collect(faces(G))    # list of faces of the graph
+    FT = RingList{Tuple{T,T}}    # data type of faces
+    VT = Vector{T}               # data type of shortened faces
+    GG = SimpleGraph{VT}()       # graph to return
+
     # the faces of G are the vertices of GG
-    for f in F
-        add!(GG, f)
+    for f in Flist
+        add!(GG, _shorten(f))
     end
 
-    # two faces are adjacent if one has (a,b) and the other (b,a)
-    n = NV(GG)
-    for i = 1:n-1
-        f = F[i]
-        for j = i+1:n
-            g = F[j]
-            for e in f
-                if in(reverse(e), g)
-                    add!(GG, f, g)
-                end
-            end
+    d = Dict{Tuple{T,T},FT}()    # mapping from (directed) edges to faces
+    for f in Flist
+        for e in f
+            d[e] = f
         end
     end
+
+    # add edges 
+    for e in G.E
+        F1 = d[e]
+        F2 = d[reverse(e)]
+        add!(GG, _shorten(F1), _shorten(F2))
+    end
+
+    try
+        # create a rotation system 
+        R = Dict{VT,RingList{VT}}()   # mapping from a face to a cycle of its neighbors
+        for f in Flist
+            bdy = [_shorten(d[reverse(e)]) for e in f]
+            R[_shorten(f)] = RingList(bdy)
+        end
+
+        set_rot(GG, R)
+    catch
+        @info "Unable to transfer rotation system to the dual; assigning a default instead."
+        set_rot(GG)
+    end
+
+    try
+        embed(GG, :tutte)
+    catch
+    end
+
     name(GG, "Dual of $(name(G))")
+
     return GG
 end
