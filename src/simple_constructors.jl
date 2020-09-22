@@ -288,7 +288,7 @@ function Cube(n::Integer = 3)
             add!(G, string(u, base = 2, pad = n), string(v, base = 2, pad = n))
         end
     end
-    name(G, "Cube")
+    name(G, "Cube($n)")
 
     if n<3
         set_rot(G)
