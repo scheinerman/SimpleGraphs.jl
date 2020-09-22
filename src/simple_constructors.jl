@@ -3,7 +3,7 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall, Johnson, Doyle
-export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton
+export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton, Spindle
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.
@@ -22,7 +22,7 @@ function Complete(n::Int)
             add!(G, j, k)
         end
     end
-    name(G, "Complete graph K($n)")
+    name(G, "Complete")
     return G
 end
 
@@ -34,7 +34,7 @@ function Complete(n::Int, m::Int)
             add!(G, u, v)
         end
     end
-    name(G, "Complete bipartite graph K($n,$m)")
+    name(G, "Complete($n,$m)")
     return G
 end
 
@@ -74,7 +74,7 @@ function Complete(parts::Array{Int,1})
             end
         end
     end
-    name(G, "Complete multipartite graph K$parts")
+    name(G, "Complete($parts)")
     return G
 end
 
@@ -92,7 +92,7 @@ function Path(n::Int)
     for v = 1:n-1
         add!(G, v, v + 1)
     end
-    name(G, "Path graph P($n)")
+    name(G, "Path")
     set_rot(G)
     d = Dict{Int,Vector{Float64}}()
     for v = 1:n
@@ -113,7 +113,7 @@ function Path(verts::Array{T}) where {T}
     for k = 1:n-1
         add!(G, verts[k], verts[k+1])
     end
-    name(G, "Path graph with $n vertices")
+    name(G, "Path")
     set_rot(G)
     return G
 end
@@ -128,7 +128,7 @@ function Cycle(n::Int)
     end
     G = Path(n)
     add!(G, 1, n)
-    name(G, "Cycle graph C($n)")
+    name(G, "Cycle")
     set_rot(G)
     embed(G)
     return G
@@ -149,7 +149,7 @@ function Wheel(n::Int)
     for k = 1:n-1
         add!(G, k, n)
     end
-    name(G, "Wheel graph with $n vertices")
+    name(G, "Wheel")
     embed(G, :tutte, outside = collect(1:n-1))
     embed_rot(G)
     return G
@@ -195,7 +195,7 @@ function Grid(n::Int, m::Int)
     recenter(G)
     embed_rot(G)
 
-    name(G, "Grid graph of size $n-by-$m")
+    name(G, "Grid($n,$m)")
     return G
 end
 
@@ -219,7 +219,7 @@ function RandomGraph(n::Int, p::Real = 0.5)
             end
         end
     end
-    name(G, "Erdos-Renyi random graph, p=$p")
+    name(G, "Erdos-Renyi, p=$p")
     return G
 end
 
@@ -241,7 +241,7 @@ function RandomTree(n::Int)
 
     code = [mod(rand(Int), n) + 1 for _ = 1:n-2]
     G = code_to_tree(code)
-    name(G, "Random tree")
+    name(G, "Tree")
     return G
 end
 
@@ -288,7 +288,7 @@ function Cube(n::Integer = 3)
             add!(G, string(u, base = 2, pad = n), string(v, base = 2, pad = n))
         end
     end
-    name(G, "Cube graph Q($n)")
+    name(G, "Cube")
 
     if n<3
         set_rot(G)
@@ -405,7 +405,7 @@ function BuckyBall()
     for e in edges
         add!(G, e[1], e[2])
     end
-    name(G, "Buckyball graph")
+    name(G, "Buckyball")
     embed(G, :tutte, outside = [15, 16, 42, 41, 18, 17])
     embed_rot(G)
     return G
@@ -441,7 +441,7 @@ function Kneser(n::Int, k::Int)
             end
         end
     end
-    name(G, "Kneser($n,$k) graph")
+    name(G, "Kneser($n,$k)")
     return G
 end
 
@@ -479,7 +479,7 @@ function Johnson(n::Int, k::Int)
         end
     end
 
-    name(G, "Johnson($n,$k) graph")
+    name(G, "Johnson($n,$k)")
     return G
 end
 
@@ -492,7 +492,7 @@ named `1:10`. See also: `Kneser`.
 """
 function Petersen()
     G = Kneser(5, 2)
-    name(G, "Petersen graph")
+    name(G, "Petersen")
     embed(
         G,
         :tutte,
@@ -525,7 +525,7 @@ function Paley(p::Int)
             add!(G, u, v)
         end
     end
-    name(G, "Paley($p) graph")
+    name(G, "Paley")
     return G
 end
 
@@ -537,7 +537,7 @@ function Frucht()
     G = Cycle(12)
     more_edges = [(1, 6), (2, 4), (3, 11), (5, 7), (8, 10), (9, 12)]
     add_edges!(G, more_edges)
-    name(G, "Frucht graph")
+    name(G, "Frucht")
     return G
 end
 
@@ -590,7 +590,7 @@ function RandomRegular(n::Int, d::Int, verbose::Bool = false)
             if verbose
                 println("Success")
             end
-            name(g, "Random regular graph, d=$d")
+            name(g, "Regular, d=$d")
             return g
         end
         if verbose
@@ -631,7 +631,7 @@ function RandomSBM(bmap::Vector{Int}, pmat::Array{S,2}) where {S<:Real}
             end
         end
     end
-    name(G, "Random stochastic block model graph")
+    name(G, "Stochastic Block Model")
     return G
 end
 
@@ -673,7 +673,7 @@ function Knight(r::Int = 8, c::Int = 8)
             end
         end
     end
-    name(G, "Knight's tour graph on $r-by-$c chess board")
+    name(G, "Knight($r,$c)")
     embed(G,d)
 
     
@@ -720,7 +720,7 @@ function HoffmanSingleton()
             end
         end
     end
-    name(G, "Hoffman-Singleton graph")
+    name(G, "Hoffman-Singleton")
     return G
 end
 
@@ -743,7 +743,7 @@ function Hoffman()
     A = [0 * D D; D' 0 * D]
 
     G = SimpleGraph(A)
-    name(G, "Hoffman graph")
+    name(G, "Hoffman")
     return G
 end
 
@@ -769,6 +769,50 @@ function Doyle()
             add!(G, v, w)
         end
     end
-    name(G, "Doyle graph")
+    name(G, "Doyle")
+    return G
+end
+
+
+"""
+`Spindle()` returns the Moser spindle graph. This is a seven-vertex
+unit distance graph with chromatic number equal to 4.
+"""
+function Spindle()
+    G = IntGraph(7)
+    edges = [
+        (1, 2),
+        (1, 3),
+        (2, 3),
+        (2, 4),
+        (3, 4),
+        (1, 5),
+        (1, 6),
+        (5, 6),
+        (5, 7),
+        (6, 7),
+        (4, 7),
+    ]
+    add_edges!(G, edges)
+
+    d = Dict{Int,Vector}()
+    a = sqrt(3) / 2
+
+    pts = [0 1 / 2 -1 / 2 0; 0 a a 2a]
+
+    theta = acos(5 / 6) / 2
+    R = [cos(theta) -sin(theta); sin(theta) cos(theta)]
+
+    p1 = R * pts
+    for k = 1:4
+        d[k] = p1[:, k]
+    end
+
+    p2 = R' * pts
+    for k = 5:7
+        d[k] = p2[:, k-3]
+    end
+    embed(G, d)
+    SimpleGraphs.name(G, "Spindle")
     return G
 end
