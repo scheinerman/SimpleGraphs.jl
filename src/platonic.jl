@@ -56,7 +56,7 @@ function Dodecahedron()
         19 20
     ]
     add_edge_matrix!(G, edges)
-    name(G, "Dodecahedron graph")
+    name(G, "Dodecahedron")
     embed(G, :tutte, outside = [1, 11, 10, 9, 2])
     embed_rot(G)
     return G
@@ -100,7 +100,7 @@ function Icosahedron()
         11 12
     ]
     add_edge_matrix!(G, edges)
-    name(G, "Icosahedron graph")
+    name(G, "Icosahedron")
     embed(G, :tutte, outside = [1, 9, 2])
     embed_rot(G)
     return G
@@ -111,7 +111,7 @@ end
 """
 function Octahedron()
     G = Complete([2, 2, 2])
-    name(G, "Octahedron graph")
+    name(G, "Octahedron")
     embed(G, :tutte, outside = [1, 5, 3])
     embed_rot(G)
     return G
