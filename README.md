@@ -43,7 +43,7 @@ for functions relying on [integer] linear programming.
 #### Not ready for prime time
 In addition, we have:
 + A nascent [`SimplePlanarGraphs`](https://github.com/scheinerman/SimplePlanarGraphs.jl) module with *extremely* limited functionality.
-+ An older [`SimpleGraphRepresentations`](https://github.com/scheinerman/SimpleGraphRepresentations.jl) module which I am no longer maintaining.
++ An older [`SimpleGraphRepresentations`](https://github.com/scheinerman/SimpleGraphRepresentations.jl) module that I am no longer maintaining.
 
 ## User's Guide
 
