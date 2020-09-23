@@ -537,6 +537,9 @@ function Frucht()
     G = Cycle(12)
     more_edges = [(1, 6), (2, 4), (3, 11), (5, 7), (8, 10), (9, 12)]
     add_edges!(G, more_edges)
+    F = [3,11,10,8,7,5,4]
+    embed(G,:tutte,outside=F)
+    embed_rot(G)
     name(G, "Frucht")
     return G
 end
@@ -795,10 +798,16 @@ function Spindle()
     ]
     add_edges!(G, edges)
 
+    # compute a rotation system that's planar
+    F = [1,3,4,7,5]
+    embed(G,:tutte,outside=F)
+    embed_rot(G)
+
+    # but then give a unit-distance embedding
     d = Dict{Int,Vector}()
     a = sqrt(3) / 2
 
-    pts = [0 1 / 2 -1 / 2 0; 0 a a 2a]
+    pts = [0 1/2 -1/2 0; 0 a a 2a]
 
     theta = acos(5 / 6) / 2
     R = [cos(theta) -sin(theta); sin(theta) cos(theta)]

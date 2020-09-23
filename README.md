@@ -10,10 +10,10 @@
 
 ---
 
-## New version release notes
+## Release Notes
 
 + As of version 0.5.0 the polynomials returned by functions such as
-`char_poly` are of type `SimplePolynomial`.
+`char_poly` are of type [`SimplePolynomial`](https://github.com/scheinerman/SimplePolynomials.jl).
 + As of version 0.5.2 the function `vertex_type` is deprecated. Use 
 `eltype` instead. 
 + Version 0.6.0 introduces *rotation systems* which are combinatorial representations of embeddings on oriented surfaces.
@@ -36,11 +36,14 @@ This module defines three data types for working with graphs:
 
 
 Additional functionality can be found in these modules:
-+ `DrawSimpleGraphs` for visualization.
-+ `SimpleGraph Algorithms` for functions relying on [integer] linear programming.
-+ `SimpleGraphRepresentations` for creating and analyzing some special
-classes of graphs.
++ [`DrawSimpleGraphs`](https://github.com/scheinerman/DrawSimpleGraphs.jl) for visualization.
++ [`SimpleGraphAlgorithms`](https://github.com/scheinerman/SimpleGraphAlgorithms.jl) 
+for functions relying on [integer] linear programming.
 
+#### Not ready for prime time
+In addition, we have:
++ A nascent [`SimplePlanarGraphs`](https://github.com/scheinerman/SimplePlanarGraphs.jl) module with *extremely* limited functionality.
++ An older [`SimpleGraphRepresentations`](https://github.com/scheinerman/SimpleGraphRepresentations.jl) module which I am no longer maintaining.
 
 ## User's Guide
 
@@ -51,10 +54,19 @@ The `SimpleDigraph` type is not so well developed nor documented. See the
 source files in the `src` directory. Likewise, the `SimpleHypergraph`
 type is in early stages of development.
 
+
+## Postcardware
+
+This software is part of a larger suite of tools for graph theory. More information
+can be found right after my explanation that this code is 
+[postcardware](https://github.com/scheinerman/scheinerman#postcardware).
+
+
 ## Thanks
 
-Thank you to JHU students Tara Abrishami and Laura Bao for contributions
+Thank you to [JHU](https://www.jhu.edu/) students Tara Abrishami and Laura Bao for contributions
 to this project.
+
 
 
 ## Please Help

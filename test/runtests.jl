@@ -211,6 +211,7 @@ end
 
     p = interlace(G)
     @test coeffs(p) == [0, 2, 3, 4, 3, 1]
+    
 end
 
 
