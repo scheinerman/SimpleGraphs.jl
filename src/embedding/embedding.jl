@@ -319,7 +319,7 @@ include("getset.jl")
 include("tutte.jl")
 include("my_spring.jl")
 include("my_stress.jl")
-
+include("colorize.jl")
 include("graffle.jl")
 include("spectral.jl")
 # include("geogebra.jl")
