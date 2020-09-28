@@ -179,3 +179,51 @@ function LZ(Z, d, w)
     @assert all(isfinite.(L))
     L
 end
+
+
+
+
+function private_dist(G::SimpleGraph)
+    n = NV(G)
+    d = dist(G)
+
+    A = zeros(n, n)
+    vv = vlist(G)
+
+    for i = 1:n
+        u = vv[i]
+        for j = 1:n
+            w = vv[j]
+            A[i, j] = d[u, w]
+            if A[i, j] < 0
+                A[i, j] = n / 2  # should be enough to separate the comps
+            end
+        end
+    end
+
+
+    return A, vv
+end
+
+
+
+function _stress(G::SimpleGraph{T}) where T 
+    n = NV(G)
+    A, vv = private_dist(G)
+
+    currentxy = zeros(n, 2)
+    xy = getxy(G)
+    for i = 1:n
+        v = vv[i]
+        currentxy[i, :] = xy[v]
+    end
+
+    xy = my_layout_stressmajorize_adj(A, 2, nothing, currentxy)
+
+    d = Dict{T,Vector{Float64}}()
+    for i = 1:n
+        v = vv[i]
+        d[v] = collect(xy[i, :])
+    end
+    return d
+end

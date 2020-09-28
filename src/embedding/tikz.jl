@@ -7,9 +7,7 @@ function tikz_string(G::SimpleGraph, label::Bool = false)
     #Label = true if nodes should be labeled in the drawing, false otherwise.
     s = "\\begin{tikzpicture}\n"
 
-    if !has_embedding(G)
-        embed(G)
-    end
+    ensure_embed(G)
 
     xy = getxy(G)
     for v in vlist(G)

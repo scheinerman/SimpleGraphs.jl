@@ -41,15 +41,15 @@ function geogebra(
     vertex_colors::Dict = Dict(),
     vertex_size::Int = 3,
 )
-    X = get_embedding_direct(G)
-    VV = vlist(X.G)
-    n = NV(X.G)
+    VV = vlist(G)
+    n = NV(G)
     F = open(file_name, "w")
+    xy = getxy(G)
 
     for i = 1:n
         v = VV[i]
         vname = string(v)
-        (x, y) = X.xy[v]
+        (x, y) = xy[v]
         x = round(x, 3)
         y = round(y, 3)
         println(F, "v_{$i} = CopyFreeObject[Point[{$x,$y}]]")
@@ -72,7 +72,7 @@ function geogebra(
         u = VV[i]
         for j = i+1:n
             v = VV[j]
-            if has(X.G, u, v)
+            if has(G, u, v)
                 println(F, "e_{$i,$j} = Segment[v_{$i},v_{$j}]")
                 println(F, "ShowLabel[e_{$i,$j}, false]")
             end

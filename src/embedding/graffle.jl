@@ -2,14 +2,15 @@ using LightXML
 
 export graffle
 
-function bounds(X::GraphEmbedding)
-
+function bounds(G::SimpleGraph)
+    ensure_embed(G)
     xmin = Inf
     ymin = Inf
     xmax = -Inf
     ymax = -Inf
 
-    for pt in values(X.xy)
+    xy = getxy(G)
+    for pt in values(xy)
         x, y = pt[1], pt[2]
         if x < xmin
             xmin = x
@@ -32,8 +33,8 @@ function bounds(X::GraphEmbedding)
     return (xmin, xmax, ymin, ymax)
 end
 
-function make_scaler(X::GraphEmbedding)
-    (xmin, xmax, ymin, ymax) = bounds(X)
+function make_scaler(G::SimpleGraph)
+    (xmin, xmax, ymin, ymax) = bounds(G)
 
     f(x, y) = (round(Int, 72 * (x - xmin + 0.5)), round(Int, 72 * (ymax - y + 0.5)))
 
@@ -82,7 +83,7 @@ an OmniGraffle document of this drawing.
 """
 function graffle(G::SimpleGraph, filename = "julia.graffle", rad::Int = 9)
 
-    X = get_embedding_direct(G)
+    # X = get_embedding_direct(G)
 
     # minimal header
     xdoc = XMLDocument()
@@ -102,21 +103,21 @@ function graffle(G::SimpleGraph, filename = "julia.graffle", rad::Int = 9)
 
     # vertices and edges are <dict> children of "glist"
 
-    VV = vlist(X.G)
-    n = NV(X.G)
+    VV = vlist(G)
+    n = NV(G)
 
     lookup = Dict{Any,Int}(zip(VV, 1:n))
 
+    xy = getxy(G)
 
-
-    f = make_scaler(X)
+    f = make_scaler(G)
 
     for v in VV
         k = lookup[v]
         vtx = new_child(glist, "dict")
 
         # Location
-        pt = X.xy[v]
+        pt = xy[v]
         x, y = f(pt[1], pt[2])
         location = "{{$x,$y},{$(rad),$(rad)}}"
         add_key_value!(vtx, "Bounds", "string", location)
@@ -140,7 +141,7 @@ function graffle(G::SimpleGraph, filename = "julia.graffle", rad::Int = 9)
     end
 
 
-    EE = elist(X.G)
+    EE = elist(G)
     id = n
 
     for e in EE

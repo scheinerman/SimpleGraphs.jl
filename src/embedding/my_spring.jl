@@ -94,3 +94,32 @@ function layout_spring_adj(
 
     return locs_x, locs_y
 end
+
+
+
+
+
+function _spring(G::SimpleGraph{T}, nits::Int = 1000) where T
+    n = NV(G)
+    A, vv = private_adj(G)
+
+    d = Dict{T,Vector{Float64}}()
+
+    if n==0
+        return d
+    end 
+
+    if n==1
+        v = first(vv)
+        d[v] = [0.0, 0.0]
+        return d
+    end
+
+    x, y = layout_spring_adj(A, MAXITER = nits)
+
+    for i = 1:n
+        v = vv[i]
+        d[v] = [x[i], y[i]]
+    end
+    return d
+end
