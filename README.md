@@ -12,12 +12,12 @@
 
 ## Release Notes
 
-+ As of version 0.5.0 the polynomials returned by functions such as
-`char_poly` are of type [`SimplePolynomial`](https://github.com/scheinerman/SimplePolynomials.jl).
++ Version 0.7.0 reworks graph embedding. One new feature is that vertices do not have to all be colored the same (as was the case in previous versions).
++ Version 0.6.0 introduces *rotation systems* which are combinatorial representations of embeddings on oriented surfaces.
 + As of version 0.5.2 the function `vertex_type` is deprecated. Use 
 `eltype` instead. 
-+ Version 0.6.0 introduces *rotation systems* which are combinatorial representations of embeddings on oriented surfaces.
-
++ As of version 0.5.0 the polynomials returned by functions such as
+`char_poly` are of type [`SimplePolynomial`](https://github.com/scheinerman/SimplePolynomials.jl).
 ---
 
 ## Overview
