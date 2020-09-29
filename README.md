@@ -3,7 +3,7 @@
 
 #  SimpleGraphs
 
-[![Build Status](https://travis-ci.org/scheinerman/SimpleGraphs.jl.svg?branch=master)](https://travis-ci.org/scheinerman/SimpleGraphs.jl)
+[![Build Status](https://travis-ci.org/scheinerman/SimpleGraphs.jl.svg?branch=master)](https://travis-ci.com/scheinerman/SimpleGraphs.jl)
 
 
 [![codecov.io](http://codecov.io/github/scheinerman/SimpleGraphs.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/SimpleGraphs.jl?branch=master)
