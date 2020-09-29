@@ -3,7 +3,7 @@ export colorize, colorize_hues, bipartite_colorize
 """
 `colorize_hues` is a hard-coded list of ten colors used by `colorize`.
 """
-const colorize_hues = [:blue, :green, :red, :yellow, :cyan, :magenta, :orange, :pink, :white, :black]
+const colorize_hues = [:blue, :green, :red, :yellow, :magenta, :cyan, :orange, :pink, :white, :black]
 
 """
 `colorize(G::SimpleGraph{T},d::Dict{T,Int})` assigns colors to the 
@@ -12,8 +12,11 @@ mapping the vertices of `G` to integers in the range `1:10`. (This
 would typically be the output of `vertex_color` from the `SimpleGraphAlgorithms`
 module.) This function calls `set_vertex_color` for each vertex of `G`.
 If `d[v]==k`, then the color assigned to `v` is `colorize_hues[k]`.
+
+This may also be done via `set_vertex_color(G,d)` where `d` is a dictionary 
+with values of type `Int`.
 """
-function colorize(G::SimpleGraph{T},d::Dict{T,Int}) where T
+function colorize(G::SimpleGraph{T},d::Dict{T,S}) where {T,S<:Integer}
     nh = length(colorize_hues)
 
     for v in G.V
@@ -32,6 +35,9 @@ colors to the vertices of `G` according to a bipartition of the graph, or
 throws an error if the graph is not bipartite.
 """
 function bipartite_colorize(G,hue1=:black, hue2=:white)
+    if NV(G) == 0
+        return 
+    end 
     XY = bipartition(G)
     X = first(parts(XY))
     for v in G.V

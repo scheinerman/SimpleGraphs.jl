@@ -42,6 +42,8 @@ end
 
 """
 `get_vertex_color(G,v)` returns the color assigned to vertex `v`.
+
+`get_vertex_color(G)` returns a copy of the dictionary mapping vertices to colors.
 """
 function get_vertex_color(G::SimpleGraph, v)
     ensure_embed(G)
@@ -49,8 +51,10 @@ function get_vertex_color(G::SimpleGraph, v)
 end 
 
 function get_vertex_color(G::SimpleGraph)
-    return get_vertex_color(G,first(G.V))
+    ensure_embed(G)
+    return deepcopy(G.cache[:vcolor])
 end
+
 
 """
 `set_vertex_color(G,v,hue)` sets the color of vertex `v` to `hue`.
@@ -68,6 +72,11 @@ function set_vertex_color(G::SimpleGraph, hue)
     for v in G.V
         d[v] = hue 
     end
+end 
+
+
+function set_vertex_color(G::SimpleGraph, d::Dict{S,T}) where {S,T<:Integer}
+    colorize(G,d)
 end 
 
 """
