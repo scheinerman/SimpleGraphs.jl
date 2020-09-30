@@ -431,10 +431,10 @@ function Kneser(n::Int, k::Int)
         add!(G, v)
     end
 
-    n = length(vtcs)
-    for i = 1:n-1
+    nn = length(vtcs)
+    for i = 1:nn-1
         u = vtcs[i]
-        for j = i+1:n
+        for j = i+1:nn
             v = vtcs[j]
             if length(intersect(u, v)) == 0
                 add!(G, u, v)

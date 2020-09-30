@@ -302,6 +302,9 @@ function complement(G::SimpleGraph{T}) where {T}
             end
         end
     end
+    if cache_check(G,:name)
+        name(H, "Complement of $(name(G))")
+    end
     return H
 end
 
@@ -316,6 +319,11 @@ adjoint(G::SimpleGraph) = complement(G)
 `complement!(G)` replaces `G` with its complement.
 """
 function complement!(G::SimpleGraph)
+    name_flag = cache_check(G,:name)
+    name_hold = "" 
+    if name_flag
+        name_hold = name(G)
+    end 
     cache_clear(G)
     n = NV(G)
     V = vlist(G)
@@ -330,6 +338,9 @@ function complement!(G::SimpleGraph)
             end
         end
     end
+    if name_flag
+        name(G,"Complement of $name_hold")
+    end 
     nothing
 end
 
