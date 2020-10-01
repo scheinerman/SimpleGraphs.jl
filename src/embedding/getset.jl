@@ -59,7 +59,8 @@ end
 """
 `set_vertex_color(G,v,hue)` sets the color of vertex `v` to `hue`.
 
-`set_vertex_color(G,hue)` sets the color of all vertices to `hue`.
+`set_vertex_color(G,hue)` sets the color of all vertices to `hue`. 
+If `hue` is omitted, we use `:white`.
 """
 function set_vertex_color(G::SimpleGraph, v, hue)
     ensure_embed(G)
@@ -74,9 +75,21 @@ function set_vertex_color(G::SimpleGraph, hue)
     end
 end 
 
+set_vertex_color(G::SimpleGraph) = set_vertex_color(G,:white)
 
-function set_vertex_color(G::SimpleGraph, d::Dict{S,T}) where {S,T<:Integer}
-    colorize(G,d)
+
+"""
+`set_vertex_color(G::SimpleGraph, d::Dict, palette)` where `d` is a dictionary 
+mapping vertices to integers and `palette` is a list of colors. 
+
+Convert a mapping of vertices to integers into colors for the vertices.
+
+Vertices are assigned colors as follows: vertex `v` gets color `palette[k]`
+where `k=d[v]`. If `palette` is omitted, use the constant global variable 
+`colorize_hues`.
+"""
+function set_vertex_color(G::SimpleGraph, d::Dict{S,T}, palette=colorize_hues) where {S,T<:Integer}
+    colorize(G,d,palette)
 end 
 
 """
