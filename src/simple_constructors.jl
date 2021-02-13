@@ -290,15 +290,15 @@ function Cube(n::Integer = 3)
     end
     name(G, "Cube($n)")
 
-    if n<3
+    if n < 3
         set_rot(G)
-    end 
+    end
 
-    if n==3 
-        F = [ "000", "001", "011", "010" ]
-        embed(G,:tutte,outside=F)
-        embed_rot(G) 
-    end 
+    if n == 3
+        F = ["000", "001", "011", "010"]
+        embed(G, :tutte, outside = F)
+        embed_rot(G)
+    end
 
     return G
 end
@@ -537,8 +537,8 @@ function Frucht()
     G = Cycle(12)
     more_edges = [(1, 6), (2, 4), (3, 11), (5, 7), (8, 10), (9, 12)]
     add_edges!(G, more_edges)
-    F = [3,11,10,8,7,5,4]
-    embed(G,:tutte,outside=F)
+    F = [3, 11, 10, 8, 7, 5, 4]
+    embed(G, :tutte, outside = F)
     embed_rot(G)
     name(G, "Frucht")
     return G
@@ -659,7 +659,7 @@ can go from one of these squares to the other in a single move.
 function Knight(r::Int = 8, c::Int = 8)
     vtcs = collect(Base.Iterators.product(1:r, 1:c))
     G = SimpleGraph{Tuple{Int64,Int64}}()
-    d = Dict{Tuple{Int,Int}, Vector{Float64}}()
+    d = Dict{Tuple{Int,Int},Vector{Float64}}()
 
     for v in vtcs
         add!(G, v)
@@ -677,9 +677,9 @@ function Knight(r::Int = 8, c::Int = 8)
         end
     end
     name(G, "Knight($r,$c)")
-    embed(G,d)
+    embed(G, d)
 
-    
+
 
     return G
 end
@@ -743,7 +743,7 @@ function Hoffman()
         0 0 1 0 1 0 1 1
     ]
 
-    A = [0 * D D; D' 0 * D]
+    A = [0*D D; D' 0*D]
 
     G = SimpleGraph(A)
     name(G, "Hoffman")
@@ -799,8 +799,8 @@ function Spindle()
     add_edges!(G, edges)
 
     # compute a rotation system that's planar
-    F = [1,3,4,7,5]
-    embed(G,:tutte,outside=F)
+    F = [1, 3, 4, 7, 5]
+    embed(G, :tutte, outside = F)
     embed_rot(G)
 
     # but then give a unit-distance embedding

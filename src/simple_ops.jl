@@ -5,7 +5,7 @@ import Base.join
 export add!, delete!, contract!, induce, add_edges!
 export line_graph, complement, complement!, adjoint
 export cartesian, lex, relabel, trim
-export disjoint_union, union, join
+export disjoint_union, union, join, subdivide
 
 # check for graph equality
 function SimpleGraphs.delete!(G::SimpleGraph, H::SimpleGraph)
@@ -64,12 +64,12 @@ function add!(G::SimpleGraph{T}, v, w) where {T}
 
     try
         if v > w
-            v,w = w,v
+            v, w = w, v
         end
     catch
         if hash(v) > hash(w)
-            v,w = w,v 
-        end 
+            v, w = w, v
+        end
     end
 
     if ~has(G, v)
@@ -302,7 +302,7 @@ function complement(G::SimpleGraph{T}) where {T}
             end
         end
     end
-    if cache_check(G,:name)
+    if cache_check(G, :name)
         name(H, "Complement of $(name(G))")
     end
     return H
@@ -319,11 +319,11 @@ adjoint(G::SimpleGraph) = complement(G)
 `complement!(G)` replaces `G` with its complement.
 """
 function complement!(G::SimpleGraph)
-    name_flag = cache_check(G,:name)
-    name_hold = "" 
+    name_flag = cache_check(G, :name)
+    name_hold = ""
     if name_flag
         name_hold = name(G)
-    end 
+    end
     cache_clear(G)
     n = NV(G)
     V = vlist(G)
@@ -339,8 +339,8 @@ function complement!(G::SimpleGraph)
         end
     end
     if name_flag
-        name(G,"Complement of $name_hold")
-    end 
+        name(G, "Complement of $name_hold")
+    end
     nothing
 end
 
@@ -583,3 +583,38 @@ end
 Abbreviation for `lex(G,H)` for `SimpleGraph`s.
 """
 getindex(G::SimpleGraph, H::SimpleGraph) = lex(G, H)
+
+
+"""
+`subdivide(G::SimpleGraph)` creates a new `SimpleGraph` by replacing
+every edge with a path of length two.
+"""
+function subdivide(G::SimpleGraph{T}) where {T}
+    TT = Tuple{T,T}
+    H = SimpleGraph{TT}()
+
+    for v in G.V
+        add!(H, (v, v))
+    end
+
+    for e in G.E
+        u, v = e
+        add!(H, (u, u), (u, v))
+        add!(H, (v, v), (u, v))
+    end
+
+    if hasxy(G)
+        Gxy = getxy(G)
+        Hxy = Dict{TT,Vector{Float64}}()
+        for v in G.V
+            Hxy[(v, v)] = Gxy[v]
+        end
+        for e in G.E
+            u, v = e
+            Hxy[e] = (Gxy[u] + Gxy[v]) / 2
+        end
+        embed(H, Hxy)
+    end
+
+    return H
+end

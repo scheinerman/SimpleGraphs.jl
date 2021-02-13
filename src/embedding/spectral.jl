@@ -25,7 +25,3 @@ function _spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
     end
     scale(G)
 end
-
-
-
-

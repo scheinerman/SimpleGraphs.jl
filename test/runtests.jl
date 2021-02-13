@@ -38,9 +38,9 @@ using SimpleGraphs
 
     G = SimpleGraph{Complex{Float64}}()
     H = SimpleGraph{Complex{Float64}}()
-    add!(G,im,-im)
-    add!(H,-im,im)
-    @test G==H
+    add!(G, im, -im)
+    add!(H, -im, im)
+    @test G == H
 end
 
 @testset "Ops" begin
@@ -78,6 +78,11 @@ end
     G = Path(9)
     H = trim(G, 1)
     @test NV(H) == 0
+
+    G = Complete(5)
+    H = subdivide(G)
+    @test NV(H) == NV(G) + NE(G)
+    @test NE(H) == 2 * NE(G)
 
 end
 
@@ -204,14 +209,14 @@ end
 @testset "Polynomials" begin
     G = Complete(3, 4)
     p = indep_poly(G)
-    @test coeffs(p) == [1;  7;  9;  5;  1]
+    @test coeffs(p) == [1; 7; 9; 5; 1]
 
     p = matching_poly(G)
     @test coeffs(p) == [0, -24, 0, 36, 0, -12, 0, 1]
 
     p = interlace(G)
     @test coeffs(p) == [0, 2, 3, 4, 3, 1]
-    
+
 end
 
 
@@ -312,26 +317,26 @@ end
     @test G.V == H.V
     @test NE(H) == NE(G)
 
-    A = rand(6,10) .> 0.5
+    A = rand(6, 10) .> 0.5
     H = SimpleHypergraph(A)
     B = Float64.(A)
     K = SimpleHypergraph(B)
-    @test H==K
+    @test H == K
 
-    H = CompleteHypergraph(6,3)
+    H = CompleteHypergraph(6, 3)
     @test NE(H) == 20
 
 end
 
 
 @testset "Rotation Systems" begin
-    G = Grid(3,3)
+    G = Grid(3, 3)
     @test euler_char(G) == 2
     G = Cycle(5)
     set_rot(G)
     @test euler_char(G) == 2
     G = Dodecahedron()
-    @test euler_char(G)==2
+    @test euler_char(G) == 2
     H = dual(G)
     @test char_poly(Icosahedron()) == char_poly(H)
     @test euler_char(H) == 2

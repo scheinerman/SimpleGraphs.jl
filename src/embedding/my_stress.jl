@@ -98,7 +98,7 @@ function my_layout_stressmajorize_adj(
         norm(X - X0) < abstolx && break
         X0 = X
     end
-    if itcounter == maxiter 
+    if itcounter == maxiter
         @warn "Maximum number of iterations reached without convergence"
     end
     returnall ? (Xs, stresses) : Xs[end]
@@ -207,7 +207,7 @@ end
 
 
 
-function _stress(G::SimpleGraph{T}) where T 
+function _stress(G::SimpleGraph{T}) where {T}
     n = NV(G)
     A, vv = private_dist(G)
 

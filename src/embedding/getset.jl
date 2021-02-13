@@ -1,6 +1,6 @@
 # The get and set functions pertaining to embeddings
 
-export getxy
+export getxy, hasxy
 export set_vertex_color, set_line_color, get_vertex_color, get_line_color
 export set_vertex_size, get_vertex_size
 
@@ -12,13 +12,19 @@ export set_vertex_size, get_vertex_size
 """
 function getxy(G::SimpleGraph)
     ensure_embed(G)
-    return(deepcopy(G.cache[:xy]))
+    return (deepcopy(G.cache[:xy]))
 end
 
 function getxy(G::SimpleGraph, v)
     ensure_embed(G)
     return G.cache[:xy][v]
 end
+
+"""
+`hasxy(G::SimpleGraph)` returns `true` if an embedding has been 
+given to this graph.
+"""
+hasxy(G::SimpleGraph)::Bool = cache_check(G, :xy)
 
 
 """
@@ -27,16 +33,16 @@ end
 function get_line_color(G::SimpleGraph)
     ensure_embed(G)
     return G.cache[:line_color]
-end 
+end
 
 """
 `set_line_color(G::SimpleGraph, hue=:black)` sets the color of the graph's 
 edges and vertex boundaries.
 """
-function set_line_color(G::SimpleGraph, hue=:black)
+function set_line_color(G::SimpleGraph, hue = :black)
     ensure_embed(G)
-    G.cache[:line_color] = hue 
-end 
+    G.cache[:line_color] = hue
+end
 
 
 
@@ -48,7 +54,7 @@ end
 function get_vertex_color(G::SimpleGraph, v)
     ensure_embed(G)
     return G.cache[:vcolor][v]
-end 
+end
 
 function get_vertex_color(G::SimpleGraph)
     ensure_embed(G)
@@ -64,18 +70,18 @@ If `hue` is omitted, we use `:white`.
 """
 function set_vertex_color(G::SimpleGraph, v, hue)
     ensure_embed(G)
-    G.cache[:vcolor][v] = hue 
-end 
+    G.cache[:vcolor][v] = hue
+end
 
 function set_vertex_color(G::SimpleGraph, hue)
     ensure_embed(G)
     d = G.cache[:vcolor]
     for v in G.V
-        d[v] = hue 
+        d[v] = hue
     end
-end 
+end
 
-set_vertex_color(G::SimpleGraph) = set_vertex_color(G,:white)
+set_vertex_color(G::SimpleGraph) = set_vertex_color(G, :white)
 
 
 """
@@ -88,19 +94,23 @@ Vertices are assigned colors as follows: vertex `v` gets color `palette[k]`
 where `k=d[v]`. If `palette` is omitted, use the constant global variable 
 `colorize_hues`.
 """
-function set_vertex_color(G::SimpleGraph, d::Dict{S,T}, palette=colorize_hues) where {S,T<:Integer}
-    colorize(G,d,palette)
-end 
+function set_vertex_color(
+    G::SimpleGraph,
+    d::Dict{S,T},
+    palette = colorize_hues,
+) where {S,T<:Integer}
+    colorize(G, d, palette)
+end
 
 """
 `set_vertex_size(G,s)` sets the radius of the graph's vertices.
 
 `set_vertex_size(G)` restores the radius to the default value.
 """
-function set_vertex_size(G::SimpleGraph, s::Int=DEFAULT_MARKER_SIZE)
+function set_vertex_size(G::SimpleGraph, s::Int = DEFAULT_MARKER_SIZE)
     ensure_embed(G)
-    G.cache[:vsize] = s 
-end 
+    G.cache[:vsize] = s
+end
 
 function get_vertex_size(G::SimpleGraph)
     ensure_embed(G)

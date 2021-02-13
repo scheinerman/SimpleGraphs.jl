@@ -99,17 +99,17 @@ end
 
 
 
-function _spring(G::SimpleGraph{T}, nits::Int = 1000) where T
+function _spring(G::SimpleGraph{T}, nits::Int = 1000) where {T}
     n = NV(G)
     A, vv = private_adj(G)
 
     d = Dict{T,Vector{Float64}}()
 
-    if n==0
+    if n == 0
         return d
-    end 
+    end
 
-    if n==1
+    if n == 1
         v = first(vv)
         d[v] = [0.0, 0.0]
         return d

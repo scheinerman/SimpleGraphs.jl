@@ -26,20 +26,20 @@ const DEFAULT_MARKER_SIZE = 6
 * :vsize is set to DEFAULT_MARKER_SIZE 
 * :xy is set to a circular embedding 
 """
-function _new_embed(G::SimpleGraph{T}) where T 
-    cache_save(G,:vsize,DEFAULT_MARKER_SIZE)
-    
+function _new_embed(G::SimpleGraph{T}) where {T}
+    cache_save(G, :vsize, DEFAULT_MARKER_SIZE)
+
     G.cache[:vcolor] = Dict{T,Any}()
-    for v in G.V 
+    for v in G.V
         G.cache[:vcolor][v] = :white
     end
-    
-    cache_save(G,:line_color, :black)
-    n =NV(G)
+
+    cache_save(G, :line_color, :black)
+    n = NV(G)
 
     G.cache[:xy] = _circular_xy(G)
 
-    nothing 
+    nothing
 end
 
 """
@@ -47,10 +47,10 @@ end
 doesn't already have an embedding.
 """
 function ensure_embed(G::SimpleGraph)
-    if !cache_check(G,:xy)
+    if !cache_check(G, :xy)
         _new_embed(G)
-    end 
-end 
+    end
+end
 
 
 function private_adj(G::SimpleGraph)
@@ -131,11 +131,11 @@ function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
     end
 
     # See if there already is an xy-embedding   
-    if !cache_check(G,:xy)
+    if !cache_check(G, :xy)
         _new_embed(G)
         if algorithm == :circular # no need to do it again 
             return nothing
-        end 
+        end
     end
 
     if algorithm == :circular
@@ -149,10 +149,10 @@ function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
     end
 
     if algorithm == :spring
-        if n<3 || m==0
+        if n < 3 || m == 0
             embed(G)
             return
-        end 
+        end
         if iterations <= 0
             G.cache[:xy] = _spring(G)
         else
@@ -162,19 +162,19 @@ function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
     end
 
     if algorithm == :stress
-        if n<3 || m==0
+        if n < 3 || m == 0
             embed(G)
-            return 
-        end 
+            return
+        end
         G.cache[:xy] = _stress(G)
         return nothing
     end
-    
+
     if algorithm == :combined
-        if n<3 || m==0
+        if n < 3 || m == 0
             embed(G)
-            return 
-        end 
+            return
+        end
         embed(G, :spring, iterations = iterations)
         scale(G)
         embed(G, :stress)
@@ -232,30 +232,30 @@ end
 """
 `_circular_xy(G)` creates a standard circular embedding.
 """
-function _circular_xy(G::SimpleGraph{T})::Dict where T 
+function _circular_xy(G::SimpleGraph{T})::Dict where {T}
     n = NV(G)
-    xy = Dict{T,Vector{Float64}}() 
-    if n==0 
+    xy = Dict{T,Vector{Float64}}()
+    if n == 0
         return xy
-    end 
+    end
 
     r = sqrt(n)
     VV = vlist(G)
-    theta = 2*pi/n 
-    for k=1:n 
-        t = (k-1)*theta 
-        x = r*sin(t)
-        y = r*cos(t)
+    theta = 2 * pi / n
+    for k = 1:n
+        t = (k - 1) * theta
+        x = r * sin(t)
+        y = r * cos(t)
         v = VV[k]
-        xy[v] = [x,y]
-    end 
-    return xy 
-end 
+        xy[v] = [x, y]
+    end
+    return xy
+end
 
 """
 `_random_xy(G)` creates a random xy-embedding for `G`
 """
-function _random_xy(G::SimpleGraph{T})::Dict where T
+function _random_xy(G::SimpleGraph{T})::Dict where {T}
     rootn = sqrt(NV(G))
     xy = Dict{T,Vector{Float64}}()
     for v in G.V
@@ -272,18 +272,18 @@ end
 `edge_length(G)` returns an array containing the
 lengths of the edges in the current embedding of `G`.
 """
-edge_length(G::SimpleGraph) = [ edge_length(G,ee) for ee in G.E ]
+edge_length(G::SimpleGraph) = [edge_length(G, ee) for ee in G.E]
 
 """
 `edge_length(G,e)` gives the distance between the
 embedded endpoints of the edge `e` in the drawing `G`.
 """
-function edge_length(G::SimpleGraph{T}, v, w) where T 
-    p1 = getxy(G,v)
-    p2 = getxy(G,w)
-    return norm(p1-p2)
-end 
-edge_length(G::SimpleGraph, ee) = edge_length(G,ee[1],ee[2])
+function edge_length(G::SimpleGraph{T}, v, w) where {T}
+    p1 = getxy(G, v)
+    p2 = getxy(G, w)
+    return norm(p1 - p2)
+end
+edge_length(G::SimpleGraph, ee) = edge_length(G, ee[1], ee[2])
 
 
 """
@@ -298,14 +298,14 @@ end
 
 function scale(G::SimpleGraph)
     if NE(G) == 0
-        return 
-    end 
+        return
+    end
     L = mean(edge_length(G))
     if L != 0
-        _scale(G.cache[:xy], 1/L)
-    else 
-        @warn "Cannot scale $G" 
-    end 
+        _scale(G.cache[:xy], 1 / L)
+    else
+        @warn "Cannot scale $G"
+    end
     nothing
 end
 
