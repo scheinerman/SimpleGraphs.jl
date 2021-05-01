@@ -66,6 +66,9 @@ end
     H = disjoint_union(Cycle(4), Cycle(5))
     @test NV(H) == 9
     @test NE(H) == 9
+    @test H == Cycle(4) + Cycle(5)
+
+    @test 2H == H + H
 
     G = join(IntGraph(5), IntGraph(4))
     @test NE(G) == 20

@@ -1,6 +1,4 @@
-import Base.isequal
-import Base.delete!, Base.union
-import Base.join
+import Base: isequal, delete!, union, join, (+)
 
 export add!, delete!, contract!, induce, add_edges!
 export line_graph, complement, complement!, adjoint
@@ -451,11 +449,9 @@ of `G` and `H` (and no additional edges).
 function disjoint_union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     GG = label_append(G, 1)
     HH = label_append(H, 2)
-    if S == T
-        K = SimpleGraph{Tuple{S,Int}}()
-    else
-        K = SimpleGraph{Any}()
-    end
+
+    ST = typejoin(S, T)
+    K = SimpleGraph{Tuple{ST,Int}}()
 
     for v in GG.V
         add!(K, v)
@@ -472,6 +468,34 @@ function disjoint_union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     end
     return K
 end
+
+
+# G+H is an abbreviation for disjoint_union(G,H)
+(+)(G::SimpleGraph, H::SimpleGraph) = disjoint_union(G, H)
+
+
+function (*)(k::Integer, G::SimpleGraph{T}) where {T}
+    @assert k >= 0 "In k*G for integer k and graph G, k must be nonnegative"
+    TT = Tuple{T,Int}
+    GG = SimpleGraph{TT}()
+
+    for i = 1:k
+        for v in G.V
+            add!(GG, (v, i))
+        end
+
+        for e in G.E
+            x = (e[1], i)
+            y = (e[2], i)
+            add!(GG, x, y)
+        end
+    end
+
+    return GG
+end
+
+
+
 
 # Repeatedly remove vertices with the given degree or less until there
 # are no such vertices remaining in the graph. The default trim(G)
