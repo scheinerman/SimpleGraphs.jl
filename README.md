@@ -3,9 +3,6 @@
 
 #  SimpleGraphs
 
-[![Build Status](https://travis-ci.com/scheinerman/SimpleGraphs.jl.svg?branch=master)](https://travis-ci.com/scheinerman/SimpleGraphs.jl)
-
-
 ---
 
 ## Release Notes
