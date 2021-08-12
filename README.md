@@ -3,7 +3,6 @@
 
 #  SimpleGraphs
 
----
 
 ## Release Notes
 
