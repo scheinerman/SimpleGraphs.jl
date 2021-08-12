@@ -73,6 +73,9 @@ end
     G = join(IntGraph(5), IntGraph(4))
     @test NE(G) == 20
 
+    H = IntGraph(5) ∨ IntGraph(4)
+    @test G == H
+
     G = Cycle(9)
     H = Cycle(10)
     contract!(H, 1, 10)

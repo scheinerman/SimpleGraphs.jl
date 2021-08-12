@@ -16,7 +16,7 @@ using RingLists
 
 
 
-import AbstractLattices.dist
+import AbstractLattices: dist, ∨
 
 """
 `AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.

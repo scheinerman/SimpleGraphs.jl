@@ -386,6 +386,8 @@ end
 """
 `join(G,H)` is a new graph formed by taking disjoint copies of
 `G` and `H` together with all possible edges between those copies.
+
+This may also be invoked as `G ∨ H`.
 """
 function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     K = disjoint_union(G, H)
@@ -396,6 +398,9 @@ function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     end
     return K
 end
+
+(∨)(G::SimpleGraph, H::SimpleGraph) = join(G,H)
+export (∨)
 
 # Create the union of two graphs. If they have vertices or edges in
 # common, that's OK.
