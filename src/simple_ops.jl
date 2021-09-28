@@ -399,7 +399,7 @@ function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     return K
 end
 
-(∨)(G::SimpleGraph, H::SimpleGraph) = join(G,H)
+(∨)(G::SimpleGraph, H::SimpleGraph) = join(G, H)
 export (∨)
 
 # Create the union of two graphs. If they have vertices or edges in

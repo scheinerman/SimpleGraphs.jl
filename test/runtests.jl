@@ -212,6 +212,15 @@ end
     @test num_trans_orientations(G) == 2
 end
 
+@testset "Prufer" begin
+    for k = 1:10
+        G = RandomTree(10)
+        code = prufer_code(G)
+        H = prufer_restore(code)
+        @test G == H
+    end
+end
+
 @testset "Polynomials" begin
     G = Complete(3, 4)
     p = indep_poly(G)

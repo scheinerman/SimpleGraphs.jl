@@ -223,6 +223,9 @@ function RandomGraph(n::Int, p::Real = 0.5)
     return G
 end
 
+include("prufer.jl")
+
+
 # Generate a random tree on vertex set 1:n. All n^(n-2) trees are
 # equally likely.
 
@@ -240,39 +243,39 @@ function RandomTree(n::Int)
     end
 
     code = [mod(rand(Int), n) + 1 for _ = 1:n-2]
-    G = code_to_tree(code)
+    G = prufer_restore(code)
     name(G, "Tree")
     return G
 end
 
-# This is a helper function for RandomTree that converts a Prufer code
-# to a tree. No checks are done on the array fed into this function.
-function code_to_tree(code::Array{Int,1})
-    n = length(code) + 2
-    G = IntGraph(n)
-    degree = ones(Int, n)  # initially all 1s
+# # This is a helper function for RandomTree that converts a Prufer code
+# # to a tree. No checks are done on the array fed into this function.
+# function code_to_tree(code::Array{Int,1})
+#     n = length(code) + 2
+#     G = IntGraph(n)
+#     degree = ones(Int, n)  # initially all 1s
 
-    #every time a vertex appears in code[], up its degree by 1
-    for c in code
-        degree[c] += 1
-    end
+#     #every time a vertex appears in code[], up its degree by 1
+#     for c in code
+#         degree[c] += 1
+#     end
 
-    for u in code
-        for v = 1:n
-            if degree[v] == 1
-                add!(G, u, v)
-                degree[u] -= 1
-                degree[v] -= 1
-                break
-            end
-        end
-    end
+#     for u in code
+#         for v = 1:n
+#             if degree[v] == 1
+#                 add!(G, u, v)
+#                 degree[u] -= 1
+#                 degree[v] -= 1
+#                 break
+#             end
+#         end
+#     end
 
-    last = findall(x -> x != 0, degree)
-    add!(G, last[1], last[2])
+#     last = findall(x -> x != 0, degree)
+#     add!(G, last[1], last[2])
 
-    return G
-end
+#     return G
+# end
 
 # Create the Cube graph with 2^n vertices
 """
