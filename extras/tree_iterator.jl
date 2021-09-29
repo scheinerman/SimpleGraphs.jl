@@ -46,7 +46,7 @@ See https://oeis.org/A000055
 function distinct_trees(n::Int)
     result = Set{SimpleGraph{Int}}()
     seen = Set{UInt64}()
-     P = Progress(length(Trees(n)))
+    P = Progress(length(Trees(n)))
     for T ∈ Trees(n)
         next!(P)
         uh = uhash(T)
