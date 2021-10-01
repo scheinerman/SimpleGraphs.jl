@@ -26,5 +26,6 @@ function create_trees_table()
     for n in keys(code)
         unlabeled_trees[n] = prufer_restore.(code[n])
     end
+    unlabeled_trees[1] = [IntGraph(1)]
     return unlabeled_trees
 end
