@@ -60,3 +60,19 @@ with 10 vertices takes hours. For convenience, we provide the function
 
 To generate the table of codes, use `create_code_table(nmax)`. This writes the codes
 into a file named `codes.jl` that, in turn, is used by `create_trees_table()`.
+
+Example:
+```julia
+julia> include("unlabeled_trees.jl")
+create_trees_table (generic function with 1 method)
+
+julia> T = create_trees_table();
+
+julia> T[5]
+3-element Vector{SimpleGraph{Int64}}:
+ SimpleGraph{Int64} (n=5, m=4)
+ SimpleGraph{Int64} (n=5, m=4)
+ SimpleGraph{Int64} (n=5, m=4)
+```
+The list `T[5]` contains three pairwise nonisomorphic trees on five vertices
+(and that's all there are).
