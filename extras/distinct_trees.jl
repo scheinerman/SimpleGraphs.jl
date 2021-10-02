@@ -36,11 +36,11 @@ function check_in(G::SimpleGraph{Int}, S::Set{SimpleGraph{Int}})
 end
 
 """
-    extend_tree_table!(TT)
+    extend_trees_table!(TT)
 Given a table of distinct trees up to size `n`, extend that table to include 
 all distinct trees of size `n+1`.
 """
-function extend_tree_table!(TT::Dict{Int,Vector{SimpleGraph{Int}}})::Nothing
+function extend_trees_table!(TT::Dict{Int,Vector{SimpleGraph{Int}}})::Nothing
     n = maximum(keys(TT))
     outset = Set{SimpleGraph{Int}}()  # set of trees with n+1 vertices
     for T ∈ TT[n]
@@ -64,7 +64,7 @@ function build_trees_table(nmax::Int)
     TT = init_tree_table()
     while maximum(keys(TT)) < nmax
         @info "Adding trees of size $(maximum(keys(TT))+1)"
-        extend_tree_table!(TT)
+        extend_trees_table!(TT)
     end
     return TT
 end
