@@ -5,10 +5,10 @@ FILE_NAME = "codes.jl"
 # initialize the table of unlabeled trees
 
 """
-    init_tree_table()
+    init_trees_table()
 Create a new table of distinct trees on 1 and 2 vertices.
 """
-function init_tree_table()
+function init_trees_table()
     TT = Dict{Int,Vector{SimpleGraph{Int}}}()
 
     TT[1] = [IntGraph(1)]
@@ -61,7 +61,7 @@ function extend_trees_table!(TT::Dict{Int,Vector{SimpleGraph{Int}}})::Nothing
 end
 
 function build_trees_table(nmax::Int)
-    TT = init_tree_table()
+    TT = init_trees_table()
     while maximum(keys(TT)) < nmax
         @info "Adding trees of size $(maximum(keys(TT))+1)"
         extend_trees_table!(TT)
@@ -111,7 +111,7 @@ is omitted, use `codes.jl`.
 """
 function load_trees_table(filename::String = FILE_NAME)
     include(filename)
-    TT = init_tree_table()
+    TT = init_trees_table()
     nmax = maximum(keys(codes))
 
     for n = 3:nmax
