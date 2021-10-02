@@ -32,31 +32,3 @@ function Base.iterate(T::Trees, state = 0)
 end
 
 Base.length(T::Trees) = Int128(T.n)^(T.n - 2)
-
-"""
-    distinct_trees(n)
-Returns a list of all trees on `n` vertices that are pairwise non-isomorphic.
-
-**WARNINGS**
-+ This can be used up to `n = 9`. Beyond that it's very slows.
-+ Filtering out isomorphic duplicates is done by a heuristic. Tested up to `n = 9` and it works.
-
-See https://oeis.org/A000055
-"""
-function distinct_trees(n::Int)
-    result = Set{SimpleGraph{Int}}()
-    seen = Set{UInt64}()
-    P = Progress(length(Trees(n)))
-    for T ∈ Trees(n)
-        next!(P)
-        uh = uhash(T)
-        if uh ∈ seen
-            continue
-        end
-        push!(seen, uh)
-        push!(result, T)
-    end
-    return collect(result)
-end
-
-

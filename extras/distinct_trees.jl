@@ -43,7 +43,6 @@ all distinct trees of size `n+1`.
 function extend_tree_table!(TT::Dict{Int,Vector{SimpleGraph{Int}}})::Nothing
     n = maximum(keys(TT))
     outset = Set{SimpleGraph{Int}}()  # set of trees with n+1 vertices
-
     for T ∈ TT[n]
         for w = 1:n
             X = deepcopy(T)
@@ -67,7 +66,7 @@ function build_trees_table(nmax::Int)
         @info "Adding trees of size $(maximum(keys(TT))+1)"
         extend_tree_table!(TT)
     end
-    return TT 
+    return TT
 end
 
 """
@@ -76,9 +75,9 @@ Given a table of distinct trees, convert that into a table of Prufer codes.
 This is used by `save_trees_table` and not useful to be called directly. 
 """
 function create_codes_table(TT::Dict{Int64,Vector{SimpleGraph{Int}}})
-    codes = Dict{Int64, Vector{Vector{Int}}}()
+    codes = Dict{Int64,Vector{Vector{Int}}}()
     codes[2] = [Int[]]
-    for n=3:maximum(keys(TT))
+    for n = 3:maximum(keys(TT))
         codes[n] = prufer_code.(TT[n])
     end
     return codes
@@ -110,12 +109,12 @@ Create a table of distinct trees by reading in a file that has been
 precomputed (and presumably saved using `save_tree_table`). If `filename`
 is omitted, use `codes.jl`.
 """
-function load_trees_table(filename::String= FILE_NAME)
+function load_trees_table(filename::String = FILE_NAME)
     include(filename)
     TT = init_tree_table()
     nmax = maximum(keys(codes))
 
-    for n=3:nmax
+    for n = 3:nmax
         TT[n] = prufer_restore.(codes[n])
     end
     @info "Read in table of distinct trees up to $nmax vertices"
