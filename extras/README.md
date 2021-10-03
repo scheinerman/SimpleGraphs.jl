@@ -50,7 +50,7 @@ There are two ways to create such a table:
 + `build_trees_table(nmax)` creates such a table of trees with vertex set size ranging from `1` up to `nmax`. If `nmax` is large, this can take a long time.
 + `load_trees_table(filename)` reads a file that contains all trees up to a certain size that has been precomputed. If `filename` is omitted, use `"tree_codes.jl"`. Note 
 that the file `tree_codes.jl` included in this `extras` folder contains 
-data for all trees up to 14 vertices.
+data for all trees up to 16 vertices.
 
 Furthermore, given a table of trees `TT` up to size `n`, 
 the function `extend_trees_table!(TT)` grows the table to include all trees of 

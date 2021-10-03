@@ -28,7 +28,7 @@ function check_in(G::SimpleGraph{Int}, S::Set{SimpleGraph{Int}})
         return false
     end
     for H ∈ S
-        if is_iso(G, H)
+        if uhash(G) == uhash(H) #is_iso(G, H)
             return true
         end
     end
