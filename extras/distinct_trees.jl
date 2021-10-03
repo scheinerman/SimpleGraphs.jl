@@ -1,6 +1,6 @@
 using SimpleGraphs, SimpleGraphAlgorithms
 
-FILE_NAME = "codes.jl"
+const DEFAULT_FILE_NAME = "tree_codes.jl"
 
 # initialize the table of unlabeled trees
 
@@ -90,7 +90,7 @@ If the file name is omitted, use `codes.jl`.
 """
 function save_trees_table(
     TT::Dict{Int64,Vector{SimpleGraph{Int}}},
-    filename::String = FILE_NAME,
+    filename::String = DEFAULT_FILE_NAME,
 )
     outfile = open(filename, "w")
     codes = create_codes_table(TT)
@@ -109,7 +109,7 @@ Create a table of distinct trees by reading in a file that has been
 precomputed (and presumably saved using `save_tree_table`). If `filename`
 is omitted, use `codes.jl`.
 """
-function load_trees_table(filename::String = FILE_NAME)
+function load_trees_table(filename::String = DEFAULT_FILE_NAME)
     include(filename)
     TT = init_trees_table()
     nmax = maximum(keys(codes))
