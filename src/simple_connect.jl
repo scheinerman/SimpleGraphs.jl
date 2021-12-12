@@ -1,6 +1,7 @@
 # Various functions regarding graph connectivity
 
-export components, num_components, is_connected, spanning_forest, random_spanning_forest
+export components,
+    num_components, is_connected, spanning_forest, random_spanning_forest, max_component
 export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
 export eccentricity, radius, graph_center
 
@@ -33,6 +34,20 @@ function num_components(G::SimpleGraph{T})::Int where {T}
     cache_save(G, :num_components, result)
     return result
 end
+
+
+
+"""
+    max_component(G::SimpleGraph)
+Return the vertex set of a largest component of `G`.
+"""
+function max_component(G::SimpleGraph{T})::Set{T} where {T}
+    comps = components(G)
+    sets = collect(parts(comps))
+    (_, idx) = findmax(length, sets)
+    return sets[idx]
+end
+
 
 
 # determine if the graph is connected

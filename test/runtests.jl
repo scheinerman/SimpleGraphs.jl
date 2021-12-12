@@ -152,6 +152,10 @@ end
     H = spanning_forest(G)
     @test num_components(H) == 2
     @test NE(H) == 8
+
+    G = Cycle(5) + Cycle(8) + Cycle(10)
+    A = max_component(G)
+    @test length(A) == 10
 end
 
 @testset "Matrices" begin
