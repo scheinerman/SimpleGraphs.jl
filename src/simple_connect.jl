@@ -352,11 +352,16 @@ end
 """
 `diam(G)` returns the diameter of `G` or `-1` if `G` is not connected.
 """
-function diam(G::SimpleGraph)
-    if is_connected(G)
-        return maximum(values(dist(G)))
+function diam(G::SimpleGraph)::Int
+    if cache_check(G, :diam)
+        return cache_recall(G, :diam)
     end
-    return -1
+    d = -1
+    if is_connected(G)
+        d = maximum(values(dist(G)))
+    end
+    cache_save(G, :diam, d)
+    return d
 end
 
 # Determine if a given edge in a graph is a cut edge. If there is no
