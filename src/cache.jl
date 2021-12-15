@@ -33,7 +33,7 @@ cache_check(G::SimpleGraph, item::Symbol)::Bool = G.cache_flag && haskey(G.cache
 **WARNING**: No check is done to see if this value is defined. Be
 sure to use `cache_check` first!
 """
-cache_recall(G::SimpleGraph, item::Symbol) = deepcopy(G.cache[item])
+cache_recall(G::SimpleGraph, item::Symbol) = G.cache[item]
 
 
 
@@ -43,7 +43,7 @@ the symbol (key) `item` in the cache for this graph.
 """
 function cache_save(G::SimpleGraph, item::Symbol, value)
     if G.cache_flag
-        G.cache[item] = deepcopy(value)
+        G.cache[item] = value
     end
     nothing
 end
