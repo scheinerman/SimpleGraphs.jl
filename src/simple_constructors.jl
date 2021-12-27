@@ -3,7 +3,7 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall, Johnson, Doyle
-export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton, Spindle
+export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton, Spindle, Golomb
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.
@@ -825,6 +825,49 @@ function Spindle()
         d[k] = p2[:, k-3]
     end
     embed(G, d)
-    SimpleGraphs.name(G, "Spindle")
+    SimpleGraphs.name(G, "Moser Spindle")
+    return G
+end
+
+
+
+"""
+    Golomb()
+Create the Golomb graph. This is a unit-distance graph with chromatic number 4.
+It has 10 vertices and 18 edges.
+"""
+function Golomb()::SimpleGraph{Int}
+    G = Cycle(6)
+    for v = 1:6
+        add!(G, 0, v)
+    end
+
+    add!(G, 1, 7)
+    add!(G, 3, 8)
+    add!(G, 5, 9)
+    add!(G, 7, 8)
+    add!(G, 7, 9)
+    add!(G, 8, 9)
+
+    xy = Dict{Int,Vector{Float64}}()
+
+    xy[0] = [0, 0]
+    for k = 1:6
+        x, y = reim(exp((k - 1) * im * 2 * π / 6))
+        xy[k] = [x, y]
+    end
+
+    r = sqrt(3) / 3
+    θ = acos(r / 2)
+
+
+    for k = 0:2
+        x, y = reim(r * exp((θ + 2 * k * π / 3) * im))
+        xy[k+7] = [x, y]
+    end
+
+    embed(G, xy)
+    name(G, "Golomb")
+
     return G
 end
