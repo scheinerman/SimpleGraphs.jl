@@ -76,3 +76,18 @@ julia> for T in TT[6]
 [3, 2, 2, 1, 1, 1]
 [5, 1, 1, 1, 1, 1]
 ```
+
+# Unit distance graph with chromatic number 5
+
+Aubrey de Grey created a unit distance graph with chromatic number 5. This graph can be seen using the function `deGrey` in the file `deGrey.jl`.
+
+```julia
+julia> include("deGrey.jl")
+deGrey
+
+julia> G = deGrey()
+de Grey (n=1585, m=7909)
+
+julia> diam(G)
+12
+```
