@@ -134,6 +134,12 @@ end
     @test Tetrahedron() == Complete(4)
 end
 
+@testset "Unit distance" begin
+    G = Spindle()
+    @test is_unit_distance(G)
+    G = Golomb()
+    @test is_unit_distance(G)
+end
 
 
 @testset "Connectivity" begin

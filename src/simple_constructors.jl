@@ -3,7 +3,7 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall, Johnson, Doyle
-export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton, Spindle, Golomb
+export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton, Spindle, Golomb, is_unit_distance
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.
@@ -870,4 +870,41 @@ function Golomb()::SimpleGraph{Int}
     name(G, "Golomb")
 
     return G
+end
+
+
+"""
+    is_unit_distance(G, tol=1e-10)
+Check to see if the embedded graph `G` is a unit-distance graph. That is, two vertices of `G`
+should be distance 1 apart if and only if they are adjacent. The optional `tol` gives some tolerance 
+to this assessment to deal with roundoff.
+"""
+function is_unit_distance(G::SimpleGraph{T}, tol = 1e-10)::Bool where {T}
+    xy = getxy(G)
+    VV = vlist(G)
+    n = NV(G)
+    for i = 1:n-1
+        u = VV[i]
+        xyu = xy[u]
+        for j = u+1:n
+            v = VV[j]
+            xyv = xy[v]
+            unit_check = abs(norm(xyu - xyv) - 1) <= tol
+
+            if has(G, u, v)
+                if !unit_check
+                    @info "$u and $v are adjacent, but not distance 1 (within tolerance $tol)"
+                    return false
+                end
+            else
+                if unit_check
+                    @info "$u and $v are not adjacent, but are distance 1 (within tolerance $tol)"
+                    return false
+                end
+            end
+
+        end
+    end
+    return true
+
 end
