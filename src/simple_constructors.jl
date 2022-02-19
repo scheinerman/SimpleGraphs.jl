@@ -3,7 +3,16 @@
 export Complete, Path, Cycle, RandomGraph, RandomRegular, RandomSBM
 export RandomTree, code_to_tree
 export Grid, Wheel, Cube, BuckyBall, Johnson, Doyle
-export Petersen, Kneser, Paley, Knight, Frucht, Hoffman, HoffmanSingleton, Spindle, Golomb, is_unit_distance
+export Petersen,
+    Kneser,
+    Paley,
+    Knight,
+    Frucht,
+    Hoffman,
+    HoffmanSingleton,
+    Spindle,
+    Golomb,
+    is_unit_distance
 
 """
 `Complete(n)` returns a complete graph with `n` vertices `1:n`.

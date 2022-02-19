@@ -77,29 +77,29 @@ end
     prufer_restore(code::Vector{Int})
 Create a tree from its Prufer code.
 """
-function prufer_restore(code::Vector{Int}) 
+function prufer_restore(code::Vector{Int})
     n = length(code)
-    G = IntGraph(n+2)
+    G = IntGraph(n + 2)
 
     # find the degree sequence of this graph 
-    ds = ones(Int,n+2)  
+    ds = ones(Int, n + 2)
     for v ∈ code
         ds[v] += 1
     end
 
-    for v ∈ code 
+    for v ∈ code
         # find first leaf in 
         leaves = [w for w ∈ G.V if ds[w] == 1]
         w = findmin(leaves)[1]
-        add!(G,v,w)
-        ds[v] -= 1 
+        add!(G, v, w)
+        ds[v] -= 1
         ds[w] -= 1
-    end 
+    end
 
     leaves = [w for w ∈ G.V if ds[w] == 1]
     add!(G, leaves[1], leaves[2])
 
-    return G   
+    return G
 end
 
 code_to_tree = prufer_restore  # for backward compatability

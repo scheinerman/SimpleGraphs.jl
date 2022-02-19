@@ -1,7 +1,7 @@
 # Functions to create standard graph matrices
 
 import LinearAlgebraX: char_poly
-export adjacency, laplace, incidence, dist_matrix, eigvals, char_poly
+export adjacency, laplace, incidence, dist_matrix, eigvals, char_poly, normalized_laplace
 using SparseArrays
 # Adjaceny Matrix
 
@@ -45,6 +45,35 @@ function laplace(G::SimpleGraph)
     D = Matrix(Diagonal(d))
     L = D - A
     return L
+end
+
+
+"""
+    normalized_laplace(G::SimpleGraph)
+Return the normalized Laplacian matrix of `G`.
+"""
+function normalized_laplace(G::SimpleGraph)::Matrix{Float64}
+    n = NV(G)
+    NL = zeros(Float64, (n, n))
+    d = vertex2idx(G)
+
+    for v in G.V
+        if deg(G, v) > 0
+            i = d[v]
+            NL[i, i] = 1
+        end
+    end
+
+    for e in G.E
+        u, v = e
+        i = d[u]
+        j = d[v]
+        val = -1 / sqrt(deg(G, u) * deg(G, v))
+        NL[i, j] = val
+        NL[j, i] = val
+    end
+
+    return NL
 end
 
 # incidence matrix

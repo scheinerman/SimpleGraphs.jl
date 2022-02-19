@@ -25,3 +25,23 @@ function _spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
     end
     scale(G)
 end
+
+"""
+    _normalized_spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
+Same as `_spectral`, but use the normalized Laplacian matrix.
+"""
+function _normalized_spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
+    L = normalized_laplace(G)
+    EV = eigvecs(L)
+    x = EV[:, xcol]
+    y = EV[:, ycol]
+
+    VV = vlist(G)
+    n = length(VV)
+
+    for k = 1:n
+        v = VV[k]
+        G.cache[:xy][v] = [x[k], y[k]]
+    end
+    scale(G)
+end
