@@ -172,6 +172,8 @@ end
     A = adjacency(G)
     v = A * ones(10)
     @test v == 3 * ones(Int, 10)
+    NL = normalized_laplace(G)
+    @test 3NL == L
 end
 
 @testset "Twins" begin
