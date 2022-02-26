@@ -91,3 +91,22 @@ de Grey (n=1585, m=7909)
 julia> diam(G)
 12
 ```
+
+# Converting between `SimpleGraphs` and  `Graphs` 
+
+Both the [Graphs](https://github.com/JuliaGraphs/Graphs.jl) module and this `SimpleGraphs` module define a graph type named `SimpleGraph`. The function `graph_convert` converts a graph defined in one 
+module to the type defined in the other. 
+
+> **Note:** When using both `Graphs` and `SimpleGraphs` at the same time it is necessary to disambiguate by writing `Graphs.SimpleGraph` and `SimpleGraphs.SimpleGraph`.
+
+If `g` is a `Graphs.SimpleGraph` then `graph_convert(g)` returns a 
+`SimpleGraphs.SimpleGraph` with exactly the same vertices and edges as `g`.
+
+Conversion in the other direction is more complicated because the `SimpleGraphs` 
+module allows  arbitrary sets of vertices, whereas `Graphs` require graphs to have 
+vertex sets of the form `{1,2,...,n}`. 
+
+When `graph_convert` is applied to a graph `G`
+of type `SimpleGraphs.SimpleGraph` it first makes a copy of `G` with vertices 
+relabeled to be integers from `1` to `n`, and then uses that copy to make a 
+`Graphs.SimpleGraph`. See our `relabel` function.

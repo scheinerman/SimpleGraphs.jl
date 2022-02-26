@@ -48,6 +48,11 @@ The `SimpleDigraph` type is not so well developed nor documented. See the
 source files in the `src` directory. Likewise, the `SimpleHypergraph`
 type is in early stages of development.
 
+## A Few Extras
+
+The `extras` directory contains some additional functionality that may be 
+useful. See the `README` file therein.
+
 
 ## Postcardware
 
@@ -58,8 +63,7 @@ can be found right after my explanation that this code is
 
 ## Thanks
 
-Thank you to [JHU](https://www.jhu.edu/) students Tara Abrishami and Laura Bao for contributions
-to this project.
+Thank you to [JHU](https://www.jhu.edu/) students Tara Abrishami and Laura Bao for contributions to this project.
 
 
 
