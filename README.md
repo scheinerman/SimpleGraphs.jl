@@ -29,12 +29,13 @@ This module defines three data types for working with graphs:
   edges may be any subset of the vertex set.
 
 
+
 Additional functionality can be found in these modules:
 + [`DrawSimpleGraphs`](https://github.com/scheinerman/DrawSimpleGraphs.jl) for visualization.
 + [`SimpleGraphAlgorithms`](https://github.com/scheinerman/SimpleGraphAlgorithms.jl) 
 for functions relying on [integer] linear programming.
 
-#### Not ready for prime time
+### Not ready for prime time
 In addition, we have:
 + A nascent [`SimplePlanarGraphs`](https://github.com/scheinerman/SimplePlanarGraphs.jl) module with *extremely* limited functionality.
 + An older [`SimpleGraphRepresentations`](https://github.com/scheinerman/SimpleGraphRepresentations.jl) module that I am not currently maintaining.
