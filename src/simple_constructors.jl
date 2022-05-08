@@ -204,6 +204,14 @@ function Grid(n::Int, m::Int)
     recenter(G)
     embed_rot(G)
 
+    # make a black-white coloring
+    c = Dict{Tuple{Int,Int},Int}()
+    for (a, b) ∈ G.V
+        c[(a, b)] = mod1(a + b, 2)
+    end
+    set_vertex_color(G, c, [:white, :black])
+
+
     name(G, "Grid($n,$m)")
     return G
 end
@@ -717,7 +725,12 @@ function Knight(r::Int = 8, c::Int = 8)
     name(G, "Knight($r,$c)")
     embed(G, d)
 
-
+    # make a black-white coloring
+    c = Dict{Tuple{Int,Int},Int}()
+    for (a, b) ∈ G.V
+        c[(a, b)] = mod1(a + b, 2)
+    end
+    set_vertex_color(G, c, [:white, :black])
 
     return G
 end
