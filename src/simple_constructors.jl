@@ -505,14 +505,40 @@ named `1:10`. See also: `Kneser`.
 function Petersen()
     G = Kneser(5, 2)
     name(G, "Petersen")
-    embed(
-        G,
-        :tutte,
-        outside = [Set([1, 4]), Set([3, 5]), Set([2, 4]), Set([1, 3]), Set([2, 5])],
-    )
+    embed(G, _pete_embed())
     embed_rot(G)
     return G
 end
+
+"""
+    _pete_embed
+Create a nice embedding for the `Petersen` graph.
+"""
+function _pete_embed()
+    d = Dict{Set{Int},Vector{Float64}}()
+    θ = 2π / 5
+
+    r1 = 2.5
+    r2 = 1.0
+
+    ring1 = [Set([1, 4]), Set([3, 5]), Set([2, 4]), Set([1, 3]), Set([2, 5])]
+    ring2 = [Set([2, 3]), Set([1, 2]), Set([1, 5]), Set([4, 5]), Set([3, 4])]
+
+    for k = 0:4
+        v = ring1[k+1]
+        w = ring2[k+1]
+        α = k * θ
+        x = sin(α)
+        y = cos(α)
+        d[v] = r1 * [x, y]
+        d[w] = r2 * [x, y]
+    end
+
+    return d
+
+end
+
+
 
 # Create Paley graphs
 

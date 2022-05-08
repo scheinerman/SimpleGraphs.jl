@@ -2,7 +2,7 @@
 
 export components,
     num_components, is_connected, spanning_forest, random_spanning_forest, max_component
-export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index
+export find_path, dist, diam, is_cut_edge, is_acyclic, wiener_index, is_cut_vertex
 export eccentricity, radius, graph_center
 
 """
@@ -371,10 +371,12 @@ end
 `is_cut_edge(G,u,v)` [or `is_cut_edge(G,e)`] determins if `(u,v)` [or
 `e`] is a cut edge of `G`.
 """
-function is_cut_edge(G::SimpleGraph, u, v)
+function is_cut_edge(G::SimpleGraph{T}, u::T, v::T)::Bool where {T}
     if !has(G, u, v)
-        error("No such edge in this graph")
+        error("No such edge {$u,$v} in this graph")
     end
+
+    C_save = deepcopy(G.cache)
 
     SimpleGraphs.delete!(G, u, v)
     P = find_path(G, u, v)
@@ -383,13 +385,47 @@ function is_cut_edge(G::SimpleGraph, u, v)
         result = true
     end
     add!(G, u, v)
+    G.cache = C_save
     return result
 end
 
 # When called as is_cut_edge(G,e), we assume e is a tuple or list
 # whose first two entries are the end points of the edge
-function is_cut_edge(G::SimpleGraph, e)
+function is_cut_edge(G::SimpleGraph{T}, e::Tuple{T,T})::Bool where {T}
     return is_cut_edge(G, e[1], e[2])
+end
+
+"""
+    is_cut_vertex(G::SimpleGraph, v)
+Determine if `v` is a cut vertex of `G`.
+"""
+function is_cut_vertex(G::SimpleGraph{T}, v::T)::Bool where {T}
+    if !has(G, v)
+        error("This graph does not have a vertex $v")
+    end
+
+    dv = deg(G, v)
+
+    if dv < 2
+        return false
+    end
+
+    Nv = G[v]
+    H = deepcopy(G)
+    delete!(H, v)
+
+    for i = 1:dv-1
+        x = Nv[i]
+        for j = i+1:dv
+            y = Nv[j]
+            P = find_path(H, x, y)
+            if length(P) == 0
+                return true
+            end
+        end
+    end
+
+    return false
 end
 
 
