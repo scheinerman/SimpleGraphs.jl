@@ -63,7 +63,7 @@ function get_rot(G::SimpleGraph)
         return cache_recall(G, :RotationSystem)
     end
 
-    if cache_check(G, :GraphEmbedding)
+    if hasxy(G)
         embed_rot(G)
         @info "Giving this graph, $G, a rotation system based on its xy-embedding."
     else
