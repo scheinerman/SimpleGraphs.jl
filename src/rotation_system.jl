@@ -40,16 +40,25 @@ function set_rot(G::SimpleGraph, d)
     cache_save(G, :RotationSystem, d)
     nothing
 end
-set_rot(G::SimpleGraph) = set_rot(G, _default_rot(G))
+
+
+function set_rot(G::SimpleGraph)
+    if hasxy(G)
+        embed_rot(G)
+        return
+    end
+    set_rot(G, _default_rot(G))
+end
 
 
 """
 `get_rot(G::SimpleGraph,v)` returns a `RingList` of the neighbors of `v`.
-This assumes that `G` has an associate rotation system. If not, one is 
-generated and an alert is generated.
+This assumes that `G` has an associate rotation system.
 
-`get_rot(G::SimpleGraph)` returns  a copy of the rotation system associated with `G`
-(or an error if there is no rotation system). 
+`get_rot(G::SimpleGraph)` returns a copy of the rotation system 
+associated with `G`. If there is none, a rotation system will 
+be created for this graph. If the graph has an embedding, 
+that will be used to create the rotation system.
 """
 function get_rot(G::SimpleGraph, v)
     if !has(G, v)
@@ -62,14 +71,7 @@ function get_rot(G::SimpleGraph)
     if cache_check(G, :RotationSystem)
         return cache_recall(G, :RotationSystem)
     end
-
-    if hasxy(G)
-        embed_rot(G)
-        @info "Giving this graph, $G, a rotation system based on its xy-embedding."
-    else
-        set_rot(G)
-        @info "Giving this graph, $G, a default rotation system."
-    end
+    set_rot(G)
     return get_rot(G)
 end
 
