@@ -42,7 +42,7 @@ function name(G::SimpleGraph)
     if cache_check(G, :name)
         return cache_recall(G, :name)
     end
-    return "SimpleGraph{$(eltype(G))}"
+    return "UndirectedGraph{$(eltype(G))}"
 end
 
 function name(G::SimpleGraph, the_name::String)

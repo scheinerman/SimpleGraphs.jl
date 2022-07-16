@@ -29,7 +29,7 @@ IntDigraph() = SimpleDigraph{Int}()
 
 
 function show(io::IO, G::SimpleDigraph)
-    print(io, "SimpleDigraph{$(eltype(G))} (n=$(NV(G)), m=$(NE(G)))")
+    print(io, "DirectedGraph{$(eltype(G))} (n=$(NV(G)), m=$(NE(G)))")
 end
 
 

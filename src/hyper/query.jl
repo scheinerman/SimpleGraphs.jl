@@ -14,7 +14,7 @@ NE(H::SimpleHypergraph) = length(H.E)
 
 function show(io::IO, H::SimpleHypergraph{T}) where {T}
     suffix = " (n=$(NV(H)), m=$(NE(H)))"
-    print(io, "SimpleHypergraph{$T}" * suffix)
+    print(io, "Hypergraph{$T}" * suffix)
 end
 
 

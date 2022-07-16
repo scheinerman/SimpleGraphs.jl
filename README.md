@@ -4,14 +4,19 @@
 #  SimpleGraphs
 
 
-## Release Notes
+## Release Notes for 0.8
 
-+ Version 0.7.0 reworks graph embedding. One new feature is that vertices do not have to all be colored the same (as was the case in previous versions).
-+ Version 0.6.0 introduces *rotation systems* which are combinatorial representations of embeddings on oriented surfaces.
-+ As of version 0.5.2 the function `vertex_type` is deprecated. Use 
-`eltype` instead. 
-+ As of version 0.5.0 the polynomials returned by functions such as
-`char_poly` are of type [`SimplePolynomial`](https://github.com/scheinerman/SimplePolynomials.jl).
+To prevent naming clashes with `Graphs`, we will be making the following changes:
++ `SimpleGraph` will be renamed `UndirectedGraph`.
++ `SimpleDigraph` will be renamed `DirectedGraph`.
++ `SimpleHypergraph` will be renamed `Hypergraph`.
+
+We will also provide the abbreviations `UG`, `DG`, and `HG` for these. 
+
+Version 0.8.0 of this package is a transition version. Name changes are 
+in process. Version 0.8.1 and on will retire the old type names.
+
+
 ---
 
 ## Overview
