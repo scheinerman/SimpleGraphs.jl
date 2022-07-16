@@ -3,10 +3,8 @@ using LinearAlgebra
 using SparseArrays
 using SimplePartitions
 using SimplePolynomials # Polynomials
-# using Pkg
-# Pkg.add(PackageSpec(name = "SimpleTools", rev = "master"))
-# Pkg.resolve()
-# using SimpleTools
+
+
 using SimpleGraphs
 
 @testset "Core" begin
@@ -25,9 +23,9 @@ using SimpleGraphs
     add!(G, 2, 3)
     @test NV(G) == NE(G)
     A = adjacency(G)
-    H = SimpleGraph(A)
+    H = UG(A)
     @test G == H
-    H = SimpleGraph(convert(BitMatrix, A))
+    H = UG(convert(BitMatrix, A))
     @test G == H
 
     @test get_edge(G, 1, 2) == get_edge(G, 2, 1)
@@ -36,8 +34,8 @@ using SimpleGraphs
     add!(G, "alpha", "beta")
     @test G["alpha", "beta"]
 
-    G = SimpleGraph{Complex{Float64}}()
-    H = SimpleGraph{Complex{Float64}}()
+    G = UG{Complex{Float64}}()
+    H = UG{Complex{Float64}}()
     add!(G, im, -im)
     add!(H, -im, im)
     @test G == H
@@ -325,7 +323,7 @@ end
     @test has(H, 3)
     @test has(H, [2, 3, 1])
 
-    G = SimpleGraph(H)
+    G = UG(H)
     @test is_connected(G)
 
     @test deg(H, 3) == 2
@@ -339,15 +337,15 @@ end
     @test is_uniform(H)
 
     G = Cycle(8)
-    H = SimpleHypergraph(G)
+    H = HG(G)
     @test is_uniform(H)
     @test G.V == H.V
     @test NE(H) == NE(G)
 
     A = rand(6, 10) .> 0.5
-    H = SimpleHypergraph(A)
+    H = HG(A)
     B = Float64.(A)
-    K = SimpleHypergraph(B)
+    K = HG(B)
     @test H == K
 
     H = CompleteHypergraph(6, 3)
