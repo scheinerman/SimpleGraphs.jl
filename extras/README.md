@@ -99,7 +99,7 @@ Julia's [`Graphs`](https://github.com/JuliaGraphs/Graphs.jl) module defines the 
 This [`SimpleGraphs`](https://github.com/scheinerman/SimpleGraphs.jl.git) module defines the
 type `UndirectedGraph`. 
 
-Both of these types represent simple graphs, i.e., graphs with out directions, loops, or multiple edges. 
+Both of these types represent simple graphs, i.e., graphs without directions, loops, or multiple edges. 
 
 
 The file `graph_converter.jl` provides a simple way to convert one type of graph to the other.
