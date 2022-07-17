@@ -9,7 +9,7 @@ const colorize_hues =
 """
 This is the code used by `set_vertex_color(G,d,palette)`. Not exported.
 """
-function colorize(G::SimpleGraph{T}, d::Dict{T,S}, palette) where {T,S<:Integer}
+function colorize(G::UndirectedGraph{T}, d::Dict{T,S}, palette) where {T,S<:Integer}
     nh = length(palette)
 
     for v in G.V

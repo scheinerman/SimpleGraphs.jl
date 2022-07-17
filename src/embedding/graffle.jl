@@ -2,7 +2,7 @@ using LightXML
 
 export graffle
 
-function bounds(G::SimpleGraph)
+function bounds(G::UndirectedGraph)
     ensure_embed(G)
     xmin = Inf
     ymin = Inf
@@ -33,7 +33,7 @@ function bounds(G::SimpleGraph)
     return (xmin, xmax, ymin, ymax)
 end
 
-function make_scaler(G::SimpleGraph)
+function make_scaler(G::UndirectedGraph)
     (xmin, xmax, ymin, ymax) = bounds(G)
 
     f(x, y) = (round(Int, 72 * (x - xmin + 0.5)), round(Int, 72 * (ymax - y + 0.5)))
@@ -81,7 +81,7 @@ an OmniGraffle document of this drawing.
 * `filename` is the name of the OmniGraffle document (be sure to end with `.graffle`)
 * `rad` is the radius of the circles representing the vertices
 """
-function graffle(G::SimpleGraph, filename = "julia.graffle", rad::Int = 9)
+function graffle(G::UndirectedGraph, filename = "julia.graffle", rad::Int = 9)
 
     # X = get_embedding_direct(G)
 

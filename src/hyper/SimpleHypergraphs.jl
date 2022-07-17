@@ -55,7 +55,7 @@ The vertices of `G` are the same as those in `H`. Two vertices of `G` are adjace
 iff they lie in a common edge of `H`.
 """
 function simplify(H::HyperGraph{T}) where {T}
-    G = SimpleGraph{T}()
+    G = UndirectedGraph{T}()
 
     # copy the vertices into G 
     for v in H.V

@@ -1,6 +1,6 @@
 export euler, is_cut_edge
 
-function euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
+function euler(G::DirectedGraph{T}, u::T, v::T) where {T}
     notrail = T[]
     #check in_degrees and out_degrees of start and end vertex first
     if u == v
@@ -25,12 +25,12 @@ function euler(G::SimpleDigraph{T}, u::T, v::T) where {T}
     return euler_work!(GG, u)
 end
 
-euler(G::SimpleDigraph, u) = euler(G, u, u)
-euler(G::SimpleDigraph) = euler(G, first(G.V))
+euler(G::DirectedGraph, u) = euler(G, u, u)
+euler(G::DirectedGraph) = euler(G, first(G.V))
 
 
 # determine if an edge in a directed graph is a cut edge
-function is_cut_edge(G::SimpleDigraph{T}, u::T, v::T) where {T}
+function is_cut_edge(G::DirectedGraph{T}, u::T, v::T) where {T}
     if !has(G, u, v)
         error("No such edge in this graph")
     end
@@ -48,7 +48,7 @@ end
 
 # helper function to determine if there is euler path
 # function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
-function euler_work!(G::SimpleDigraph{T}, u::T) where {T}
+function euler_work!(G::DirectedGraph{T}, u::T) where {T}
     trail = T[]
     while true
         Nu = out_neighbors(G, u)

@@ -26,7 +26,7 @@ const DEFAULT_MARKER_SIZE = 6
 * :vsize is set to DEFAULT_MARKER_SIZE 
 * :xy is set to a circular embedding 
 """
-function _new_embed(G::SimpleGraph{T}) where {T}
+function _new_embed(G::UndirectedGraph{T}) where {T}
     cache_save(G, :vsize, DEFAULT_MARKER_SIZE)
 
     G.cache[:vcolor] = Dict{T,Any}()
@@ -46,14 +46,14 @@ end
 `ensure_embed(G)` gives `G` a default embedding if it 
 doesn't already have an embedding.
 """
-function ensure_embed(G::SimpleGraph)
+function ensure_embed(G::UndirectedGraph)
     if !cache_check(G, :xy)
         _new_embed(G)
     end
 end
 
 
-function private_adj(G::SimpleGraph)
+function private_adj(G::UndirectedGraph)
     n = NV(G)
     A = zeros(Int, n, n)
     vv = vlist(G)
@@ -99,7 +99,7 @@ The `algorithm` defaults to `:circular` and may be one of the following:
 Note that if the graph already has (say) an embedding, that embedding may
 be used as the starting point for one of the algorithms.
 """
-function embed(G::SimpleGraph, algorithm::Symbol = :circular; args...)
+function embed(G::UndirectedGraph, algorithm::Symbol = :circular; args...)
     arg_dict = list2dict(collect(args))
     n = NV(G)
     m = NE(G)
@@ -212,7 +212,7 @@ end
 a dictionary `d` that maps vertices to coordinates (as two
 dimensional vectors `[x,y]`).
 """
-function embed(G::SimpleGraph, xy::Dict)
+function embed(G::UndirectedGraph, xy::Dict)
     ensure_embed(G)
     G.cache[:xy] = deepcopy(xy)
     nothing
@@ -238,7 +238,7 @@ end
 """
 `_circular_xy(G)` creates a standard circular embedding.
 """
-function _circular_xy(G::SimpleGraph{T})::Dict where {T}
+function _circular_xy(G::UndirectedGraph{T})::Dict where {T}
     n = NV(G)
     xy = Dict{T,Vector{Float64}}()
     if n == 0
@@ -261,7 +261,7 @@ end
 """
 `_random_xy(G)` creates a random xy-embedding for `G`
 """
-function _random_xy(G::SimpleGraph{T})::Dict where {T}
+function _random_xy(G::UndirectedGraph{T})::Dict where {T}
     rootn = sqrt(NV(G))
     xy = Dict{T,Vector{Float64}}()
     for v in G.V
@@ -278,18 +278,18 @@ end
 `edge_length(G)` returns an array containing the
 lengths of the edges in the current embedding of `G`.
 """
-edge_length(G::SimpleGraph) = [edge_length(G, ee) for ee in G.E]
+edge_length(G::UndirectedGraph) = [edge_length(G, ee) for ee in G.E]
 
 """
 `edge_length(G,e)` gives the distance between the
 embedded endpoints of the edge `e` in the drawing `G`.
 """
-function edge_length(G::SimpleGraph{T}, v, w) where {T}
+function edge_length(G::UndirectedGraph{T}, v, w) where {T}
     p1 = getxy(G, v)
     p2 = getxy(G, w)
     return norm(p1 - p2)
 end
-edge_length(G::SimpleGraph, ee) = edge_length(G, ee[1], ee[2])
+edge_length(G::UndirectedGraph, ee) = edge_length(G, ee[1], ee[2])
 
 
 """
@@ -297,12 +297,12 @@ edge_length(G::SimpleGraph, ee) = edge_length(G, ee[1], ee[2])
 `m`. If `m` is omitted, the drawing is rescaled so that the average
 length of an edge equals 1.
 """
-function scale(G::SimpleGraph, m::T) where {T<:Real}
+function scale(G::UndirectedGraph, m::T) where {T<:Real}
     ensure_embed(G)
     _scale(G.cache[:xy], m)
 end
 
-function scale(G::SimpleGraph)
+function scale(G::UndirectedGraph)
     if NE(G) == 0
         return
     end

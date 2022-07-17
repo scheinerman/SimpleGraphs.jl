@@ -4,7 +4,7 @@ export toggle!, local_complement!, interlace
 `toggle!(G,x,y)` deletes edge `xy` if present or adds edge `xy`
 if absent. **No error checking is done**.
 """
-function toggle!(G::SimpleGraph, x, y)
+function toggle!(G::UndirectedGraph, x, y)
     if has(G, x, y)
         SimpleGraphs.delete!(G, x, y)
     else
@@ -18,7 +18,7 @@ end
 where `a` is in `A` and `b` is in `B`.
 **No error checking is done**.
 """
-function super_toggle!(G::SimpleGraph, A::Set, B::Set)
+function super_toggle!(G::UndirectedGraph, A::Set, B::Set)
     for a in A
         for b in B
             toggle!(G, a, b)
@@ -33,7 +33,7 @@ end
 That is, if `u` and `w` are neighbors of `v` then we toggle the edge/nonedge
 `uw`, modifying the graph.
 """
-function local_complement!(G::SimpleGraph, v)
+function local_complement!(G::UndirectedGraph, v)
     if !has(G, v)
         error("Vertex $v is not in this graph")
     end
@@ -51,7 +51,7 @@ function local_complement!(G::SimpleGraph, v)
 end
 
 
-function pivot!(G::SimpleGraph, a, b, debug::Bool = false)
+function pivot!(G::UndirectedGraph, a, b, debug::Bool = false)
     if !has(G, a, b)
         error("Edge ($a,$b) is not in this graph")
     end
@@ -83,7 +83,7 @@ end
 """
 `interlace(G)` returns the interlace polynomial of the graph `G`.
 """
-function interlace(G::SimpleGraph, saver::Bool = true)
+function interlace(G::UndirectedGraph, saver::Bool = true)
     if saver && cache_check(G, :interlace)
         return cache_recall(G, :interlace)
     end

@@ -4,7 +4,7 @@ export indep_poly
 `indep_poly(G)` returns the independence polynomial of the
 `SimpleGraph` `G`.
 """
-function indep_poly(G::SimpleGraph, cache_flag::Bool = true)
+function indep_poly(G::UndirectedGraph, cache_flag::Bool = true)
     if cache_flag && cache_check(G, :indep_poly)
         return cache_recall(G, :indep_poly)
     end

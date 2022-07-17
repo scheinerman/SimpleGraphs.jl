@@ -99,7 +99,7 @@ end
 
 
 
-function _spring(G::SimpleGraph{T}, nits::Int = 1000) where {T}
+function _spring(G::UndirectedGraph{T}, nits::Int = 1000) where {T}
     n = NV(G)
     A, vv = private_adj(G)
 

@@ -2,7 +2,7 @@ export tikz_file, tikz_print
 
 # Code developed by Tara Abrishami
 
-function tikz_string(G::SimpleGraph, label::Bool = false)
+function tikz_string(G::UndirectedGraph, label::Bool = false)
     #Outputs a string of tikz code to draw graph G.
     #Label = true if nodes should be labeled in the drawing, false otherwise.
     s = "\\begin{tikzpicture}\n"
@@ -39,7 +39,7 @@ end
 `tikz_print(G)` prints tikz code to draw `G`.
 `tikz_print(G,true)` does likewise, with vertex labels drawn.
 """
-function tikz_print(G::SimpleGraph, label::Bool = false)
+function tikz_print(G::UndirectedGraph, label::Bool = false)
     print(tikz_string(G, label))
 end
 
@@ -48,10 +48,10 @@ end
 into `filename`. If `label` is omitted (or `false`) vertex labels are not drawn.
 If `filename` is omitted, it defaults to `graph.tex`.
 """
-function tikz_file(G::SimpleGraph, label::Bool, filename::String = "graph.tex")
+function tikz_file(G::UndirectedGraph, label::Bool, filename::String = "graph.tex")
     FILE = open(filename, "w")
     print(FILE, tikz_string(G, label))
     close(FILE)
 end
 
-tikz_file(G::SimpleGraph, filename::String = "graph.tex") = tikz_file(G, false, filename)
+tikz_file(G::UndirectedGraph, filename::String = "graph.tex") = tikz_file(G, false, filename)

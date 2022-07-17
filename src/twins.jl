@@ -7,7 +7,7 @@ That is, if `G[u]-v == G[v]-u`. This is an equivalence relation.
 `twins(G)` returns a partition of the graph's vertex set into twin
 equivalence classes.
 """
-function twins(G::SimpleGraph, u, v)::Bool
+function twins(G::UndirectedGraph, u, v)::Bool
     @assert has(G, u) "vertex $u not in the graph"
     @assert has(G, v) "vertex $v not in the graph"
 

@@ -1,7 +1,7 @@
 export hamiltonian_cycle
 
 #check if it is safe to add vertex v to the path
-function isSafe(v::T, G::SimpleDigraph{T}, path::Deque{T}) where {T}
+function isSafe(v::T, G::DirectedGraph{T}, path::Deque{T}) where {T}
     prev = last(path)
 
     #check if the added vertex is an out_neighbor of the previous vertex
@@ -21,7 +21,7 @@ function isSafe(v::T, G::SimpleDigraph{T}, path::Deque{T}) where {T}
     return true
 end
 
-function hamCycle(G::SimpleDigraph{T}, path::Deque{T}) where {T}
+function hamCycle(G::DirectedGraph{T}, path::Deque{T}) where {T}
     #if all vertices are included in the cycle
     if length(path) == NV(G)
         #check if last vertex is connected to first vertex in path
@@ -49,7 +49,7 @@ function hamCycle(G::SimpleDigraph{T}, path::Deque{T}) where {T}
 end
 
 #check if a directed graph contains a hamiltonian cycle
-function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
+function directed_ham_cycle(G::DirectedGraph{T}) where {T}
     result = Deque{T}()
     vlist = collect(G.V)
 
@@ -72,6 +72,6 @@ function directed_ham_cycle(G::SimpleDigraph{T}) where {T}
 end
 
 #export the result as an array
-function hamiltonian_cycle(G::SimpleDigraph{T}) where {T}
+function hamiltonian_cycle(G::DirectedGraph{T}) where {T}
     return collect(directed_ham_cycle(G))
 end

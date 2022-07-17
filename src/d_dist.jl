@@ -1,5 +1,5 @@
 
-function dist_matrix(G::SimpleDigraph)
+function dist_matrix(G::DirectedGraph)
     VV = vlist(G)
     n = length(VV)
     A = zeros(Int, n, n)
@@ -12,7 +12,7 @@ function dist_matrix(G::SimpleDigraph)
     return A
 end
 
-function diam(G::SimpleDigraph)
+function diam(G::DirectedGraph)
     A = dist_matrix(G)
     if minimum(A) < 0
         return -1

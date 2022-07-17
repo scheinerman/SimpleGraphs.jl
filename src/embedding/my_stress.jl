@@ -183,7 +183,7 @@ end
 
 
 
-function private_dist(G::SimpleGraph)
+function private_dist(G::UndirectedGraph)
     n = NV(G)
     d = dist(G)
 
@@ -207,7 +207,7 @@ end
 
 
 
-function _stress(G::SimpleGraph{T}) where {T}
+function _stress(G::UndirectedGraph{T}) where {T}
     n = NV(G)
     A, vv = private_dist(G)
 

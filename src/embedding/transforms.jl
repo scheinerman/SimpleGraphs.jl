@@ -69,7 +69,7 @@ end
 `recenter(G)` translates the graph's drawing so that the center of mass
 of the vertices is at the origin.
 """
-function recenter(G::SimpleGraph)
+function recenter(G::UndirectedGraph)
     ensure_embed(G)
     _recenter(G.cache[:xy])
 end
@@ -79,7 +79,7 @@ end
 in the graph's drawing. Here `A` is 2-by-2 matrix and `b` is a 2-vector.
 Each point `p` is mapped to `A*p+b`.
 """
-function transform(G::SimpleGraph, A::Array{S,2}, b::Vector{T}) where {S<:Real,T<:Real}
+function transform(G::UndirectedGraph, A::Array{S,2}, b::Vector{T}) where {S<:Real,T<:Real}
     ensure_embed(G)
     _transform(G.cache[:xy], A, b)
 end

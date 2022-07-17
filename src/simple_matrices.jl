@@ -14,7 +14,7 @@ and so forth. However, if the vertices are not sortable in this way,
 the mapping between vertices and rows/columns of the matrix is
 unpredictable.
 """
-function adjacency(G::SimpleGraph)
+function adjacency(G::UndirectedGraph)
     n = NV(G)
     A = zeros(Int, (n, n))
 
@@ -39,7 +39,7 @@ adjacency matrix minus the (diagonal) degree matrix. See `adjacency`
 to understand how vertices correspond to rows/columns of the resulting
 matrix.
 """
-function laplace(G::SimpleGraph)
+function laplace(G::UndirectedGraph)
     A = adjacency(G)
     d = collect(sum(A, dims = 1))[:]
     D = Matrix(Diagonal(d))
@@ -52,7 +52,7 @@ end
     normalized_laplace(G::SimpleGraph)
 Return the normalized Laplacian matrix of `G`.
 """
-function normalized_laplace(G::SimpleGraph)::Matrix{Float64}
+function normalized_laplace(G::UndirectedGraph)::Matrix{Float64}
     n = NV(G)
     NL = zeros(Float64, (n, n))
     d = vertex2idx(G)
@@ -87,7 +87,7 @@ Notes:
 is undirected and an unsigned incidence matrix is desired, use
 `incidence(G,false)`.
 """
-function incidence(G::SimpleGraph, signed::Bool = true)
+function incidence(G::UndirectedGraph, signed::Bool = true)
     n = NV(G)
     m = NE(G)
     M = spzeros(Int, n, m)
@@ -174,6 +174,6 @@ adjacency matrix. More generally, `eigvals(G,mat)` returns the eigenvalues
 of `mat(G)` where `mat` is a matrix-valued function of `G`. In particular,
 one can use `mat(G,laplace)` to find the eigenvalues of `G`'s Laplacian.
 """
-function LinearAlgebra.eigvals(G::SimpleGraph, mat::Function = adjacency)
+function LinearAlgebra.eigvals(G::UndirectedGraph, mat::Function = adjacency)
     return eigvals(mat(G))
 end

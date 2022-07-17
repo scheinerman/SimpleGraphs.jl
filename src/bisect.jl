@@ -21,7 +21,7 @@ This can be invoked as follows:
 A plain call to `bisect(G)` is equivalent to `bisect(G,"zero")` (which
 is the same as `bisect(G,"user", 0.0)`).
 """
-function bisect(G::SimpleGraph, where::AbstractString = "zero", pivot::Real = 0.0)
+function bisect(G::UndirectedGraph, where::AbstractString = "zero", pivot::Real = 0.0)
 
     verbose = false
 
@@ -100,7 +100,7 @@ end
 one end in `A` and one end in `B`. Here `A` and `B` are collections
 of vertices of `G`.
 """
-function cross_edges(G::SimpleGraph, A, B)
+function cross_edges(G::UndirectedGraph, A, B)
 
     AB = Base.Iterators.product(A, B)
 

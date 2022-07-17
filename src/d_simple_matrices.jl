@@ -1,7 +1,7 @@
 # Functions to create standard digraph matrices
 
 # Adjaceny Matrix
-function adjacency(G::SimpleDigraph)
+function adjacency(G::DirectedGraph)
     n = NV(G)
     A = zeros(Int, (n, n))
 
@@ -20,7 +20,7 @@ end
 
 
 # incidence matrix
-function incidence(G::SimpleDigraph)
+function incidence(G::DirectedGraph)
     n = NV(G)
     m = NE(G)
     M = spzeros(Int, n, m)

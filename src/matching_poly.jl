@@ -4,7 +4,7 @@ export matching_poly
 `matching_poly(G)` returns the matching polynomial of the
 `SimpleGraph` `G`.
 """
-function matching_poly(G::SimpleGraph, cache_flag::Bool = true)
+function matching_poly(G::UndirectedGraph, cache_flag::Bool = true)
     if cache_flag && cache_check(G, :matching_poly)
         return cache_recall(G, :matching_poly)
     end

@@ -10,7 +10,7 @@ smallest.
 This may also be invoked as `_spectral(G,xcol,ycol)` to choose other
 eigenvectors to use for the x and y coordinates of the embedding.
 """
-function _spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
+function _spectral(G::UndirectedGraph, xcol::Int = 2, ycol::Int = 3)
     L = laplace(G)
     EV = eigvecs(L)
     x = EV[:, xcol]
@@ -30,7 +30,7 @@ end
     _normalized_spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
 Same as `_spectral`, but use the normalized Laplacian matrix.
 """
-function _normalized_spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
+function _normalized_spectral(G::UndirectedGraph, xcol::Int = 2, ycol::Int = 3)
     L = normalized_laplace(G)
     EV = eigvecs(L)
     x = EV[:, xcol]

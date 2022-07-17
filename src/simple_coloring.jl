@@ -10,7 +10,7 @@ export bipartition, two_color, greedy_color, random_greedy_color
 if the graph is not bipartite. The output is a `Dict` mapping the
 vertex set to the values 1 and 2.
 """
-function two_color(G::SimpleGraph{T}) where {T}
+function two_color(G::UndirectedGraph{T}) where {T}
     if cache_check(G, :two_color)
         return cache_recall(G, :two_color)
     end
@@ -47,7 +47,7 @@ using SimplePartitions
 `bipartition(G)` creates a bipartition of the graph (or returns an
 error if the graph is not bipartite. Output is a `Partition`.
 """
-function bipartition(G::SimpleGraph{T}) where {T}
+function bipartition(G::UndirectedGraph{T}) where {T}
     f = two_color(G)
     return Partition(f)
 end
@@ -66,7 +66,7 @@ is returned to you as a `Dict` mapping vertices to positive integers
 
 If `seq` is omitted, a random permutation of the vertices is used.
 """
-function greedy_color(G::SimpleGraph{T}, seq::Array{T,1}) where {T}
+function greedy_color(G::UndirectedGraph{T}, seq::Array{T,1}) where {T}
     f = Dict{T,Int}()  # this is the mapping from V to colors
     maxf::Int = 0      # largest color used
 
@@ -97,7 +97,7 @@ end
 # order by degree. The order of vertices of the same degree is
 # indeterminate. NOTE: This is not exported from this module. Should
 # it be?
-function deg_sorted_vlist(G::SimpleGraph)
+function deg_sorted_vlist(G::UndirectedGraph)
     bye = x -> -x[1]
     list = [(deg(G, v), v) for v in G.V]
     sort!(list, by = bye)
@@ -107,7 +107,7 @@ end
 
 # Apply greedy_color to the graph visiting the vertices in decreasing
 # order of degree.
-function greedy_color(G::SimpleGraph{T}) where {T}
+function greedy_color(G::UndirectedGraph{T}) where {T}
     seq = deg_sorted_vlist(G)
     return greedy_color(G, seq)
 end
@@ -122,7 +122,7 @@ end
 random permutations of the vertex set. After `reps` iterations, the
 best coloring found is returned.
 """
-function random_greedy_color(G::SimpleGraph{T}, reps::Int = 1) where {T}
+function random_greedy_color(G::UndirectedGraph{T}, reps::Int = 1) where {T}
     n = NV(G)
     bestf = greedy_color(G)  # degree order default start
     best = maximum(values(bestf))

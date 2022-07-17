@@ -118,7 +118,7 @@ function ShiftDigraph(alphabet = [0, 1], n::Int = 3)
     vertex_iter = all_tuples(alphabet, n)
     vlist = collect(vertex_iter)
     T = typeof(vlist[1])
-    G = SimpleDigraph{T}()
+    G = DirectedGraph{T}()
     for v in vlist
         add!(G, v)
     end
@@ -143,7 +143,7 @@ function for creating a Torus Graph
 function TorusDigraph(n::Int = 4, m::Int = 3)
 
     T = Tuple{Int,Int}
-    G = SimpleDigraph{T}()
+    G = DirectedGraph{T}()
 
     #create vertices
     vlist = Tuple{Int,Int}[]

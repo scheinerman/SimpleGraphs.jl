@@ -113,7 +113,7 @@ end
 
 # Create a path graph from a list of vertices
 function Path(verts::Array{T}) where {T}
-    G = SimpleGraph{T}()
+    G = UndirectedGraph{T}()
     n = length(verts)
 
     if n == 1
@@ -171,7 +171,7 @@ suggest `Path(n1)*Path(n2)*Path(n3)` optionally wrapped in
 `relabel`. See also: `Cube`.
 """
 function Grid(n::Int, m::Int)
-    G = SimpleGraph{Tuple{Int,Int}}()
+    G = UndirectedGraph{Tuple{Int,Int}}()
 
     # add the vertices
     for u = 1:n
@@ -445,7 +445,7 @@ they are disjoint.
 function Kneser(n::Int, k::Int)
     A = collect(1:n)
     vtcs = [Set(v) for v in IterTools.subsets(A, k)]
-    G = SimpleGraph{Set{Int}}()
+    G = UndirectedGraph{Set{Int}}()
 
     for v in vtcs
         add!(G, v)
@@ -482,7 +482,7 @@ function Johnson(n::Int, k::Int)
 
     A = collect(1:n)
     vtcs = [Set{Int}(v) for v in IterTools.subsets(A, k)]
-    G = SimpleGraph{Set{Int}}()
+    G = UndirectedGraph{Set{Int}}()
 
     for v in vtcs
         add!(G, v)
@@ -704,7 +704,7 @@ can go from one of these squares to the other in a single move.
 """
 function Knight(r::Int = 8, c::Int = 8)
     vtcs = collect(Base.Iterators.product(1:r, 1:c))
-    G = SimpleGraph{Tuple{Int64,Int64}}()
+    G = UndirectedGraph{Tuple{Int64,Int64}}()
     d = Dict{Tuple{Int,Int},Vector{Float64}}()
 
     for v in vtcs
@@ -796,7 +796,7 @@ function Hoffman()
 
     A = [0*D D; D' 0*D]
 
-    G = SimpleGraph(A)
+    G = UndirectedGraph(A)
     name(G, "Hoffman")
     return G
 end
@@ -810,7 +810,7 @@ See article on [Mathworld](http://mathworld.wolfram.com/DoyleGraph.html)
 """
 function Doyle()
     T = Tuple{Int,Int}
-    G = SimpleGraph{T}()
+    G = UndirectedGraph{T}()
     for a = 0:8
         for b = 0:2
             v = (a, b)
@@ -884,7 +884,7 @@ end
 Create the Golomb graph. This is a unit-distance graph with chromatic number 4.
 It has 10 vertices and 18 edges.
 """
-function Golomb()::SimpleGraph{Int}
+function Golomb()::UndirectedGraph{Int}
     G = Cycle(6)
     for v = 1:6
         add!(G, 0, v)
@@ -927,7 +927,7 @@ Check to see if the embedded graph `G` is a unit-distance graph. That is, two ve
 should be distance 1 apart if and only if they are adjacent. The optional `tol` gives some tolerance 
 to this assessment to deal with roundoff.
 """
-function is_unit_distance(G::SimpleGraph{T}, tol = 1e-10)::Bool where {T}
+function is_unit_distance(G::UndirectedGraph{T}, tol = 1e-10)::Bool where {T}
     xy = getxy(G)
     VV = vlist(G)
     n = NV(G)

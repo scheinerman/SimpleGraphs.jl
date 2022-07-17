@@ -8,13 +8,13 @@ export transitive_orientation
 simple graph `G`. The result is a `SimpleDigraph`. An error is raised
 if `G` does not have a transitive orientation.
 """
-function transitive_orientation(G::SimpleGraph)
+function transitive_orientation(G::UndirectedGraph)
     err_msg = "This graph does not have a transitive orientation"
     vertices = deepcopy(vlist(G))
     edges = deepcopy(elist(G))
     V = eltype(G)
     diredges = Tuple{V,V}[]
-    D = SimpleDigraph{V}()
+    D = DirectedGraph{V}()
     while length(diredges) != 0 || length(edges) != 0
         if length(diredges) == 0
             e = popfirst!(edges)
@@ -62,7 +62,7 @@ export num_trans_orientations
 `num_trans_orientations(G)` returns the number of transitive
 orientations of the graph `G`.
 """
-function num_trans_orientations(G2::SimpleGraph)
+function num_trans_orientations(G2::UndirectedGraph)
     if cache_check(G2, :num_trans_orientations)
         return cache_recall(G2, :num_trans_orientations)
     end
@@ -86,7 +86,7 @@ function num_trans_orientations(G2::SimpleGraph)
     return ans
 end
 
-function makeSimplex!(G::SimpleGraph, multiplexes::Array, col::Dict)
+function makeSimplex!(G::UndirectedGraph, multiplexes::Array, col::Dict)
     edge = elist(G)[1]
     vert1 = edge[1]
     vert2 = edge[2]
@@ -127,21 +127,21 @@ function makeSimplex!(G::SimpleGraph, multiplexes::Array, col::Dict)
     end
 end
 
-function makeColorClass(G1::SimpleGraph)
+function makeColorClass(G1::UndirectedGraph)
     err_msg = "error"
     G = deepcopy(G1)
     vertices = deepcopy(vlist(G))
     edge = deepcopy(elist(G))
     V = eltype(G)
     diredge = Tuple{V,V}[]
-    D = SimpleDigraph{V}()
-    E = SimpleGraph{V}()
-    classes = SimpleGraph{V}[]
+    D = DirectedGraph{V}()
+    E = UndirectedGraph{V}()
+    classes = UndirectedGraph{V}[]
     while length(diredge) != 0 || length(edge) != 0
         if length(diredge) == 0
             if length(elist(E)) != 0
                 pushfirst!(classes, E)
-                E1 = SimpleGraph{V}()
+                E1 = UndirectedGraph{V}()
                 E = E1
             end
             e = popfirst!(edge)

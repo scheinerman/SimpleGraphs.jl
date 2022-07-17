@@ -5,7 +5,7 @@ export hamiltonian_cycle
 graph (if one exists) or an empty array (otherwise). This works
 reasonably well for small graphs.
 """
-function hamiltonian_cycle(G::SimpleGraph)
+function hamiltonian_cycle(G::UndirectedGraph)
     if cache_check(G, :hamiltonian_cycle)
         return cache_recall(G, :hamiltonian_cycle)
     end
@@ -41,7 +41,7 @@ function hamiltonian_cycle(G::SimpleGraph)
 end
 
 
-function ham_extend(G::SimpleGraph, VV::Array, idx::Int, used::Dict, path::Array)
+function ham_extend(G::UndirectedGraph, VV::Array, idx::Int, used::Dict, path::Array)
     # println(path[1:idx])  # debug
     n = NV(G)
     v = path[idx]

@@ -9,7 +9,7 @@ export eccentricity, radius, graph_center
 `components(G)` returns the vertex sets of the connected components of
 `G` (as a `Partition`).
 """
-function components(G::SimpleGraph{T}) where {T}
+function components(G::UndirectedGraph{T}) where {T}
     if cache_check(G, :components)
         return cache_recall(G, :components)
     end
@@ -26,7 +26,7 @@ end
 """
 `num_components(G)` returns the number of connected components in `G`.
 """
-function num_components(G::SimpleGraph{T})::Int where {T}
+function num_components(G::UndirectedGraph{T})::Int where {T}
     if cache_check(G, :num_components)
         return cache_recall(G, :num_components)
     end
@@ -41,7 +41,7 @@ end
     max_component(G::SimpleGraph)
 Return the vertex set of a largest component of `G`.
 """
-function max_component(G::SimpleGraph{T})::Set{T} where {T}
+function max_component(G::UndirectedGraph{T})::Set{T} where {T}
     comps = components(G)
     sets = collect(parts(comps))
     (_, idx) = findmax(length, sets)
@@ -54,7 +54,7 @@ end
 """
 `is_connected(G)` determines if `G` is connected.
 """
-function is_connected(G::SimpleGraph{T}) where {T}
+function is_connected(G::UndirectedGraph{T}) where {T}
     return num_components(G) <= 1
 end
 
@@ -64,11 +64,11 @@ end
 """
 `spanning_forest(G)` creates a maximal acyclic subgraph of `G`.
 """
-function spanning_forest(G::SimpleGraph{T}) where {T}
+function spanning_forest(G::UndirectedGraph{T}) where {T}
     if cache_check(G, :spanning_forest)
         return cache_recall(G, :spanning_forest)
     end
-    H = SimpleGraph{T}()
+    H = UndirectedGraph{T}()
     if NV(G) == 0
         return H
     end
@@ -102,11 +102,11 @@ Each component of the result spans a component of `G`.
 This differs from `spanning_forest` in that repeated invocations of this function
 can return different results.
 """
-function random_spanning_forest(G::SimpleGraph)
+function random_spanning_forest(G::UndirectedGraph)
     VT = eltype(G)
     ET = Tuple{VT,VT}
 
-    T = SimpleGraph{VT}()  # output
+    T = UndirectedGraph{VT}()  # output
 
     VV = vlist(G)
     EE = elist(G)
@@ -211,7 +211,7 @@ function dist(G::AbstractSimpleGraph, u, v)
     if !has(G, u) || !has(G, v)
         error("One or both of $u and $v are not vertices of this graph")
     end
-    if typeof(G) <: SimpleGraph && cache_check(G, :dist)
+    if typeof(G) <: UndirectedGraph && cache_check(G, :dist)
         d = cache_recall(G, :dist)
         return d[u, v]
     end
@@ -279,7 +279,7 @@ end
 in the graph `G`. This is the maximum distance from `v`
 to another vertex (or -1 if the graph is not connected).
 """
-function eccentricity(G::SimpleGraph, v)
+function eccentricity(G::UndirectedGraph, v)
     if !has(G, v)
         error("$v is not a vertex of this graph")
     end
@@ -294,7 +294,7 @@ end
 `graph_center(G)` returns the set of vertices of a `SimpleGraph` with minimum
 eccentricities.
 """
-function graph_center(G::SimpleGraph)::Set
+function graph_center(G::UndirectedGraph)::Set
     if cache_check(G, :graph_center)
         return cache_recall(G, :graph_center)
     end
@@ -321,7 +321,7 @@ end
 minimum `eccentricity` of a vertex of `G` (or -1 if the graph
 is not connected).
 """
-function radius(G::SimpleGraph)
+function radius(G::UndirectedGraph)
     if cache_check(G, :radius)
         return cache_recall(G, :radius)
     end
@@ -340,7 +340,7 @@ end
 `wiener_index(G)` is the sum of the distances between vertices in `G`.
 Returns -1 if `G` is not connected.
 """
-function wiener_index(G::SimpleGraph)::Int
+function wiener_index(G::UndirectedGraph)::Int
     if is_connected(G)
         return div(sum(values(dist(G))), 2)
     end
@@ -352,7 +352,7 @@ end
 """
 `diam(G)` returns the diameter of `G` or `-1` if `G` is not connected.
 """
-function diam(G::SimpleGraph)::Int
+function diam(G::UndirectedGraph)::Int
     if cache_check(G, :diam)
         return cache_recall(G, :diam)
     end
@@ -371,7 +371,7 @@ end
 `is_cut_edge(G,u,v)` [or `is_cut_edge(G,e)`] determins if `(u,v)` [or
 `e`] is a cut edge of `G`.
 """
-function is_cut_edge(G::SimpleGraph{T}, u::T, v::T)::Bool where {T}
+function is_cut_edge(G::UndirectedGraph{T}, u::T, v::T)::Bool where {T}
     if !has(G, u, v)
         error("No such edge {$u,$v} in this graph")
     end
@@ -391,7 +391,7 @@ end
 
 # When called as is_cut_edge(G,e), we assume e is a tuple or list
 # whose first two entries are the end points of the edge
-function is_cut_edge(G::SimpleGraph{T}, e::Tuple{T,T})::Bool where {T}
+function is_cut_edge(G::UndirectedGraph{T}, e::Tuple{T,T})::Bool where {T}
     return is_cut_edge(G, e[1], e[2])
 end
 
@@ -399,7 +399,7 @@ end
     is_cut_vertex(G::SimpleGraph, v)
 Determine if `v` is a cut vertex of `G`.
 """
-function is_cut_vertex(G::SimpleGraph{T}, v::T)::Bool where {T}
+function is_cut_vertex(G::UndirectedGraph{T}, v::T)::Bool where {T}
     if !has(G, v)
         error("This graph does not have a vertex $v")
     end
@@ -433,7 +433,7 @@ end
 `is_acyclic(G)` returns `true` if `G` has no cycles and `false`
 otherwise.
 """
-function is_acyclic(G::SimpleGraph)
+function is_acyclic(G::UndirectedGraph)
     n = NV(G)
     m = NE(G)
     c = num_components(G)

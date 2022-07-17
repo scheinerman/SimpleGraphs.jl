@@ -1,6 +1,6 @@
 export Tetrahedron, Dodecahedron, Icosahedron, Octahedron
 
-function add_edge_matrix!(G::SimpleGraph, edges::Array{Int,2})
+function add_edge_matrix!(G::UndirectedGraph, edges::Array{Int,2})
     ne = size(edges, 1)
     for j = 1:ne
         e = edges[j, :]

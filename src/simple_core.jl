@@ -2,7 +2,7 @@ import Base.show, Base.==, Base.adjoint, Base.*, Base.eltype
 import Base.getindex
 import LightXML.name
 
-export SimpleGraph, IntGraph, StringGraph
+export UndirectedGraph, IntGraph, StringGraph
 export show, NV, NE, has, typ, fastN!, name, get_edge
 export vlist, elist, neighbors, getindex, deg, deg_hist
 
@@ -15,14 +15,14 @@ Use `SimpleGraph()` to create a new graph in which the vertices may be
 vertices are of type `T`. See `IntGraph` and `StringGraph` as special
 cases.
 """
-mutable struct SimpleGraph{T} <: AbstractSimpleGraph
+mutable struct UndirectedGraph{T} <: AbstractSimpleGraph
     V::Set{T}          # Vertex set
     E::Set{Tuple{T,T}} # Edge set
     N::Dict{T,Set{T}}  # Optional neighbor sets
     Nflag::Bool        # Tells if N is used or not (default on)
     cache::Dict{Symbol,Any}   # save previous expensive results
     cache_flag::Bool          # decide if we use cache or no
-    function SimpleGraph{T}(Nflag::Bool = true) where {T}
+    function UndirectedGraph{T}(Nflag::Bool = true) where {T}
         V = Set{T}()
         E = Set{Tuple{T,T}}()
         N = Dict{T,Set{T}}()
@@ -31,6 +31,9 @@ mutable struct SimpleGraph{T} <: AbstractSimpleGraph
     end
 end
 
+const UG = UndirectedGraph
+export UG
+
 """
 `name(G)` returns the graph's name.
 
@@ -38,14 +41,14 @@ end
 empty, then the name is set to the default `SimpleGraph{T}` where
 `T` is the vertex type.
 """
-function name(G::SimpleGraph)
+function name(G::UndirectedGraph)
     if cache_check(G, :name)
         return cache_recall(G, :name)
     end
     return "UndirectedGraph{$(eltype(G))}"
 end
 
-function name(G::SimpleGraph, the_name::String)
+function name(G::UndirectedGraph, the_name::String)
     G.cache[:name] = the_name
     if length(the_name) == 0
         cache_clear(G, :name)
@@ -55,13 +58,13 @@ end
 
 
 
-function show(io::IO, G::SimpleGraph)
+function show(io::IO, G::UndirectedGraph)
     suffix = " (n=$(NV(G)), m=$(NE(G)))"
     print(io, name(G) * suffix)
 end
 
 # Default constructor uses Any type vertices
-SimpleGraph(Nflag::Bool = true) = SimpleGraph{Any}(Nflag)
+UndirectedGraph(Nflag::Bool = true) = UndirectedGraph{Any}(Nflag)
 
 # A StringGraph has vertices of type String.
 """
@@ -80,7 +83,7 @@ more) tokens, then the first two tokens are taken as vertex names and
 extra tokens on the line are ignored. Lines that begin with a # are
 ignored.
 """
-StringGraph() = SimpleGraph{String}()
+StringGraph() = UndirectedGraph{String}()
 
 function StringGraph(file::AbstractString)
     G = StringGraph()
@@ -91,7 +94,7 @@ end
 # Helper function for StrinGraph(file), and can be used to add
 # vertices and edges to a graph (assuming its vertex type can
 # accomodate strings).
-function load!(G::SimpleGraph, file::AbstractString)
+function load!(G::UndirectedGraph, file::AbstractString)
     f = open(file, "r")
     while (~eof(f))
         line = chomp(readline(f))
@@ -120,7 +123,7 @@ vertices `1:n`.
 `IntGraph(A)` where `A` is an adjacency matrix creates a graph for which
 `A` is the adjacency matrix.
 """
-IntGraph() = SimpleGraph{Int}()
+IntGraph() = UndirectedGraph{Int}()
 
 # With a postive integer argument, adds 1:n as vertex set, but no
 # edges.
@@ -153,7 +156,7 @@ end
 `1:n` where `A` is an `n`-by-`n` symmetric matrix specifying the graph's
 adjacency matrix.
 """
-SimpleGraph(A::AbstractMatrix) = IntGraph(A)
+UndirectedGraph(A::AbstractMatrix) = IntGraph(A)
 
 
 """
@@ -162,7 +165,7 @@ SimpleGraph(A::AbstractMatrix) = IntGraph(A)
 Returns the data type of the vertices this graph may hold.
 For example, if `G=IntGraph()` then this returns `Int64`.`
 """
-eltype(G::SimpleGraph{T}) where {T} = T
+eltype(G::UndirectedGraph{T}) where {T} = T
 
 @deprecate vertex_type eltype
 
@@ -177,7 +180,7 @@ NV(G::AbstractSimpleGraph) = length(G.V)
 """
 `NE(G)` returns the number of edges in `G`.
 """
-NE(G::SimpleGraph) = length(G.E)
+NE(G::UndirectedGraph) = length(G.E)
 
 
 """
@@ -186,7 +189,7 @@ NE(G::SimpleGraph) = length(G.E)
 `has(G,v,w)` returns `true` iff `(v,w)` is an edge of `G`.
 """
 has(G::AbstractSimpleGraph, v) = in(v, G.V)
-has(G::SimpleGraph, v, w) = in((v, w), G.E) || in((w, v), G.E)
+has(G::UndirectedGraph, v, w) = in((v, w), G.E) || in((w, v), G.E)
 
 
 """
@@ -194,7 +197,7 @@ has(G::SimpleGraph, v, w) = in((v, w), G.E) || in((w, v), G.E)
 the edge joining `u` and `v` is stored in the edge set of `G`.
 An error is thrown if `u` and `v` are not adjacent vertices of `G`.
 """
-function get_edge(G::SimpleGraph{T}, u, v)::Tuple{T,T} where {T}
+function get_edge(G::UndirectedGraph{T}, u, v)::Tuple{T,T} where {T}
     if !has(G, u, v)
         error("($u,$v) is not an edge of this graph")
     end
@@ -215,7 +218,7 @@ structure holding the graph, but slows down look up of edges.
 
 **Note**: Fast neighborhood look up is on by default.
 """
-function fastN!(G::SimpleGraph{T}, flg::Bool = true) where {T}
+function fastN!(G::UndirectedGraph{T}, flg::Bool = true) where {T}
     # if no change, do nothing
     if flg == G.Nflag
         return flg
@@ -276,7 +279,7 @@ end
 """
 `elist(G)` returns the edges of `G` as a list (array).
 """
-function elist(G::SimpleGraph)
+function elist(G::UndirectedGraph)
     result = collect(G.E)
     try
         sort!(result)
@@ -291,7 +294,7 @@ end
 
 May also be invoked as `G[v]`.
 """
-function neighbors(G::SimpleGraph{T}, v) where {T}
+function neighbors(G::UndirectedGraph{T}, v) where {T}
     if ~has(G, v)
         error("Graph does not contain requested vertex")
     end
@@ -315,11 +318,11 @@ function neighbors(G::SimpleGraph{T}, v) where {T}
 end
 
 # Here is another way to access the neighbors of a vertex: G[v]
-getindex(G::SimpleGraph, v) = neighbors(G, v)
+getindex(G::UndirectedGraph, v) = neighbors(G, v)
 
 # And here's a getindex way to check for edges: G[u,v] is a shortcut
 # for has(G,u,v).
-getindex(G::SimpleGraph, v, w) = has(G, v, w)
+getindex(G::UndirectedGraph, v, w) = has(G, v, w)
 
 # Degree of a vertex
 """
@@ -327,7 +330,7 @@ getindex(G::SimpleGraph, v, w) = has(G, v, w)
 
 `deg(G)` gives the degree sequence (sorted).
 """
-function deg(G::SimpleGraph, v)
+function deg(G::UndirectedGraph, v)
     if ~has(G, v)
         error("Graph does not contain requested vertex")
     end
@@ -338,7 +341,7 @@ function deg(G::SimpleGraph, v)
 end
 
 # Degree sequence
-function deg(G::SimpleGraph{T}) where {T}
+function deg(G::UndirectedGraph{T}) where {T}
     if G.Nflag
         ds = [deg(G, v) for v in G.V]
     else
@@ -368,7 +371,7 @@ present in the graph. Because Julia arrays are 1-based, the indexing
 is a bit off. Specifically, entry `k` in the returned array is the
 number of vertices of degree `k-1`.
 """
-function deg_hist(G::SimpleGraph{T}) where {T}
+function deg_hist(G::UndirectedGraph{T}) where {T}
     n = NV(G)
     degs = deg(G)
     result = zeros(Int, n)
@@ -381,8 +384,8 @@ end
 
 import Base.hash
 
-function hash(G::SimpleGraph, h::UInt64 = UInt64(0))
+function hash(G::UndirectedGraph, h::UInt64 = UInt64(0))
     return hash(G.V, h) + hash(G.E, h)
 end
 
-simplify(G::SimpleGraph) = deepcopy(G)
+simplify(G::UndirectedGraph) = deepcopy(G)

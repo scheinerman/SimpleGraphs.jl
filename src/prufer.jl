@@ -4,7 +4,7 @@ export prufer_code, is_tree, prufer_restore
     is_tree(G)
 Determines if the `SimpleGraph` is a tree.
 """
-function is_tree(G::SimpleGraph)
+function is_tree(G::UndirectedGraph)
     return is_connected(G) && (NE(G) == NV(G) - 1)
 end
 
@@ -13,7 +13,7 @@ end
     lowest_leaf(G)
 Return the leaf of the `SimpleGraph` with the smallest label.
 """
-function lowest_leaf(G::SimpleGraph)
+function lowest_leaf(G::UndirectedGraph)
     leaves = [v for v ∈ G.V if deg(G, v) == 1]
     return findmin(leaves)[1]
 end
@@ -23,7 +23,7 @@ end
     lowest_leaf_neighbor(G::SimpleGraph)
 Return the unique neighbor of `lowest_leaf(G)`.
 """
-function lowest_leaf_neighbor(G::SimpleGraph)
+function lowest_leaf_neighbor(G::UndirectedGraph)
     v = lowest_leaf(G)
     return G[v][1]
 end
@@ -34,7 +34,7 @@ Return the Prufer code of the `SimpleGraph` which must be a tree.
 The vertices must be `<`-comparable and preferrably are the integers 
 `{1,2,...,n}` (otherwise we cannot decode the sequence generated).
 """
-function prufer_code(G::SimpleGraph{T})::Vector{T} where {T}
+function prufer_code(G::UndirectedGraph{T})::Vector{T} where {T}
     if !is_tree(G)
         error("Graph must be a tree")
     end
@@ -57,7 +57,7 @@ function prufer_code(G::SimpleGraph{T})::Vector{T} where {T}
 
 end
 
-function prufer_work(G::SimpleGraph{T})::Vector{T} where {T}
+function prufer_work(G::UndirectedGraph{T})::Vector{T} where {T}
     if NV(G) <= 2
         return T[]
     end

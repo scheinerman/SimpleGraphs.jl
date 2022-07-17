@@ -6,7 +6,7 @@ export cartesian, lex, relabel, trim
 export disjoint_union, union, join, subdivide
 
 # check for graph equality
-function SimpleGraphs.delete!(G::SimpleGraph, H::SimpleGraph)
+function SimpleGraphs.delete!(G::UndirectedGraph, H::UndirectedGraph)
     if G.V != H.V || NE(G) != NE(H)
         return false
     end
@@ -25,12 +25,12 @@ function SimpleGraphs.delete!(G::SimpleGraph, H::SimpleGraph)
     return G.E == H.E
 end
 
-function SimpleGraphs.isequal(G::SimpleGraph, H::SimpleGraph)
+function SimpleGraphs.isequal(G::UndirectedGraph, H::UndirectedGraph)
     return G.V == H.V && G.E == H.E
 end
 
 
-function ==(G::SimpleGraph, H::SimpleGraph)
+function ==(G::UndirectedGraph, H::UndirectedGraph)
     return isequal(G, H)
 end
 
@@ -42,7 +42,7 @@ end
 of those vertices is not already in the graph, it is added to the
 vertex set.
 """
-function add!(G::SimpleGraph{T}, v) where {T}
+function add!(G::UndirectedGraph{T}, v) where {T}
     if has(G, v)
         return false
     end
@@ -55,7 +55,7 @@ function add!(G::SimpleGraph{T}, v) where {T}
 end
 
 # adding edges
-function add!(G::SimpleGraph{T}, v, w) where {T}
+function add!(G::UndirectedGraph{T}, v, w) where {T}
     if v == w
         return false
     end
@@ -112,7 +112,7 @@ from the graph.
 
 `delete!(G,v,w)` deletes the edge `(v,w)` from `G`.
 """
-function SimpleGraphs.delete!(G::SimpleGraph, v, w)
+function SimpleGraphs.delete!(G::UndirectedGraph, v, w)
     flag = false
     if has(G, v, w)
         cache_clear(G)
@@ -128,7 +128,7 @@ function SimpleGraphs.delete!(G::SimpleGraph, v, w)
 end
 
 # vertex deletion
-function SimpleGraphs.delete!(G::SimpleGraph, v)
+function SimpleGraphs.delete!(G::UndirectedGraph, v)
     flag = false
     if has(G, v)
         cache_clear(G)
@@ -159,7 +159,7 @@ Note: The edge `(u,v)` need not be present in the graph. If missing,
 this is equivalent to first adding the edge to the graph and then
 contracting it.
 """
-function contract!(G::SimpleGraph, u, v)
+function contract!(G::UndirectedGraph, u, v)
     if !has(G, u) || !has(G, v) || u == v
         return false
     end
@@ -178,14 +178,14 @@ end
 `induce(G,A)` creates the induced subgraph of `G` with vertices in the
 set `A`. The graph may be either a `SimpleGraph` or a `SimpleDigraph`.
 """
-function induce(G::SimpleGraph{T}, A::Set) where {T}
+function induce(G::UndirectedGraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
     for v in A
         if ~has(G, v)
             error("The set A must be a subset of V(G)")
         end
     end
-    H = SimpleGraph{T}()  # place to hold the answer
+    H = UndirectedGraph{T}()  # place to hold the answer
 
     # add all the vertices in A to H
     for v in A
@@ -225,14 +225,14 @@ function induce(G::SimpleGraph{T}, A::Set) where {T}
 end
 
 # Digraph version
-function induce(G::SimpleDigraph{T}, A::Set) where {T}
+function induce(G::DirectedGraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
     for v in A
         if ~has(G, v)
             error("The set A must be a subset of V(G)")
         end
     end
-    H = SimpleDigraph{T}()  # place to hold the answer
+    H = DirectedGraph{T}()  # place to hold the answer
 
     # add all the vertices in A to H
     for v in A
@@ -256,8 +256,8 @@ end
 """
 `line_graph(G)` creates the line graph of `G`.
 """
-function line_graph(G::SimpleGraph{T}) where {T}
-    H = SimpleGraph{Tuple{T,T}}()
+function line_graph(G::UndirectedGraph{T}) where {T}
+    H = UndirectedGraph{Tuple{T,T}}()
 
     m = NE(G)
     E = elist(G)
@@ -282,8 +282,8 @@ end
 `complement(G)` creates (as a new graph) the complement of `G`.
 Note that `G'` is a short cut for `complement(G)`.
 """
-function complement(G::SimpleGraph{T}) where {T}
-    H = SimpleGraph{T}()
+function complement(G::UndirectedGraph{T}) where {T}
+    H = UndirectedGraph{T}()
     V = vlist(G)
     n = NV(G)
 
@@ -310,13 +310,13 @@ end
 """
 `G'` is equivalent to `complement(G)`.
 """
-adjoint(G::SimpleGraph) = complement(G)
+adjoint(G::UndirectedGraph) = complement(G)
 
 # complement in place. Returns None.
 """
 `complement!(G)` replaces `G` with its complement.
 """
-function complement!(G::SimpleGraph)
+function complement!(G::UndirectedGraph)
     name_flag = cache_check(G, :name)
     name_hold = ""
     if name_flag
@@ -347,8 +347,8 @@ end
 `cartesian(G,H)` creates the Cartesian product of the two graphs.
 This can be abbreviated as `G*H`.
 """
-function cartesian(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
-    K = SimpleGraph{Tuple{S,T}}()
+function cartesian(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
+    K = UndirectedGraph{Tuple{S,T}}()
     for v in G.V
         for w in H.V
             add!(K, (v, w))
@@ -376,7 +376,7 @@ end
 """
 For `SimpleGraph`s: `G*H` is equivalent to `cartesian(G,H)`.
 """
-function *(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
+function *(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
     return cartesian(G, H)
 end
 
@@ -389,7 +389,7 @@ end
 
 This may also be invoked as `G ∨ H`.
 """
-function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
+function join(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
     K = disjoint_union(G, H)
     for v in G.V
         for w in H.V
@@ -399,7 +399,7 @@ function join(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
     return K
 end
 
-(∨)(G::SimpleGraph, H::SimpleGraph) = join(G, H)
+(∨)(G::UndirectedGraph, H::UndirectedGraph) = join(G, H)
 export (∨)
 
 # Create the union of two graphs. If they have vertices or edges in
@@ -409,11 +409,11 @@ export (∨)
 `union(G,H)` creates the union of the graphs `G` and `H`. The graphs
 may (and typically do) have common vertices or edges.
 """
-function union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
+function union(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
     if S == T
-        K = SimpleGraph{S}()
+        K = UndirectedGraph{S}()
     else
-        K = SimpleGraph{Any}()
+        K = UndirectedGraph{Any}()
     end
 
     for v in G.V
@@ -436,7 +436,7 @@ end
 # a new graph in which the name of each vertex has an integer
 # appended. For example, if the vertex type is String in the original
 # graph, the new vertices are type (String, Int).
-function label_append(G::SimpleGraph{S}, a::Int) where {S}
+function label_append(G::UndirectedGraph{S}, a::Int) where {S}
     mapper = Dict{S,Tuple{S,Int}}()
     for v in G.V
         mapper[v] = (v, a)
@@ -451,12 +451,12 @@ end
 `disjoint_union(G,H)` is a new graph formed by taking disjoint copies
 of `G` and `H` (and no additional edges).
 """
-function disjoint_union(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
+function disjoint_union(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
     GG = label_append(G, 1)
     HH = label_append(H, 2)
 
     ST = typejoin(S, T)
-    K = SimpleGraph{Tuple{ST,Int}}()
+    K = UndirectedGraph{Tuple{ST,Int}}()
 
     for v in GG.V
         add!(K, v)
@@ -476,13 +476,13 @@ end
 
 
 # G+H is an abbreviation for disjoint_union(G,H)
-(+)(G::SimpleGraph, H::SimpleGraph) = disjoint_union(G, H)
+(+)(G::UndirectedGraph, H::UndirectedGraph) = disjoint_union(G, H)
 
 
-function (*)(k::Integer, G::SimpleGraph{T}) where {T}
+function (*)(k::Integer, G::UndirectedGraph{T}) where {T}
     @assert k >= 0 "In k*G for integer k and graph G, k must be nonnegative"
     TT = Tuple{T,Int}
-    GG = SimpleGraph{TT}()
+    GG = UndirectedGraph{TT}()
 
     for i = 1:k
         for v in G.V
@@ -513,7 +513,7 @@ end
 vertices of degree `d` or smaller. For example, if `G` is a tree,
 `trim(G,1)` will eventually remove all vertices.
 """
-function trim(G::SimpleGraph, d::Int = 0)
+function trim(G::UndirectedGraph, d::Int = 0)
     H = deepcopy(G)
     while NV(H) > 0 && minimum(deg(H)) <= d
         for v in H.V
@@ -535,8 +535,8 @@ end
 `relabel(G,d)` (where `d` is a `Dict`) returns a copy of `G` in which
 vertex `v` is renamed `d[v]`.
 """
-function relabel(G::SimpleGraph{S}, label::Dict{S,T}) where {S,T}
-    H = SimpleGraph{T}()
+function relabel(G::UndirectedGraph{S}, label::Dict{S,T}) where {S,T}
+    H = UndirectedGraph{T}()
     for v in G.V
         add!(H, label[v])
     end
@@ -550,7 +550,7 @@ function relabel(G::SimpleGraph{S}, label::Dict{S,T}) where {S,T}
 end
 
 # Relabel the vertices with the integers 1:n
-function relabel(G::SimpleGraph{S}) where {S}
+function relabel(G::UndirectedGraph{S}) where {S}
     verts = vlist(G)
     n = length(verts)
     label = Dict{S,Int}()
@@ -574,9 +574,9 @@ and `h~h'`.
 
 We can use the notation `G[H]` also to create `lex(G,H)`.
 """
-function lex(G::SimpleGraph{S}, H::SimpleGraph{T}) where {S,T}
+function lex(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
     VT = Tuple{S,T}
-    K = SimpleGraph{VT}()
+    K = UndirectedGraph{VT}()
     # Create vertex set
     for a in G.V
         for b in H.V
@@ -611,16 +611,16 @@ end
 """
 Abbreviation for `lex(G,H)` for `SimpleGraph`s.
 """
-getindex(G::SimpleGraph, H::SimpleGraph) = lex(G, H)
+getindex(G::UndirectedGraph, H::UndirectedGraph) = lex(G, H)
 
 
 """
 `subdivide(G::SimpleGraph)` creates a new `SimpleGraph` by replacing
 every edge with a path of length two.
 """
-function subdivide(G::SimpleGraph{T}) where {T}
+function subdivide(G::UndirectedGraph{T}) where {T}
     TT = Tuple{T,T}
-    H = SimpleGraph{TT}()
+    H = UndirectedGraph{TT}()
 
     for v in G.V
         add!(H, (v, v))

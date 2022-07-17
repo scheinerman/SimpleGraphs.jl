@@ -9,7 +9,7 @@ defines a face, the embedding will be crossing free.
 `tutte(G::SimpleGraph)` assumes `G` has a rotation system in which case a 
 largest face will be selected to be `outside`.
 """
-function _tutte(G::SimpleGraph{T}, outside::Vector{T}) where {T}
+function _tutte(G::UndirectedGraph{T}, outside::Vector{T}) where {T}
     if !issubset(outside, G.V)
         error("Some of the proposed outer vertices are not in this graph")
     end
@@ -61,7 +61,7 @@ function _tutte(G::SimpleGraph{T}, outside::Vector{T}) where {T}
 end
 
 
-function _tutte(G::SimpleGraph)
+function _tutte(G::UndirectedGraph)
     FF = faces(G)
     Fmax = first(FF)
     for F in FF

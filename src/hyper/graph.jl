@@ -2,8 +2,8 @@
 `SimpleGraph(H::HG)` demotes a hypergraph to
 a simple graph.
 """
-function SimpleGraph(H::HG{T})::SimpleGraph{T} where {T}
-    G = SimpleGraph{T}()
+function UndirectedGraph(H::HG{T})::UndirectedGraph{T} where {T}
+    G = UndirectedGraph{T}()
 
     # copy all vertices
     for v in H.V
@@ -37,7 +37,7 @@ type `T`. **Warning**: Do not use `T=Any`.
 `HG(G::SimpleGraph)` converts a graph to
 the equivalent two-uniform hypergraph.
 """
-function HG(G::SimpleGraph{T}) where {T}
+function HG(G::UndirectedGraph{T}) where {T}
     H = HG{T}()
     for v in G.V
         add!(H, v)

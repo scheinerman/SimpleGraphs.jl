@@ -6,7 +6,7 @@ export embed_rot, NF, dual
 `rand_rot(G::SimpleGraph)` creates a random rotation system for 
 the graph.
 """
-function rand_rot(G::SimpleGraph{T}) where {T}
+function rand_rot(G::UndirectedGraph{T}) where {T}
     d = Dict{T,RingList{T}}()
     for v in G.V
         a = shuffle(RingList(G[v]))
@@ -19,7 +19,7 @@ end
 `_default_rot(G::SimpleGraph)` creates a default 
 rotation system for the graph.
 """
-function _default_rot(G::SimpleGraph{T}) where {T}
+function _default_rot(G::UndirectedGraph{T}) where {T}
     d = Dict{T,RingList{T}}()
     for v in G.V
         d[v] = RingList(G[v])
@@ -33,7 +33,7 @@ for this graph (held in the graph's cache).
 
 If `d` is omitted, the a default rotation is used.
 """
-function set_rot(G::SimpleGraph, d)
+function set_rot(G::UndirectedGraph, d)
     if !check_rot(G, d)
         error("Not a valid rotation system for this graph")
     end
@@ -42,7 +42,7 @@ function set_rot(G::SimpleGraph, d)
 end
 
 
-function set_rot(G::SimpleGraph)
+function set_rot(G::UndirectedGraph)
     if hasxy(G)
         embed_rot(G)
         return
@@ -60,14 +60,14 @@ associated with `G`. If there is none, a rotation system will
 be created for this graph. If the graph has an embedding, 
 that will be used to create the rotation system.
 """
-function get_rot(G::SimpleGraph, v)
+function get_rot(G::UndirectedGraph, v)
     if !has(G, v)
         error("No such vertex $v in this graph")
     end
     d = get_rot(G)
     return d[v]
 end
-function get_rot(G::SimpleGraph)
+function get_rot(G::UndirectedGraph)
     if cache_check(G, :RotationSystem)
         return cache_recall(G, :RotationSystem)
     end
@@ -81,7 +81,7 @@ end
 `embed_rot(G::SimpleGraph)` assigns a rotation system to `G`
 corresponding to its current `xy` embedding.
 """
-function embed_rot(G::SimpleGraph{T}) where {T}
+function embed_rot(G::UndirectedGraph{T}) where {T}
     xy = getxy(G)
     d = Dict{T,RingList{T}}()
     for v in G.V
@@ -101,7 +101,7 @@ end
 `check_rot(G::SimpleGraph,d::Dict)`  checks if `d` is a valid 
 rotation system for `G`. 
 """
-function check_rot(G::SimpleGraph{T}, d::Dict{T,RingList{T}}) where {T}
+function check_rot(G::UndirectedGraph{T}, d::Dict{T,RingList{T}}) where {T}
     for v in G.V
         if !haskey(d, v)
             return false
@@ -115,7 +115,7 @@ end
 
 
 
-function _next_edge(G::SimpleGraph{T}, uv::Tuple{T,T}) where {T}
+function _next_edge(G::UndirectedGraph{T}, uv::Tuple{T,T}) where {T}
     u, v = uv
     r = get_rot(G, v)
     w = r(u)
@@ -128,7 +128,7 @@ end
 face starting with the edge `(u,v)` (in that order). Also may be called 
 by `_trace_face(G,(u,v))`.
 """
-function _trace_face(G::SimpleGraph{T}, uv::Tuple{T,T}) where {T}
+function _trace_face(G::UndirectedGraph{T}, uv::Tuple{T,T}) where {T}
     data = T[]
     u, v = uv
     push!(data, u)
@@ -147,7 +147,7 @@ function _trace_face(G::SimpleGraph{T}, uv::Tuple{T,T}) where {T}
 
     return RingList(boundary)
 end
-_trace_face(G::SimpleGraph{T}, u::T, v::T) where {T} = _trace_face(G, (u, v))
+_trace_face(G::UndirectedGraph{T}, u::T, v::T) where {T} = _trace_face(G, (u, v))
 
 
 """
@@ -159,7 +159,7 @@ Each face is a `RingList` of the (directed) edges bordering the face.
 
 *Requires that the graph is connected and has at least one edge.*
 """
-function faces(G::SimpleGraph{T}) where {T}
+function faces(G::UndirectedGraph{T}) where {T}
     FT = RingList{Tuple{T,T}}   # type of an oriented face 
     result = Set{FT}()
 
@@ -180,7 +180,7 @@ given its current rotation system.
 
 *Requires that the graph is connected and has at least one edge.*
 """
-NF(G::SimpleGraph) = length(faces(G))
+NF(G::UndirectedGraph) = length(faces(G))
 
 """
 `euler_char(G::SimpleGraph)` computes the Euler characteristic 
@@ -189,7 +189,7 @@ Specifically, `euler_char(G)` returns `NV(G) - NE(G) + NF(G)`.
 
 *Requires that the graph is connected and has at least one edge.*
 """
-euler_char(G::SimpleGraph) = NV(G) - NE(G) + NF(G)
+euler_char(G::UndirectedGraph) = NV(G) - NE(G) + NF(G)
 
 
 _shorten(F::RingList) = first.(F)
@@ -201,11 +201,11 @@ adjacent if and only if they share a common edge.
 
 *Requires that the graph is connected and has at least one edge.*
 """
-function dual(G::SimpleGraph{T}) where {T}
+function dual(G::UndirectedGraph{T}) where {T}
     Flist = collect(faces(G))    # list of faces of the graph
     FT = RingList{Tuple{T,T}}    # data type of faces
     VT = Vector{T}               # data type of shortened faces
-    GG = SimpleGraph{VT}()       # graph to return
+    GG = UndirectedGraph{VT}()       # graph to return
 
     # the faces of G are the vertices of GG
     for f in Flist
