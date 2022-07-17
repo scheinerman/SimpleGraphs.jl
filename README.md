@@ -13,7 +13,9 @@ We have made the following (breaking) changes:
 
 These may be abbreviated as `UG`, `DG`, and `HG`, respectively 
 
-These changes were made to help this `SimpleGraphs` module be interoperable with Julia's [`Graphs`](https://github.com/JuliaGraphs/Graphs.jl) module that now uses the name `SimpleGraph` (formerly `LightGraph`). 
+These changes were made to help this `SimpleGraphs` module be interoperable with Julia's [`Graphs`](https://github.com/JuliaGraphs/Graphs.jl) module that defines the type `SimpleGraph` (formerly `Graph` in the `LightGraphs` module). 
+
+Conversion between these two types (`UndirectedGraph` in this module and `SimpleGraph` in the `Graphs` module) is supported; see the file `graph_converter.jl` in the `extras` directory.
 
 ---
 
