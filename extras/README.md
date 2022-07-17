@@ -94,6 +94,9 @@ julia> diam(G)
 
 # Converting between `SimpleGraphs` and  `Graphs` 
 
+## ALERT: This is information is obsolete. I'll be working on fixing this soon.
+
+
 Both the [Graphs](https://github.com/JuliaGraphs/Graphs.jl) module and this `SimpleGraphs` module define a graph type named `SimpleGraph`. The function `graph_convert` converts a graph defined in one 
 module to the type defined in the other. 
 
