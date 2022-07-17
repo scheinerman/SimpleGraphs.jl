@@ -4,9 +4,9 @@
 #  SimpleGraphs
 
 
-## Release Notes for 0.8
+## Release notes for version 0.8
 
-We have made the following changes:
+We have made the following (breaking) changes:
 + `SimpleGraph` has been renamed `UndirectedGraph`.
 + `SimpleDigraph` has been renamed `DirectedGraph`.
 + `SimpleHypergraph` has been renamed `HyperGraph` (note the captial G).
@@ -22,13 +22,13 @@ These changes were made to help this `SimpleGraphs` module be interoperable with
 
 This module defines three data types for working with graphs:
 
-+ The `SimpleGraph` type represents *undirected* graphs without loops
++ The `UndirectedGraph` type represents *undirected* graphs without loops
   or multiple edges.
-+ The `SimpleDigraph` type represents *directed* graphs in which there
++ The `DirectedGraph` type represents *directed* graphs in which there
   may be at most one directed edge `(u,v)` from a vertex `u` to a
   vertex `v`. There may also be a directed edge in the opposite
   direction, `(v,u)`.
-+ The `SimpleHypergraph` type representing *hypergraphs* in which
++ The `HyperGraph` type representing *hypergraphs* in which
   edges may be any subset of the vertex set.
 
 
@@ -46,11 +46,10 @@ In addition, we have:
 ## User's Guide
 
 Please see the [Wiki](https://github.com/scheinerman/SimpleGraphs.jl/wiki) for
-extensive information pertaining to the `SimpleGraph` type.
+extensive information pertaining to the `UndirectedGraph` type.
 
-The `SimpleDigraph` type is not so well developed nor documented. See the
-source files in the `src` directory. Likewise, the `SimpleHypergraph`
-type is in early stages of development.
+The `DirectedGraph` type is not so well developed nor documented. See the
+source files in the `src` directory. Likewise, documentation and support for the `HyperGraph` type is limited.
 
 ## A Few Extras
 
