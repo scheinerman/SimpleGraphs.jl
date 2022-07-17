@@ -9,7 +9,7 @@
 To prevent naming clashes with `Graphs`, we will be making the following changes:
 + `SimpleGraph` will be renamed `UndirectedGraph`.
 + `SimpleDigraph` will be renamed `DirectedGraph`.
-+ `SimpleHypergraph` will be renamed `Hypergraph`.
++ `SimpleHypergraph` will be renamed `HyperGraph`.
 
 We will also provide the abbreviations `UG`, `DG`, and `HG` for these. 
 
