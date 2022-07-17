@@ -1,5 +1,8 @@
 using SimpleGraphs, Graphs
 
+import SimpleGraphs: UndirectedGraph, UG 
+import Graphs: SimpleGraph
+
 """
     graph_convert 
 Both `Graphs` and `SimpleGraphs` define a graph type named `SimpleGraph`.
@@ -17,8 +20,8 @@ of type `SimpleGraphs.SimpleGraph` it first makes a copy of `G` with vertices
 relabeled to be integers from `1` to `n`, and then uses that copy to make a 
 `Graphs.SimpleGraph`. See `SimpleGraphs.relabel`.
 """
-function graph_convert(g::Graphs.SimpleGraph{T})::SimpleGraphs.SimpleGraph{T} where {T}
-    G = SimpleGraphs.SimpleGraph{T}()
+function UndirectedGraph(g::SimpleGraph{T})::UG{T} where {T}
+    G = UG{T}()
 
     for v in vertices(g)
         add!(G, v)
@@ -33,11 +36,11 @@ function graph_convert(g::Graphs.SimpleGraph{T})::SimpleGraphs.SimpleGraph{T} wh
     return G
 end
 
-function graph_convert(G::SimpleGraphs.SimpleGraph)::Graphs.SimpleGraph
+function SimpleGraph(G::UG)::SimpleGraph
     H = relabel(G)
     n = NV(H)
 
-    g = Graphs.SimpleGraph(n)
+    g = SimpleGraph(n)
     for e in H.E
         u, v = e
         add_edge!(g, u, v)
@@ -47,3 +50,5 @@ function graph_convert(G::SimpleGraphs.SimpleGraph)::Graphs.SimpleGraph
 
 end
 
+
+nothing

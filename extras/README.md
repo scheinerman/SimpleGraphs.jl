@@ -97,19 +97,65 @@ julia> diam(G)
 ## ALERT: This is information is obsolete. I'll be working on fixing this soon.
 
 
-Both the [Graphs](https://github.com/JuliaGraphs/Graphs.jl) module and this `SimpleGraphs` module define a graph type named `SimpleGraph`. The function `graph_convert` converts a graph defined in one 
-module to the type defined in the other. 
+Julia's [`Graphs`](https://github.com/JuliaGraphs/Graphs.jl) module defines the type `SimpleGraph`.
 
-> **Note:** When using both `Graphs` and `SimpleGraphs` at the same time it is necessary to disambiguate by writing `Graphs.SimpleGraph` and `SimpleGraphs.SimpleGraph`.
+This [`SimpleGraphs`](https://github.com/scheinerman/SimpleGraphs.jl.git) module defines the
+type `UndirectedGraph`. 
 
-If `g` is a `Graphs.SimpleGraph` then `graph_convert(g)` returns a 
-`SimpleGraphs.SimpleGraph` with exactly the same vertices and edges as `g`.
+Both of these types represent simple graphs, i.e., graphs with out directions, loops, or multiple edges. 
 
-Conversion in the other direction is more complicated because the `SimpleGraphs` 
-module allows  arbitrary sets of vertices, whereas `Graphs` require graphs to have 
-vertex sets of the form `{1,2,...,n}`. 
 
-When `graph_convert` is applied to a graph `G`
-of type `SimpleGraphs.SimpleGraph` it first makes a copy of `G` with vertices 
-relabeled to be integers from `1` to `n`, and then uses that copy to make a 
-`Graphs.SimpleGraph`. See our `relabel` function.
+The file `graph_converter.jl` provides a simple way to convert one type of graph to the other.
+
++ If `G` is an `UndirectedGraph`, then `SimpleGraph(G)` converts `G` to a `SimpleGraph`.
++ If `g` is a `SimpleGraph`, then `UndirectedGraph(g)` [or `UG(g)`] converts `g` to an `UndirectedGraph`.
+
+```
+julia> include("extras/graph_converter.jl")
+
+julia> G = Cycle(6)
+Cycle (n=6, m=6)
+
+julia> g = SimpleGraph(G)
+{6, 6} undirected simple Int64 graph
+
+julia> H = UndirectedGraph(g)
+UndirectedGraph{Int64} (n=6, m=6)
+
+julia> G == H
+true
+```
+
+
+## Important note concerning conversion from a `SimpleGraph` to an `UndirectedGraph`
+
+
+The vertices of a `SimpleGraph` (from the `Graphs` module) is a set of integers of the form `{1,2,...,n}`. The vertex set of an `UndirectedGraph` can contain
+arbitrary types. When converting from a `SimpleGraph` to an `UndirectedGraph`, the names
+of the vertices are converted to consecutive integers. 
+
+In this example, the `Petersen()` function returns the Petersen graph as an `UndirectedGraph`. The ten vertices are the two-element subsets of `{1,2,3,4,5}`.
+When we convert to a `SimpleGraph`, the resulting graph has ten vertices are the integers from `1` to `10`. When we convert that `SimpleGraph` back to an `UndirectedGraph`, the 
+vertices are different (integers vs. two-element sets) from the original. 
+
+```
+julia> using ShowSet
+
+julia> G = Petersen()
+Petersen (n=10, m=15)
+
+julia> g = SimpleGraph(G)
+{10, 15} undirected simple Int64 graph
+
+julia> H = UG(g)
+UndirectedGraph{Int64} (n=10, m=15)
+
+julia> G == H  
+false
+
+julia> using SimpleGraphAlgorithms
+
+julia> is_iso(G,H)   # lots of output deleted
+
+true
+```
