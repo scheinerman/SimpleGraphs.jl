@@ -1,6 +1,6 @@
 # Extras for the `SimpleGraphs` Module
 
-This directory will be for code that is potentially useful in graph theory work, 
+This directory is for code that is potentially useful in graph theory work, 
 but not included in the `SimpleGraphs` module.
 <hr>
 
