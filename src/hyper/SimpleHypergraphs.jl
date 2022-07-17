@@ -1,10 +1,10 @@
-export SimpleHypergraph, IntHypergraph
+export HyperGraph, IntHyperGraph
 
-struct SimpleHypergraph{T}
+struct HyperGraph{T}
     V::Set{T}                   # vertex set
     E::Set{Set{T}}              # edge set
     VE::Dict{T,Set{Set{T}}}    # VE[v] is the set of edges containing v
-    function SimpleHypergraph{T}() where {T}
+    function HyperGraph{T}() where {T}
         if T == Any
             error("Do not create hypergraphs with vertex type Any")
         end
@@ -15,6 +15,10 @@ struct SimpleHypergraph{T}
     end
 end
 
+const HG = HyperGraph
+const Hypergraph = HyperGraph
+export HG, Hypergraph
+
 
 """
 `IntHypergraph()` creates a new hypergraph with vertex type `Int`.
@@ -22,31 +26,35 @@ end
 `IntHypergraph(n)` creates a new hypergraph with vertex set
 `{1,2,...,n}` and no edges.
 """
-IntHypergraph() = SimpleHypergraph{Int}()
+IntHyperGraph() = HyperGraph{Int}()
 
-function IntHypergraph(n::Int)
-    H = IntHypergraph()
+function IntHyperGraph(n::Int)
+    H = IntHyperGraph()
     for v = 1:n
         add!(H, v)
     end
     return H
 end
 
+const IntHypergraph = IntHyperGraph
+export IntHypergraph
+
 """
-`StringHypergraph()` creates a new hypergraph with vertex
+`StringHyperGraph()` creates a new hypergraph with vertex
 type `String`.
 """
-StringHypergraph = SimpleHypergraph{String}()
+StringHypergraph = HyperGraph{String}()
+StringHyperGraph = HyperGraph{String}()
 
 
-(==)(H::SimpleHypergraph, K::SimpleHypergraph) = H.V == K.V && H.E == K.E
+(==)(H::HyperGraph, K::HyperGraph) = H.V == K.V && H.E == K.E
 
 """
 `simplify(H::SimpleHypergraph)` converts a hypergraph into a simple graph, `G`.
 The vertices of `G` are the same as those in `H`. Two vertices of `G` are adjacent
 iff they lie in a common edge of `H`.
 """
-function simplify(H::SimpleHypergraph{T}) where {T}
+function simplify(H::HyperGraph{T}) where {T}
     G = SimpleGraph{T}()
 
     # copy the vertices into G 

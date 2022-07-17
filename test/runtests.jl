@@ -308,7 +308,7 @@ end
 end
 
 @testset "Hypergraphs" begin
-    H = IntHypergraph(2)
+    H = IntHyperGraph(2)
 
     add!(H, [1, 2, 3])
     add!(H, [3, 4])

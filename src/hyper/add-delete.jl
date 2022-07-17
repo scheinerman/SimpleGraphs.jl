@@ -1,14 +1,14 @@
 ### ADDING  ###
 
 """
-`add!(H::SimpleHypergraph{T}, v::T)` to add a vertex to `H`. **Example**:
+`add!(H::HG{T}, v::T)` to add a vertex to `H`. **Example**:
 `add!(H,3)`.
 
-`add!(H::SimpleHypergraph{T}, e::Set{T})` to add a hyperedge. This
+`add!(H::HG{T}, e::Set{T})` to add a hyperedge. This
 also works if `e` is a one-dimensional array of `T`s.
 **Example**: `add!(H,[1,2,3])`.
 """
-function add!(H::SimpleHypergraph{T}, v::T)::Bool where {T}
+function add!(H::HG{T}, v::T)::Bool where {T}
     if in(v, H.V)
         return false
     end
@@ -17,7 +17,7 @@ function add!(H::SimpleHypergraph{T}, v::T)::Bool where {T}
     return true
 end
 
-function add!(H::SimpleHypergraph{T}, e::Set{T})::Bool where {T}
+function add!(H::HG{T}, e::Set{T})::Bool where {T}
     if in(e, H.E)
         return false  # already have this edge
     end
@@ -38,11 +38,11 @@ function add!(H::SimpleHypergraph{T}, e::Set{T})::Bool where {T}
     return true
 end
 
-function add!(H::SimpleHypergraph{T}, e::Vector{T})::Bool where {T}
+function add!(H::HG{T}, e::Vector{T})::Bool where {T}
     add!(H, Set(e))
 end
 
-function add!(H::SimpleHypergraph{T}, e::T...) where {T}
+function add!(H::HG{T}, e::T...) where {T}
     add!(H, Set(e))
 end
 
@@ -50,13 +50,13 @@ end
 ### DELETING ###
 
 """
-`delete!(H::SimpleHypergraph,v)` deletes vertex `v` from `H` as well as
+`delete!(H::HG,v)` deletes vertex `v` from `H` as well as
 all edges that contain `v`.
 
-`delete!(H::SimpleHypergraph,e)` deletes edge `e` from `H`. Here,
+`delete!(H::HG,e)` deletes edge `e` from `H`. Here,
 `e` is either a `Set` or a `Vector` of vertices.
 """
-function delete!(H::SimpleHypergraph{T}, e::Set{T})::Bool where {T}
+function delete!(H::HG{T}, e::Set{T})::Bool where {T}
     if !has(H, e)   # nothing to do if this edge isn't in H
         return false
     end
@@ -72,16 +72,16 @@ function delete!(H::SimpleHypergraph{T}, e::Set{T})::Bool where {T}
     return true
 end
 
-function delete!(H::SimpleHypergraph{T}, e::Vector{T})::Bool where {T}
+function delete!(H::HG{T}, e::Vector{T})::Bool where {T}
     delete!(H, Set(e))
 end
 
 
-function delete!(H::SimpleHypergraph{T}, e::T...) where {T}
+function delete!(H::HG{T}, e::T...) where {T}
     delete!(H, Set(e))
 end
 
-function delete!(H::SimpleHypergraph{T}, v::T)::Bool where {T}
+function delete!(H::HG{T}, v::T)::Bool where {T}
     if !has(H, v)
         return false
     end

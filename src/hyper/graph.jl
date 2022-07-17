@@ -1,8 +1,8 @@
 """
-`SimpleGraph(H::SimpleHypergraph)` demotes a hypergraph to
+`SimpleGraph(H::HG)` demotes a hypergraph to
 a simple graph.
 """
-function SimpleGraph(H::SimpleHypergraph{T})::SimpleGraph{T} where {T}
+function SimpleGraph(H::HG{T})::SimpleGraph{T} where {T}
     G = SimpleGraph{T}()
 
     # copy all vertices
@@ -31,14 +31,14 @@ function SimpleGraph(H::SimpleHypergraph{T})::SimpleGraph{T} where {T}
 end
 
 """
-`SimpleHypergraph{T}()` creates a new hypergraph in which vertices have
+`HG{T}()` creates a new hypergraph in which vertices have
 type `T`. **Warning**: Do not use `T=Any`.
 
-`SimpleHypergraph(G::SimpleGraph)` converts a graph to
+`HG(G::SimpleGraph)` converts a graph to
 the equivalent two-uniform hypergraph.
 """
-function SimpleHypergraph(G::SimpleGraph{T}) where {T}
-    H = SimpleHypergraph{T}()
+function HG(G::SimpleGraph{T}) where {T}
+    H = HG{T}()
     for v in G.V
         add!(H, v)
     end
