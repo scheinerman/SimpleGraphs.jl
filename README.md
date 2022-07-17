@@ -6,16 +6,14 @@
 
 ## Release Notes for 0.8
 
-To prevent naming clashes with `Graphs`, we will be making the following changes:
-+ `SimpleGraph` will be renamed `UndirectedGraph`.
-+ `SimpleDigraph` will be renamed `DirectedGraph`.
-+ `SimpleHypergraph` will be renamed `HyperGraph`.
+We have made the following changes:
++ `SimpleGraph` has been renamed `UndirectedGraph`.
++ `SimpleDigraph` has been renamed `DirectedGraph`.
++ `SimpleHypergraph` has been renamed `HyperGraph` (note the captial G).
 
-We will also provide the abbreviations `UG`, `DG`, and `HG` for these. 
+These may be abbreviated as `UG`, `DG`, and `HG`, respectively 
 
-Version 0.8.0 of this package is a transition version. Name changes are 
-in process. Version 0.8.1 and on will retire the old type names.
-
+These changes were made to help this `SimpleGraphs` module be interoperable with Julia's [`Graphs`](https://github.com/JuliaGraphs/Graphs.jl) module that now uses the name `SimpleGraph` (formerly `LightGraph`). 
 
 ---
 
