@@ -92,7 +92,7 @@ julia> diam(G)
 12
 ```
 
-# Converting between `SimpleGraphs` and  `Graphs` 
+# Converting between `SimpleGraphs` and  `UndirectedGraphs` 
 
 Julia's [`Graphs`](https://github.com/JuliaGraphs/Graphs.jl) module defines the type `SimpleGraph`.
 
