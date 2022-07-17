@@ -55,7 +55,4 @@ include("d_ham.jl")
 include("embedding/embedding.jl")
 
 include("hyper/SimpleHypergraphs.jl")
-
-# include("abbreviations.jl")
-
 end # module SimpleGraphs
