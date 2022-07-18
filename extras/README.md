@@ -153,6 +153,5 @@ false
 julia> using SimpleGraphAlgorithms
 
 julia> is_iso(G,H)   # lots of output deleted
-
 true
 ```
