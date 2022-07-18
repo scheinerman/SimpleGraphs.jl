@@ -3,7 +3,6 @@ using SimpleGraphs, Graphs
 import SimpleGraphs: UndirectedGraph, UG 
 import Graphs: SimpleGraph
 
-
 function UndirectedGraph(g::SimpleGraph{T})::UG{T} where {T}
     G = UG{T}()
 
@@ -31,7 +30,6 @@ function SimpleGraph(G::UG)::SimpleGraph
     end
 
     return g
-
 end
 
 
