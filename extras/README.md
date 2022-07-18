@@ -132,7 +132,7 @@ arbitrary types. When converting from a `SimpleGraph` to an `UndirectedGraph`, t
 of the vertices are converted to consecutive integers. 
 
 In this example, the `Petersen()` function returns the Petersen graph as an `UndirectedGraph`. The ten vertices are the two-element subsets of `{1,2,3,4,5}`.
-When we convert to a `SimpleGraph`, the resulting graph has ten vertices are the integers from `1` to `10`. When we convert that `SimpleGraph` back to an `UndirectedGraph`, the 
+When we convert to a `SimpleGraph`, the resulting graph has ten vertices that are the integers from `1` to `10`. When we convert that `SimpleGraph` back to an `UndirectedGraph`, the 
 vertices are different (integers vs. two-element sets) from the original. 
 
 ```
