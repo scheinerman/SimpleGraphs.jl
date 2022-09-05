@@ -74,7 +74,7 @@ end
 
 
 """
-`graffle(G::SimpleGraph, filename="julia.graffle",rad=9)` creates
+`graffle(G::UndirectedGraph, filename="julia.graffle", rad=9)` creates
 an OmniGraffle document of this drawing.
 
 * `G` is the graph

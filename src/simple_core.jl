@@ -7,11 +7,11 @@ export show, NV, NE, has, typ, fastN!, name, get_edge
 export vlist, elist, neighbors, getindex, deg, deg_hist
 
 """
-The `SimpleGraph` type represents a simple graph; that is, an
+The `UndirectedGraph` type represents a simple graph; that is, an
 undirected graph with no loops and no multiple edges.
 
-Use `SimpleGraph()` to create a new graph in which the vertices may be
-`Any` type. Use `SimpleGraph{T}()` to create a new graph in which the
+Use `UndirectedGraph()` to create a new graph in which the vertices may be
+`Any` type. Use `UndirectedGraph{T}()` to create a new graph in which the
 vertices are of type `T`. See `IntGraph` and `StringGraph` as special
 cases.
 """
@@ -31,6 +31,10 @@ mutable struct UndirectedGraph{T} <: AbstractSimpleGraph
     end
 end
 
+"""
+    UG 
+Abbreviation for `UndirectedGraph`.
+"""
 const UG = UndirectedGraph
 export UG
 
@@ -38,7 +42,7 @@ export UG
 `name(G)` returns the graph's name.
 
 `name(G,str)` assigns `str` to be the graph's name. If `str` is
-empty, then the name is set to the default `SimpleGraph{T}` where
+empty, then the name is set to the default `UndirectedGraph{T}` where
 `T` is the vertex type.
 """
 function name(G::UndirectedGraph)
@@ -68,11 +72,11 @@ UndirectedGraph(Nflag::Bool = true) = UndirectedGraph{Any}(Nflag)
 
 # A StringGraph has vertices of type String.
 """
-A `StringGraph` is a `SimpleGraph` whose vertices are of type
+A `StringGraph` is a `UndirectedGraph` whose vertices are of type
 `String`.
 
 When constructed with `StringGraph()` creates an empty
-`SimpleGraph{String}`.
+`UndirectedGraph{String}`.
 
 When invoked as `StringGraph(file::AbstractString)` opens the named
 file for parsing as a graph. Each line of the file should contain one
@@ -116,7 +120,7 @@ function load!(G::UndirectedGraph, file::AbstractString)
 end
 
 """
-`IntGraph()` creates a new `SimpleGraph` whose vertices are of type
+`IntGraph()` creates a new `UndirectedGraph` whose vertices are of type
 `Int`. Called as `IntGraph(n::Int)` prepopulates the vertex set with
 vertices `1:n`.
 
@@ -152,7 +156,7 @@ end
 
 
 """
-`SimpleGraph(A)` where `A` is a matrix creates a graph with vertex set
+`UndirectedGraph(A)` where `A` is a matrix creates a graph with vertex set
 `1:n` where `A` is an `n`-by-`n` symmetric matrix specifying the graph's
 adjacency matrix.
 """
@@ -160,7 +164,7 @@ UndirectedGraph(A::AbstractMatrix) = IntGraph(A)
 
 
 """
-`eltype(G::SimpleGraph)`, `eltype(G::SimpleDigraph)`, `eltype(G::SimpleHypergraph)`
+`eltype(G::UndirectedGraph)`, `eltype(G::DirectedGraph)`, `eltype(G::HyperGraph)`
 
 Returns the data type of the vertices this graph may hold.
 For example, if `G=IntGraph()` then this returns `Int64`.`
@@ -248,7 +252,7 @@ end
 
 # Create a mapping between G.V and 1:n. This is not exposed outside
 # this module; it's a helper function used by other functions. This
-# has been crafted to work with either SimpleGraph or SimpleDigraph
+# has been crafted to work with either UndirectedGraph or DirectedGraph
 # arguments.
 function vertex2idx(G::AbstractSimpleGraph)
     T = eltype(G)

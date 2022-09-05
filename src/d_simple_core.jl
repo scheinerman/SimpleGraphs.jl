@@ -7,9 +7,9 @@ export in_neighbors, out_neighbors, simplify, vertex_split
 export is_strongly_connected
 
 """
-`SimpleDigraph()` creates a new directed graph with vertices of `Any`
+`DirectedGraph()` creates a new directed graph with vertices of `Any`
 type. This can be restricted to vertics of type `T` with
-`SimpleDigraph{T}()`.
+`DirectedGraph{T}()`.
 """
 mutable struct DirectedGraph{T} <: AbstractSimpleGraph
     V::Set{T}              # vertex set of this graph
@@ -24,6 +24,10 @@ mutable struct DirectedGraph{T} <: AbstractSimpleGraph
     end
 end
 
+"""
+    DG
+Abbreviation for `DirectedGraph`.
+"""
 const DG = DirectedGraph
 export DG
 
@@ -280,7 +284,7 @@ end
 # directions (and loops)
 
 """
-`simplify(G::SimpleDigraph)` converts a directed graph into a `SimpleGraph`
+`simplify(G::DirectedGraph)` converts a directed graph into an `UndirectedGraph`
 by removing directions and loops.
 """
 function simplify(D::DirectedGraph{T}) where {T}

@@ -93,7 +93,7 @@ end
 `demo_distxy(G,tol=1e-3)` presents an animation showing the evolving
 drawing found by `distxy!`.
 """
-function demo_distxy(G::SimpleGraph = BuckyBall(), tol = 1e-3)
+function demo_distxy(G::UndirectedGraph = BuckyBall(), tol = 1e-3)
     return demo_distxy(GraphEmbedding(G), tol)
 end
 

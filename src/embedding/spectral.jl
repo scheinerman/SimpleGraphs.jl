@@ -27,7 +27,7 @@ function _spectral(G::UndirectedGraph, xcol::Int = 2, ycol::Int = 3)
 end
 
 """
-    _normalized_spectral(G::SimpleGraph, xcol::Int = 2, ycol::Int = 3)
+    _normalized_spectral(G::UndirectedGraph, xcol::Int = 2, ycol::Int = 3)
 Same as `_spectral`, but use the normalized Laplacian matrix.
 """
 function _normalized_spectral(G::UndirectedGraph, xcol::Int = 2, ycol::Int = 3)

@@ -1,12 +1,12 @@
 # export tutte
 
 """
-`tutte(G::SimpleGraph, outside)` gives `G` a Tutte embedding in which 
+`tutte(G::UndirectedGraph, outside)` gives `G` a Tutte embedding in which 
 the list of vertices in `outside` form the outer boundary. The graph 
 should be connected (ideally, 3-connected) and, if planar and `outside`
 defines a face, the embedding will be crossing free.
 
-`tutte(G::SimpleGraph)` assumes `G` has a rotation system in which case a 
+`tutte(G::UndirectedGraph)` assumes `G` has a rotation system in which case a 
 largest face will be selected to be `outside`.
 """
 function _tutte(G::UndirectedGraph{T}, outside::Vector{T}) where {T}

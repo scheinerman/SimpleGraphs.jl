@@ -19,7 +19,7 @@ using RingLists
 import AbstractLattices: dist, ∨
 
 """
-`AbstractSimpleGraph` is a parent class for `SimpleGraph` and `SimpleDigraph`.
+`AbstractSimpleGraph` is a parent class for `UndirectedGraph` and `DirectedGraph`.
 """
 abstract type AbstractSimpleGraph end
 export AbstractSimpleGraph

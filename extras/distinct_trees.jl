@@ -9,7 +9,7 @@ const DEFAULT_FILE_NAME = "tree_codes.jl"
 Create a new table of distinct trees on 1 and 2 vertices.
 """
 function init_trees_table()
-    TT = Dict{Int,Vector{SimpleGraph{Int}}}()
+    TT = Dict{Int,Vector{UG{Int}}}()
 
     TT[1] = [IntGraph(1)]
     T = IntGraph(2)
@@ -23,7 +23,7 @@ end
     check_in(G,S)
 See if the set `S` contains a graph isomorphic to `G`. Return `true` if so.
 """
-function check_in(G::SimpleGraph{Int}, S::Set{SimpleGraph{Int}})
+function check_in(G::UG{Int}, S::Set{UG{Int}})
     if isempty(S)
         return false
     end
@@ -40,9 +40,9 @@ end
 Given a table of distinct trees up to size `n`, extend that table to include 
 all distinct trees of size `n+1`.
 """
-function extend_trees_table!(TT::Dict{Int,Vector{SimpleGraph{Int}}})::Nothing
+function extend_trees_table!(TT::Dict{Int,Vector{UG{Int}}})::Nothing
     n = maximum(keys(TT))
-    outset = Set{SimpleGraph{Int}}()  # set of trees with n+1 vertices
+    outset = Set{UG{Int}}()  # set of trees with n+1 vertices
     for T ∈ TT[n]
         for w = 1:n
             X = deepcopy(T)
@@ -74,7 +74,7 @@ end
 Given a table of distinct trees, convert that into a table of Prufer codes.
 This is used by `save_trees_table` and not useful to be called directly. 
 """
-function create_codes_table(TT::Dict{Int64,Vector{SimpleGraph{Int}}})
+function create_codes_table(TT::Dict{Int64,Vector{UG{Int}}})
     codes = Dict{Int64,Vector{Vector{Int}}}()
     codes[2] = [Int[]]
     for n = 3:maximum(keys(TT))
@@ -89,7 +89,7 @@ Save a trees table into a file specified by `filename`.
 If the file name is omitted, use `codes.jl`.
 """
 function save_trees_table(
-    TT::Dict{Int64,Vector{SimpleGraph{Int}}},
+    TT::Dict{Int64,Vector{UG{Int}}},
     filename::String = DEFAULT_FILE_NAME,
 )
     outfile = open(filename, "w")

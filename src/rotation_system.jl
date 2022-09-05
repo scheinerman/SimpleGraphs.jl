@@ -3,7 +3,7 @@ export embed_rot, NF, dual
 
 
 """
-`rand_rot(G::SimpleGraph)` creates a random rotation system for 
+`rand_rot(G::UndirectedGraph)` creates a random rotation system for 
 the graph.
 """
 function rand_rot(G::UndirectedGraph{T}) where {T}
@@ -16,7 +16,7 @@ function rand_rot(G::UndirectedGraph{T}) where {T}
 end
 
 """
-`_default_rot(G::SimpleGraph)` creates a default 
+`_default_rot(G::UndirectedGraph)` creates a default 
 rotation system for the graph.
 """
 function _default_rot(G::UndirectedGraph{T}) where {T}
@@ -28,7 +28,7 @@ function _default_rot(G::UndirectedGraph{T}) where {T}
 end
 
 """
-`set_rot(G::SimpleGraph,d)` makes `d` the rotation system 
+`set_rot(G::UndirectedGraph,d)` makes `d` the rotation system 
 for this graph (held in the graph's cache).
 
 If `d` is omitted, the a default rotation is used.
@@ -52,10 +52,10 @@ end
 
 
 """
-`get_rot(G::SimpleGraph,v)` returns a `RingList` of the neighbors of `v`.
+`get_rot(G::UndirectedGraph,v)` returns a `RingList` of the neighbors of `v`.
 This assumes that `G` has an associate rotation system.
 
-`get_rot(G::SimpleGraph)` returns a copy of the rotation system 
+`get_rot(G::UndirectedGraph)` returns a copy of the rotation system 
 associated with `G`. If there is none, a rotation system will 
 be created for this graph. If the graph has an embedding, 
 that will be used to create the rotation system.
@@ -78,7 +78,7 @@ end
 
 
 """
-`embed_rot(G::SimpleGraph)` assigns a rotation system to `G`
+`embed_rot(G::UndirectedGraph)` assigns a rotation system to `G`
 corresponding to its current `xy` embedding.
 """
 function embed_rot(G::UndirectedGraph{T}) where {T}
@@ -98,7 +98,7 @@ end
 
 
 """
-`check_rot(G::SimpleGraph,d::Dict)`  checks if `d` is a valid 
+`check_rot(G::UndirectedGraph,d::Dict)`  checks if `d` is a valid 
 rotation system for `G`. 
 """
 function check_rot(G::UndirectedGraph{T}, d::Dict{T,RingList{T}}) where {T}
@@ -124,7 +124,7 @@ end
 
 
 """
-`_trace_face(G::SimpleGraph, v,w)` uses the graph's rotation system to find a 
+`_trace_face(G::UndirectedGraph, v,w)` uses the graph's rotation system to find a 
 face starting with the edge `(u,v)` (in that order). Also may be called 
 by `_trace_face(G,(u,v))`.
 """
@@ -151,7 +151,7 @@ _trace_face(G::UndirectedGraph{T}, u::T, v::T) where {T} = _trace_face(G, (u, v)
 
 
 """
-`faces(G::SimpleGraph)` returns the set of faces of this graph 
+`faces(G::UndirectedGraph)` returns the set of faces of this graph 
 (given its rotation system). The rotation system is a 
 planar embedding iff this returns `2`.
 
@@ -183,7 +183,7 @@ given its current rotation system.
 NF(G::UndirectedGraph) = length(faces(G))
 
 """
-`euler_char(G::SimpleGraph)` computes the Euler characteristic 
+`euler_char(G::UndirectedGraph)` computes the Euler characteristic 
 of the graph `G` with its associated rotation system. 
 Specifically, `euler_char(G)` returns `NV(G) - NE(G) + NF(G)`.
 
@@ -195,7 +195,7 @@ euler_char(G::UndirectedGraph) = NV(G) - NE(G) + NF(G)
 _shorten(F::RingList) = first.(F)
 
 """
-`dual(G::SimpleGraph)` returns the dual graph of `G`.
+`dual(G::UndirectedGraph)` returns the dual graph of `G`.
 The vertices of the dual are the faces of `G` and they are 
 adjacent if and only if they share a common edge. 
 

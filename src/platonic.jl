@@ -10,7 +10,7 @@ function add_edge_matrix!(G::UndirectedGraph, edges::Array{Int,2})
 end
 
 """
-`Tetrahedron()` creates the tetrahedron `SimpleGraph`.
+`Tetrahedron()` creates the tetrahedron graph.
 """
 function Tetrahedron()
     G = Wheel(4)
@@ -19,7 +19,7 @@ function Tetrahedron()
 end
 
 """
-`Dodecahedron()` creates the dodecahedron `SimpleGraph`.
+`Dodecahedron()` creates the dodecahedron graph.
 """
 function Dodecahedron()
     G = IntGraph()
@@ -63,7 +63,7 @@ function Dodecahedron()
 end
 
 """
-`Icosahedron()` creates the icosahedron `SimpleGraph`.
+`Icosahedron()` creates the icosahedron graph.
 """
 function Icosahedron()
     G = IntGraph()
@@ -107,7 +107,7 @@ function Icosahedron()
 end
 
 """
-`Octahedron()` creates the octaahedron `SimpleGraph`.
+`Octahedron()` creates the octaahedron graph.
 """
 function Octahedron()
     G = Complete([2, 2, 2])

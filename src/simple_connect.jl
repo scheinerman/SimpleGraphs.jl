@@ -38,7 +38,7 @@ end
 
 
 """
-    max_component(G::SimpleGraph)
+    max_component(G::UndirectedGraph)
 Return the vertex set of a largest component of `G`.
 """
 function max_component(G::UndirectedGraph{T})::Set{T} where {T}
@@ -291,7 +291,7 @@ function eccentricity(G::UndirectedGraph, v)
 end
 
 """
-`graph_center(G)` returns the set of vertices of a `SimpleGraph` with minimum
+`graph_center(G)` returns the set of vertices of a `UndirectedGraph` with minimum
 eccentricities.
 """
 function graph_center(G::UndirectedGraph)::Set
@@ -396,7 +396,7 @@ function is_cut_edge(G::UndirectedGraph{T}, e::Tuple{T,T})::Bool where {T}
 end
 
 """
-    is_cut_vertex(G::SimpleGraph, v)
+    is_cut_vertex(G::UndirectedGraph, v)
 Determine if `v` is a cut vertex of `G`.
 """
 function is_cut_vertex(G::UndirectedGraph{T}, v::T)::Bool where {T}

@@ -1,7 +1,7 @@
 export bisect, cross_edges
 
 """
-`bisect(G::SimpleGraph)` partitions the vertex set of `G` using the
+`bisect(G::UndirectedGraph)` partitions the vertex set of `G` using the
 eigenvector associated with the second smallest eigenvalue of the
 graph's Laplacian matrix (called `x` below).
 
@@ -96,7 +96,7 @@ end
 # import IterTools.product
 
 """
-`cross_edges(G::SimpleGraph,A,B)` returns the set of edges of `G` with
+`cross_edges(G::UndirectedGraph,A,B)` returns the set of edges of `G` with
 one end in `A` and one end in `B`. Here `A` and `B` are collections
 of vertices of `G`.
 """

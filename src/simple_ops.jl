@@ -93,8 +93,8 @@ end
 `edge_table` is an iterable list (array or set) of edges to be
 added (two-tuples). Returns the number of edges added to the graph.
 
-This works both when `G` is a `SimpleGraph` and when `G` is
-a `SimpleDigraph`.
+This works both when `G` is a `UndirectedGraph` and when `G` is
+a `DirectedGraph`.
 """
 function add_edges!(G::AbstractSimpleGraph, edge_list)::Int
     m0 = NE(G)
@@ -176,7 +176,7 @@ end
 # subgraph G[A]. Note that A must be a subset of V(G).
 """
 `induce(G,A)` creates the induced subgraph of `G` with vertices in the
-set `A`. The graph may be either a `SimpleGraph` or a `SimpleDigraph`.
+set `A`. The graph may be either a `UndirectedGraph` or a `DirectedGraph`.
 """
 function induce(G::UndirectedGraph{T}, A::Set) where {T}
     # Check that A is a subset of V(G)
@@ -374,7 +374,7 @@ end
 
 # Use G*H for Cartesian product
 """
-For `SimpleGraph`s: `G*H` is equivalent to `cartesian(G,H)`.
+For `UndirectedGraph`s: `G*H` is equivalent to `cartesian(G,H)`.
 """
 function *(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
     return cartesian(G, H)
@@ -609,13 +609,13 @@ function lex(G::UndirectedGraph{S}, H::UndirectedGraph{T}) where {S,T}
 end
 
 """
-Abbreviation for `lex(G,H)` for `SimpleGraph`s.
+Abbreviation for `lex(G,H)` for `UndirectedGraph`s.
 """
 getindex(G::UndirectedGraph, H::UndirectedGraph) = lex(G, H)
 
 
 """
-`subdivide(G::SimpleGraph)` creates a new `SimpleGraph` by replacing
+`subdivide(G::UndirectedGraph)` creates a new `UndirectedGraph` by replacing
 every edge with a path of length two.
 """
 function subdivide(G::UndirectedGraph{T}) where {T}

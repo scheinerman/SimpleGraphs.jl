@@ -21,7 +21,7 @@ function getxy(G::UndirectedGraph, v)
 end
 
 """
-`hasxy(G::SimpleGraph)` returns `true` if an embedding has been 
+`hasxy(G::UndirectedGraph)` returns `true` if an embedding has been 
 given to this graph.
 """
 hasxy(G::UndirectedGraph)::Bool = cache_check(G, :xy)
@@ -36,7 +36,7 @@ function get_line_color(G::UndirectedGraph)
 end
 
 """
-`set_line_color(G::SimpleGraph, hue=:black)` sets the color of the graph's 
+`set_line_color(G::UndirectedGraph, hue=:black)` sets the color of the graph's 
 edges and vertex boundaries.
 """
 function set_line_color(G::UndirectedGraph, hue = :black)
@@ -85,7 +85,7 @@ set_vertex_color(G::UndirectedGraph) = set_vertex_color(G, :white)
 
 
 """
-`set_vertex_color(G::SimpleGraph, d::Dict, palette)` where `d` is a dictionary 
+`set_vertex_color(G::UndirectedGraph, d::Dict, palette)` where `d` is a dictionary 
 mapping vertices to integers and `palette` is a list of colors. 
 
 Convert a mapping of vertices to integers into colors for the vertices.

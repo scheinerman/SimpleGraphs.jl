@@ -1,5 +1,5 @@
 """
-`SimpleGraph(H::HG)` demotes a hypergraph to
+`UndirectedGraph(H::HG)` demotes a hypergraph to
 a simple graph.
 """
 function UndirectedGraph(H::HG{T})::UndirectedGraph{T} where {T}
@@ -34,7 +34,7 @@ end
 `HG{T}()` creates a new hypergraph in which vertices have
 type `T`. **Warning**: Do not use `T=Any`.
 
-`HG(G::SimpleGraph)` converts a graph to
+`HG(G::UndirectedGraph)` converts a graph to
 the equivalent two-uniform hypergraph.
 """
 function HG(G::UndirectedGraph{T}) where {T}

@@ -1,7 +1,7 @@
 export geogebra
 
 """
-`geogebra(G,file_name)` takes a `SimpleGraph` and writes out a
+`geogebra(G,file_name)` takes a `UndirectedGraph` and writes out a
 script to produce a drawing of this graph in GeoGebra.
 
 Here is the secret sauce to make this work.
@@ -34,7 +34,7 @@ named parameters as follows:
   default is `3`.
 """
 function geogebra(
-    G::SimpleGraph,
+    G::UndirectedGraph,
     file_name::String = "geogebra.txt";
     vertex_labels::Bool = false,
     vertex_color::String = "black",

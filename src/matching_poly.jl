@@ -2,7 +2,7 @@ export matching_poly
 
 """
 `matching_poly(G)` returns the matching polynomial of the
-`SimpleGraph` `G`.
+`UndirectedGraph` `G`.
 """
 function matching_poly(G::UndirectedGraph, cache_flag::Bool = true)
     if cache_flag && cache_check(G, :matching_poly)

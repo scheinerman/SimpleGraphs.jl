@@ -2,7 +2,7 @@ export prufer_code, is_tree, prufer_restore
 
 """
     is_tree(G)
-Determines if the `SimpleGraph` is a tree.
+Determines if the `UndirectedGraph` is a tree.
 """
 function is_tree(G::UndirectedGraph)
     return is_connected(G) && (NE(G) == NV(G) - 1)
@@ -11,7 +11,7 @@ end
 
 """
     lowest_leaf(G)
-Return the leaf of the `SimpleGraph` with the smallest label.
+Return the leaf of the `UndirectedGraph` with the smallest label.
 """
 function lowest_leaf(G::UndirectedGraph)
     leaves = [v for v ∈ G.V if deg(G, v) == 1]
@@ -20,7 +20,7 @@ end
 
 
 """
-    lowest_leaf_neighbor(G::SimpleGraph)
+    lowest_leaf_neighbor(G::UndirectedGraph)
 Return the unique neighbor of `lowest_leaf(G)`.
 """
 function lowest_leaf_neighbor(G::UndirectedGraph)
@@ -30,7 +30,7 @@ end
 
 """
     prufer_code(G)
-Return the Prufer code of the `SimpleGraph` which must be a tree.
+Return the Prufer code of the `UndirectedGraph` which must be a tree.
 The vertices must be `<`-comparable and preferrably are the integers 
 `{1,2,...,n}` (otherwise we cannot decode the sequence generated).
 """

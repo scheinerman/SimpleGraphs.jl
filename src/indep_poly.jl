@@ -1,8 +1,7 @@
 export indep_poly
 
 """
-`indep_poly(G)` returns the independence polynomial of the
-`SimpleGraph` `G`.
+`indep_poly(G)` returns the independence polynomial of the `UndirectedGraph` `G`.
 """
 function indep_poly(G::UndirectedGraph, cache_flag::Bool = true)
     if cache_flag && cache_check(G, :indep_poly)

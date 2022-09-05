@@ -49,7 +49,7 @@ end
 
 
 """
-    normalized_laplace(G::SimpleGraph)
+    normalized_laplace(G::UndirectedGraph)
 Return the normalized Laplacian matrix of `G`.
 """
 function normalized_laplace(G::UndirectedGraph)::Matrix{Float64}
@@ -169,7 +169,7 @@ end
 
 
 """
-`eigvals(G)` for a `SimpleGraph` returns the eigenvalues of `G`'s
+`eigvals(G)` for a `UndirectedGraph` returns the eigenvalues of `G`'s
 adjacency matrix. More generally, `eigvals(G,mat)` returns the eigenvalues
 of `mat(G)` where `mat` is a matrix-valued function of `G`. In particular,
 one can use `mat(G,laplace)` to find the eigenvalues of `G`'s Laplacian.

@@ -61,7 +61,7 @@ To save a table of trees to a file (to later recall with `load_trees_table`) use
 
 For example, here are the degree sequences of all distinct trees with 6 vertices:
 
-```julia
+```
 julia> include("distinct_trees.jl");
 
 julia> TT = build_trees_table(6);  # Information output omitted
@@ -81,7 +81,7 @@ julia> for T in TT[6]
 
 Aubrey de Grey created a unit distance graph with chromatic number 5. This graph can be seen using the function `deGrey` in the file `deGrey.jl`.
 
-```julia
+```
 julia> include("deGrey.jl")
 deGrey
 
