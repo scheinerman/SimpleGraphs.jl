@@ -956,3 +956,57 @@ function is_unit_distance(G::UndirectedGraph{T}, tol = 1e-10)::Bool where {T}
     return true
 
 end
+
+
+export Tutte
+"""
+    Tutte()::UndirectedGraph{Int}
+
+Return the Tutte graph: a 3-regular, 3-connected, planar, non-Hamiltonian graph.
+"""
+function Tutte()::UndirectedGraph{Int}
+    ee = [
+        1 2
+        1 9
+        2 3
+        2 11
+        3 4
+        4 5
+        4 12
+        5 6
+        5 13
+        6 7
+        6 15
+        7 8
+        8 9
+        8 15
+        9 10
+        10 11
+        10 14
+        11 12
+        12 13
+        13 14
+        14 15
+    ]
+    G = IntGraph()
+    for idx = 1:21
+        add!(G, ee[idx, 1], ee[idx, 2])
+        add!(G, ee[idx, 1] + 15, ee[idx, 2] + 15)
+        add!(G, ee[idx, 1] + 30, ee[idx, 2] + 30)
+    end
+
+    add!(G, 3, 16)
+    add!(G, 18, 31)
+    add!(G, 33, 1)
+
+    add!(G, 46, 7)
+    add!(G, 46, 22)
+    add!(G, 46, 37)
+
+    outer = [1, 2, 3, 16, 17, 18, 31, 32, 33]
+    embed(G, :tutte, outside = outer)
+    embed_rot(G)
+
+    name(G, "Tutte")
+    return G
+end
