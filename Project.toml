@@ -1,6 +1,6 @@
 name = "SimpleGraphs"
 uuid = "55797a34-41de-5266-9ec1-32ac4eb504d3"
-version = "0.8.5"
+version = "0.8.6"
 
 [deps]
 AbstractLattices = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
@@ -32,7 +32,7 @@ SimplePartitions = "0.0.1, 0.1, 0.2, 0.3"
 SimpleRandom = "0.1, 0.2, 0.3"
 Combinatorics = "1"
 SimplePolynomials = "0.0.1, 0.0.2, 0.0.3, 0.0.4, 0.0.5, 0.0.6, 0.1, 0.2"
-LinearAlgebraX = "0.0.1, 0.0.2, 0.0.3, 0.0.4, 0.0.5, 0.0.6, 0.0.7, 0.0.8, 0.1"
+LinearAlgebraX = "0.1, 0.2"
 RingLists = "0.1, 0.2"
 
 [extras]
