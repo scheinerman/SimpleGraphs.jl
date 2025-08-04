@@ -1,6 +1,6 @@
 name = "SimpleGraphs"
 uuid = "55797a34-41de-5266-9ec1-32ac4eb504d3"
-version = "0.8.6"
+version = "0.8.7"
 
 [deps]
 AbstractLattices = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
@@ -23,7 +23,7 @@ RingLists = "286e9d63-9694-5540-9e3c-4e6708fa07b2"
 [compat]
 julia = "1"
 AbstractLattices = "0.1, 0.2, 0.3"
-DataStructures = "0.9, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18"
+DataStructures = "0.9, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19"
 IterTools = "1"
 LightXML = "0.7, 0.8, 0.9"
 Optim = "0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 1"
