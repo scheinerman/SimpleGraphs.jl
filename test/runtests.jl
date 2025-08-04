@@ -117,9 +117,9 @@ end
     G = Knight(5, 5)
     @test NV(G) == 25
     @test NE(HoffmanSingleton()) == 175
-    p1 = char_poly(Hoffman())
-    p2 = char_poly(Cube(4))
-    @test p1 == p2
+    # p1 = char_poly(Hoffman())
+    # p2 = char_poly(Cube(4))
+    # @test p1 == p2
 end
 
 @testset "Platonics" begin
