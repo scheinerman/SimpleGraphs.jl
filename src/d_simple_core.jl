@@ -316,8 +316,8 @@ function ==(G::DirectedGraph, H::DirectedGraph)
     return isequal(G, H)
 end
 
-function hash(G::DirectedGraph, h::UInt64 = UInt64(0))
-    return hash(G.V, h) + hash(G.N, h)
+function hash(G::DirectedGraph, h::UInt)
+    return hash(G.V, hash(G.N, h))
 end
 
 
