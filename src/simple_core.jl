@@ -388,8 +388,8 @@ end
 
 import Base.hash
 
-function hash(G::UndirectedGraph, h::UInt64 = UInt64(0))
-    return hash(G.V, h) + hash(G.E, h)
+function hash(G::UndirectedGraph, h::UInt)
+    return hash(G.V, hash(G.E, h))
 end
 
 simplify(G::UndirectedGraph) = deepcopy(G)
